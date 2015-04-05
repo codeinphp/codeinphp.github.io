@@ -2,7 +2,7 @@
 <rss version="2.0">
 <channel>
 <title>Code In PHP</title>
-<link>https://codeinphp.github.io/</link>
+<link>https://codeinphp.github.io</link>
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
@@ -10,7 +10,7 @@
 <description><p><strong>Hello, World !</strong></p>
 <p>This is my first post on this blog hosted at awesome <a href="https://pages.github.com/">github pages</a>. Previously I used to blog on <a href="http://sarfraznawaz.wordpress.com">sarfraznawaz.wordpress.com</a> but I switched to github pages because I really wanted to have static blog with free hosting and ability to write up quick posts using <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax. In the next post, I will write about <strong>BloggerCMS</strong>, a CMS I have made that helps create static blogs. This blog has also been generated via BloggerCMS :)</p>
 <p>On this blog, I intend to write my ideas mainly about PHP as well as other related web development technologies. <em>Stayed tuned :)</em></p></description>
-<link>https://codeinphp.github.io//post/welcome.html</link>
+<link>https://codeinphp.github.io/post/welcome.html</link>
 <pubDate>Sun, 05 Apr 2015 15:46:00 +0200</pubDate>
 </item>
 </channel>
