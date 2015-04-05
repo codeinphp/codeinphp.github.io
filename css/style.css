@@ -1,0 +1,14 @@
+body {
+    margin-top: 75px;
+    font-family: "Open Sans", Tahoma, Verdana, Segoe, sans-serif;
+
+}
+
+.post-content, .page-content {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+footer {
+    margin: 10px 0;
+}
