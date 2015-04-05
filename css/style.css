@@ -9,6 +9,10 @@ body {
     text-align: justify;
 }
 
+article {
+    text-align: justify;
+}
+
 .fa-rss {
     background-color: #F4B83F;
     color: #fff;
