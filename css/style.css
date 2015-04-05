@@ -6,11 +6,6 @@ body {
 .post-content, .page-content {
     font-size: 16px !important;
     line-height: 1.5;
-    text-align: justify;
-}
-
-article {
-    text-align: justify;
 }
 
 .fa-rss {
