@@ -1,12 +1,17 @@
 body {
     margin-top: 75px;
-    font-family: "Open Sans", Tahoma, Verdana, Segoe, sans-serif;
-
+    font-family: "Open Sans", Tahoma, Verdana, Segoe, sans-serif !important;
 }
 
 .post-content, .page-content {
-    font-size: 16px;
+    font-size: 16px !important;
     line-height: 1.5;
+    text-align: justify;
+}
+
+.fa-rss {
+    background-color: #F4B83F;
+    color: #fff;
 }
 
 footer {
