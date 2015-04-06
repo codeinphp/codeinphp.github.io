@@ -8,6 +8,10 @@ body {
     line-height: 1.5;
 }
 
+.main-content {
+    margin-bottom: 20px;
+}
+
 .fa-rss {
     background-color: #F4B83F;
     color: #fff;
