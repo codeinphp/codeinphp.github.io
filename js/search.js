@@ -35,12 +35,11 @@ $(function () {
                     var postBody = $("<div/>").html(post.body).text();
 
                     if (post.title.search(queryRegex) != -1 || postBody.search(queryRegex) != -1) {
-                        var slug = post.title.replace(/[^a-zA-Z0-9- ]/, '');
-                        slug = $.trim(slug);
-                        slug = slug.replace(/\s{2,}/g, ' ');
+                        var slug = post.title.replace(/[^a-zA-Z0-9\/_|+ -]/, '');
+                        slug = $.trim(slug).toLowerCase();
+                        slug = slug.replace(/\s+/g,' ');
+                        slug = slug.replace(/\W/g, ' ');
                         slug = slug.replace(/\s+/g, '-');
-                        slug = slug.replace(/-{2,}/g, '-');
-                        slug = slug.replace('--', '-').toLowerCase();
 
                         if (slug) {
                             foundPosts += '<h3><a href="' + data.settings.url + '/post/' + slug + '.html">' + post.title + '</a></h3><hr>';
