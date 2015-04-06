@@ -6,6 +6,37 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>BloggerCMS  - An Static Blog Creator CMS</title>
+<description><p>In the <a href="https://codeinphp.github.io/post/welcome.html">last</a> post, I had mentioned about BloggerCMS which is used to build this very blog. BloggerCMS is dead simple CMS that can be used to create fully functional static blogs. Although there are <a href="https://github.com/pinceladasdaweb/Static-Site-Generators#php">quite some static site generators</a> out there but I created BloggerCMS because I was missing these features in any of those static site generators:</p>
+<ul>
+<li>Web interface that allows me to create blog posts, add pages and more instead of writing blog posts manually in bunch of different text files</li>
+<li>Markdown editor with live preview feature so that I don't have to type Markdown syntax myself</li>
+<li>I needed a true blog generator instead of generic/advanced site generator</li>
+</ul>
+<p>Those three things are the driving force why I created BloggerCMS. Here is complete list of features of BloggerCMS as of now:</p>
+<ul>
+<li><strong>Graphical User Interface</strong> - manage your site via a browser</li>
+<li><strong>File-based</strong> - no database required</li>
+<li><strong>Truly Static</strong> - no server-side languages needed</li>
+<li><strong>Portability</strong> - copy, move, backup or version control your site easily</li>
+<li><strong>Integrated Markdown Editor</strong> - no need to know Markdown</li>
+<li><strong>Built-in Images Manager</strong></li>
+<li><strong>Disqus Commenting System</strong></li>
+<li><strong>Search Posts Feature</strong></li>
+<li><strong>Responsive Layout</strong> - get started easily with the included responsive layout</li>
+<li><strong>RSS Support</strong></li>
+<li><strong>Sitemap Support</strong></li>
+<li><strong>Code Highlight Support</strong></li>
+<li><strong>Tags Cloud Support</strong></li>
+<li><strong>Social Follow Section</strong></li>
+<li><strong>Categories Section</strong></li>
+<li><strong>Archives Section</strong></li>
+</ul>
+<p>To know more about BloggerCMS, head over to <a href="https://codeinphp.github.io/bloggercms-demo">it's blog</a> or see <a href="https://codeinphp.github.io/bloggercms-demo/post/introducing-bloggercms.html">introductory post</a>.</p></description>
+<link>https://codeinphp.github.io/post/bloggercms----an-static-blog-creator-cms.html</link>
+<pubDate>Mon, 06 Apr 2015 21:41:00 +0200</pubDate>
+</item>
+<item>
 <title>Welcome !</title>
 <description><p><strong>Hello, World !</strong></p>
 <p>This is my first post on this blog hosted at awesome <a href="https://pages.github.com/">github pages</a>. Previously I used to blog on wordpress <a href="http://sarfraznawaz.wordpress.com">here</a> but I switched to github pages because I really wanted to have static blog with free hosting and ability to write up quick posts using <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax. In the next post, I will write about <strong><a href="https://codeinphp.github.io/bloggercms-demo/">BloggerCMS</a></strong>, a CMS I have made that helps create static blogs. This blog has also been generated via BloggerCMS :)</p>

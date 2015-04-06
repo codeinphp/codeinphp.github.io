@@ -1,6 +1,8 @@
-[
-	"php",
-	"javascript",
-	"welcome",
-	"blog"
-]
+{
+	"0": "php",
+	"1": "javascript",
+	"2": "welcome",
+	"3": "blog",
+	"6": "cms",
+	"7": "static"
+}
