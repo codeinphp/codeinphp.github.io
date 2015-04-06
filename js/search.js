@@ -32,7 +32,9 @@ $(function () {
             dataType: "json",
             success: function (data) {
                 $.each(data.posts, function (i, post) {
-                    if (post.title.search(queryRegex) != -1 || post.body.search(queryRegex) != -1) {
+                    var postBody = $("<div/>").html(post.body).text();
+
+                    if (post.title.search(queryRegex) != -1 || postBody.search(queryRegex) != -1) {
                         var slug = $.trim(post.title).replace(/[^a-zA-Z0-9- ]/, '');
                         slug = slug.replace(/\s+/g, '-').toLowerCase();
 
@@ -42,7 +44,12 @@ $(function () {
                     }
                 });
 
-                $searchResultsSelector.html('').html(foundPosts);
+                if (foundPosts) {
+                    $searchResultsSelector.html('').html(foundPosts);
+                }
+                else {
+                    alert('No results found!');
+                }
             },
             error: function (e) {
                 console.log("error in searching...");
