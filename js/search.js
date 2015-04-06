@@ -37,7 +37,7 @@ $(function () {
                         slug = slug.replace(/\s+/g, '-').toLowerCase();
 
                         if (slug) {
-                            foundPosts += '<h3><a href="' + data.settings.url + '/post/' + slug + '.html">' + post.title + '</a></h3>';
+                            foundPosts += '<h3><a href="' + data.settings.url + '/post/' + slug + '.html">' + post.title + '</a></h3><hr>';
                         }
                     }
                 });
@@ -49,4 +49,12 @@ $(function () {
             }
         });
     });
+
+    // on Enter keyboard button, click on search button
+    $searchKeywordSelector.keydown(function (event) {
+        if (event.keyCode == 13) {
+            $searchButtonSelector.click();
+        }
+    });
+
 });
