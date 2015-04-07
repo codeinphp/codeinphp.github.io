@@ -1,5 +1,5 @@
-[
-	{
+{
+	"1": {
 		"title": "BloggerCMS  - An Static Blog Generator CMS",
 		"tags": [
 			"bloggercms",
@@ -14,7 +14,7 @@
 		"slug": "bloggercms-an-static-blog-generator-cms",
 		"status": "publised"
 	},
-	{
+	"2": {
 		"title": "Welcome !",
 		"tags": [
 			"blog",
@@ -27,4 +27,4 @@
 		"slug": "welcome",
 		"status": "publised"
 	}
-]
+}
