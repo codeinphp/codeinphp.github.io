@@ -25,7 +25,7 @@ $(function () {
     });
 
     // lightbox for all images
-    $('img').data('toggle', 'lightbox');
+    $('img').attr('data-toggle', 'lightbox');
 
     $(document).delegate('*[data-toggle="lightbox"]', 'click', function (event) {
         event.preventDefault();
