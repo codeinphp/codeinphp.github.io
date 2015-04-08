@@ -25,10 +25,14 @@ $(function () {
     });
 
     // lightbox for all images
-    $('img').wrap('a').attr({
-        "href" : this.src,
-        "data-toggle" : "lightbox"
-    })
+    $('img').each(function () {
+        var src = this.src;
+
+        $(this).wrap('a').attr({
+            "href" : src,
+            "data-toggle" : "lightbox"
+        });
+    });
 
     $(document).delegate('*[data-toggle="lightbox"]', 'click', function (event) {
         event.preventDefault();
