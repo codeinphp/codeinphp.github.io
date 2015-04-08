@@ -27,11 +27,7 @@ $(function () {
     // lightbox for all images
     $('img').each(function () {
         var src = this.src;
-
-        $(this).wrap('a').attr({
-            "href" : src,
-            "data-toggle" : "lightbox"
-        });
+        $(this).wrap('<a data-toggle="lightbox" href="' + src + '"></a>');
     });
 
     $(document).delegate('*[data-toggle="lightbox"]', 'click', function (event) {
