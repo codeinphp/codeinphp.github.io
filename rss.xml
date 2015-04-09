@@ -7,7 +7,7 @@
 <language>en-us</language>
 <item>
 <title>BloggerCMS  - An Static Blog Generator CMS</title>
-<description><p>In the <a href="https://codeinphp.github.io/post/welcome.html">last</a> post, I had mentioned about BloggerCMS which is used to build this very blog. BloggerCMS is dead simple CMS that can be used to create fully functional static blogs. Although there are <a href="https://github.com/pinceladasdaweb/Static-Site-Generators#php">quite some static site generators</a> out there but I created BloggerCMS because I was missing these features in any of those static site generators:</p>
+<description><p>In the <a href="https://codeinphp.github.io/post/welcome.html">last post</a>, I had mentioned about BloggerCMS which is used to build this very blog. BloggerCMS is dead simple CMS that can be used to create fully functional static blogs. Although there are <a href="https://github.com/pinceladasdaweb/Static-Site-Generators#php">quite some static site generators</a> out there but I created BloggerCMS because I was missing these features in any of those static site generators:</p>
 <ul>
 <li>Web interface that allows me to create blog posts, add pages and more instead of writing blog posts manually in bunch of different text files</li>
 <li>Markdown editor with live preview feature so that I don't have to type Markdown syntax myself</li>
