@@ -12,7 +12,8 @@
 		"addpost": "addpost",
 		"dated": "April 06, 2015 09:41 PM",
 		"slug": "bloggercms-an-static-blog-generator-cms",
-		"status": "publised"
+		"status": "publised",
+		"generated": "1"
 	},
 	{
 		"title": "Welcome !",
@@ -25,6 +26,7 @@
 		"addpost": "addpost",
 		"dated": "April 05, 2015 03:46 PM",
 		"slug": "welcome",
-		"status": "publised"
+		"status": "publised",
+		"generated": "1"
 	}
 ]
