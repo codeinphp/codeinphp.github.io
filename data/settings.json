@@ -3,10 +3,11 @@
 	"title": "Code In PHP",
 	"tagline": "PHP and more...",
 	"author": "Sarfraz Ahmed",
-	"number_posts": "10",
+	"number_posts": null,
 	"layout": "default",
 	"theme": "yeti.min.css",
 	"disqus": "codeinphp",
 	"analytics": "UA-61657332-1",
-	"only_titles": ""
+	"only_titles": "",
+	"generated": ""
 }
