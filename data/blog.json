@@ -125,20 +125,6 @@
 			"slug": "bloggercms-an-static-blog-generator-cms",
 			"status": "publised",
 			"showbody": true
-		},
-		{
-			"title": "Welcome !",
-			"tags": [
-				"blog",
-				"welcome"
-			],
-			"category": "Blog",
-			"body": "<p><strong>Hello, World !<\/strong><\/p>\n<p>This is my first post on this blog hosted at awesome <a href=\"https:\/\/pages.github.com\/\">github pages<\/a>. Previously I used to blog on wordpress <a href=\"http:\/\/sarfraznawaz.wordpress.com\">here<\/a> but I switched to github pages because I really wanted to have static blog with free hosting and ability to write up quick posts using <a href=\"http:\/\/en.wikipedia.org\/wiki\/Markdown\">Markdown<\/a> syntax. In the <a href=\"https:\/\/codeinphp.github.io\/post\/bloggercms-an-static-blog-generator-cms.html\">next post<\/a>, I will write about <strong><a href=\"https:\/\/bloggercms.github.io\">BloggerCMS<\/a><\/strong>, a CMS I have made that helps create static blogs. This blog has also been generated via BloggerCMS :)<\/p>\n<p>On this blog, I intend to write my ideas mainly about PHP as well as other related web development technologies. <\/p>\n<p><em>Stay tuned :)<\/em><\/p>",
-			"addpost": "addpost",
-			"dated": "April 05, 2015 03:46 PM",
-			"slug": "welcome",
-			"status": "publised",
-			"showbody": true
 		}
 	],
 	"tagsCloud": "<a style=\"font-size: 12px\" class=\"tag_cloud\" href=\"https:\/\/codeinphp.github.io\/tag\/blog.html\" title=\"'blog' returned a count of 0\">blog<\/a>\n<a style=\"font-size: 12px\" class=\"tag_cloud\" href=\"https:\/\/codeinphp.github.io\/tag\/bloggercms.html\" title=\"'bloggercms' returned a count of 0\">bloggercms<\/a>\n<a style=\"font-size: 12px\" class=\"tag_cloud\" href=\"https:\/\/codeinphp.github.io\/tag\/cms.html\" title=\"'cms' returned a count of 0\">cms<\/a>\n<a style=\"font-size: 12px\" class=\"tag_cloud\" href=\"https:\/\/codeinphp.github.io\/tag\/php.html\" title=\"'php' returned a count of 0\">php<\/a>\n<a style=\"font-size: 12px\" class=\"tag_cloud\" href=\"https:\/\/codeinphp.github.io\/tag\/static.html\" title=\"'static' returned a count of 0\">static<\/a>\n<a style=\"font-size: 12px\" class=\"tag_cloud\" href=\"https:\/\/codeinphp.github.io\/tag\/welcome.html\" title=\"'welcome' returned a count of 0\">welcome<\/a>\n",

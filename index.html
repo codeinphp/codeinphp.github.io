@@ -114,32 +114,20 @@
                 
                     <hr>
                 </article>
-                <article>
-                    <h3><a href="https://codeinphp.github.io/post/welcome.html">Welcome !</a></h3>
-                    <span class="glyphicon glyphicon-time"></span> April 05, 2015 03:46 PM
-                
-                        <hr>
-                        <p class="post-content"><p><strong>Hello, World !</strong></p>
-<p>This is my first post on this blog hosted at awesome <a href="https://pages.github.com/">github pages</a>. Previously I used to blog on wordpress <a href="http://sarfraznawaz.wordpress.com">here</a> but I switched to github pages because I really wanted to have static blog with free hosting and ability to write up quick posts using <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax. In the <a href="https://codeinphp.github.io/post/bloggercms-an-static-blog-generator-cms.html">next post</a>, I will write about <strong><a href="https://bloggercms.github.io">BloggerCMS</a></strong>, a CMS I have made that helps create static blogs. This blog has also been generated via BloggerCMS :)</p>
-<p>On this blog, I intend to write my ideas mainly about PHP as well as other related web development technologies. </p>
-<p><em>Stay tuned :)</em></p></p>
-                        <br/>
-                
-                        <div class="post-info">
-                                <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
-                                <a class="lowercase" href="https://codeinphp.github.io/category/Blog.html">Blog</a>
-                                &nbsp;&nbsp;
-                
-                            <span class="glyphicon glyphicon-bookmark"></span>
-                
-                                <a class="lowercase" href="https://codeinphp.github.io/tag/blog.html">blog</a>&nbsp;&nbsp;
-                                <a class="lowercase" href="https://codeinphp.github.io/tag/welcome.html">welcome</a>&nbsp;&nbsp;
-                        </div>
-                
-                    <hr>
-                </article>
 
-            <a class="btn btn-primary" href="posts.html">&rarr; View All Posts</a>
+            <div class="text-center clearfix">
+                <div class="col-sm-4 col-md-4">
+                    <a class="prevpost btn btn-primary"><i class="fa fa-chevron-circle-left"></i> Prev Post</a>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <a class="btn btn-primary" href="https://codeinphp.github.io/posts.html"><i class="fa fa-pencil"></i> View All
+                        Post</a>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    &nbsp;
+                </div>
+            </div>
+
         </div>
 
         <div class="sidebar col-md-4">
@@ -256,3 +244,36 @@
 
 </body>
 </html>
+<!-- for pagination -->
+<script>
+    $(function () {
+
+        ///////////////////////////////////////////////////
+        // class/id/selector of prev link
+        var $prevPostSelector = $('.prevpost');
+        ///////////////////////////////////////////////////
+
+        $.ajax({
+            url: __blogURL + "/data/blog.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                if (data.posts !== undefined && data.posts !== null) {
+                    var prevPost = data.posts[1];
+
+                    if (prevPost === undefined || prevPost === null) {
+                        // hide previous link if blog has only one post
+                        $prevPostSelector.hide();
+                    }
+                    else {
+                        $prevPostSelector.attr('href', __blogURL + '/post/' + prevPost.slug + '.html');
+                    }
+                }
+            },
+            error: function (e) {
+                $prevPostSelector.hide();
+            }
+        });
+
+    });
+</script>
