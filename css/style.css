@@ -1,10 +1,13 @@
 body {
     margin-top: 75px;
+    font-family: 'open sans', helvetica, arial, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #333;
 }
 
 .post-content, .page-content {
     margin-bottom: 20px;
-    line-height: 22px;
 }
 
 .fa-rss {
