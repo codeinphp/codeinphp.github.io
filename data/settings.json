@@ -5,9 +5,9 @@
 	"author": "Sarfraz Ahmed",
 	"number_posts": null,
 	"layout": "default",
-	"theme": "yeti.min.css",
+	"theme": "cerulean.min.css",
 	"disqus": "codeinphp",
 	"analytics": "UA-61657332-1",
 	"only_titles": "",
-	"generated": "1"
+	"generated": null
 }
