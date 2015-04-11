@@ -10,7 +10,7 @@
 		"disqus": "codeinphp",
 		"analytics": "UA-61657332-1",
 		"only_titles": "",
-		"generated": ""
+		"generated": "1"
 	},
 	"customValues": [
 		{
@@ -24,7 +24,7 @@
 			"title": "About",
 			"body": "<img src=\"https:\/\/codeinphp.github.io\/images\/142826623555219cfb26ffd.png\" width=\"150\" height=\"180\"\/>\n<p>Hello, I am <strong>Sarfraz Ahmed<\/strong>, a self-taught programmer from Karachi, Pakistan mainly involved in PHP, MySQL, HTML\/CSS, JavaScript\/jQuery for around 6+ years now. I also have bit of experience with Android platform. I am also Pakistan's top user on <a href=\"http:\/\/stackoverflow.com\/users\/139459\/sarfraz\">StackOverflow<\/a> by reputation holding Gold badge for the tags PHP, Javascript, jQuery, HTML and CSS.<\/p>",
 			"slug": "about",
-			"generated": "1"
+			"generated": ""
 		},
 		{
 			"title": "Projects",
