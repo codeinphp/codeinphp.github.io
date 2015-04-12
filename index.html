@@ -71,80 +71,38 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/outputting-php-to-browser-console.html">Outputting PHP To Browser Console</a></h3>
-                    <span class="glyphicon glyphicon-time"></span> April 12, 2015 08:23 PM
+                    <h3><a href="https://codeinphp.github.io/post/phpexecute-php-code-runner.html">PHPExecute – PHP Code Runner</a></h3>
+                    <span class="glyphicon glyphicon-time"></span> April 12, 2015 08:57 PM
                 
                         <hr>
-                        <p class="post-content"><p>Although there exist <strong>classes</strong> for outputting PHP to browser console such as Google’s <strong>PHP Console</strong> and certain others, I was looking for a way to output PHP to browser console without including those classes in my PHP files or installing any browser plugin to do the same. Currently, I am working on Facebook application development in which you have to commit/upload the code to check certain output out of PHP unlike offline development where you check the code output before committing it up. This makes Facebook application development a longer process for a developer but you got to live with it because you don’t have a choice.</p>
-<p>Anyways, to speed up the code output checking process a little and rather using <code>debug_backtrace</code>, <code>print_r</code>, <code>print</code>, <code>echo</code>, <code>var_dump</code>, etc which you need to remove/comment again, I created a function to get output of PHP on the browser console. One could use <code>error_log</code> function but even that makes you go to your log file and then see the output. Of course, browser needs to support/have the console so that code result is output there. Because IE less than 8 doesn't have console, this won’t work in IE less than 8, though result won’t be affected in it. Notice that you can see console in IE=&gt;8 by pressing <kbd>F12</kbd> key and then going to <strong>Script</strong> tab where you need to make sure <strong>Console</strong> tab is selected on the right side.</p>
-<p>Here is the function:</p>
-<pre><code> /**
- * Logs messages/variables/data to browser console from within php
- *
- * @param $name: message to be shown for optional data/vars
- * @param $data: variable (scalar/mixed) arrays/objects, etc to be logged
- * @param $jsEval: whether to apply JS eval() to arrays/objects
- *
- * @return none
- * @author Sarfraz
- */
- function logConsole($name, $data = NULL, $jsEval = FALSE)
- {
-      if (! $name) return false;
-
-      $isevaled = false;
-      $type = ($data || gettype($data)) ? 'Type: ' . gettype($data) : '';
-
-      if ($jsEval &amp;&amp; (is_array($data) || is_object($data)))
-      {
-           $data = 'eval(' . preg_replace('#[\s\r\n\t\0\x0B]+#', '', json_encode($data)) . ')';
-           $isevaled = true;
-      }
-      else
-      {
-           $data = json_encode($data);
-      }
-
-      # sanitalize
-      $data = $data ? $data : '';
-      $search_array = array("#'#", '#""#', "#''#", "#\n#", "#\r\n#");
-      $replace_array = array('"', '', '', '\\n', '\\n');
-      $data = preg_replace($search_array,  $replace_array, $data);
-      $data = ltrim(rtrim($data, '"'), '"');
-      $data = $isevaled ? $data : ($data[0] === "'") ? $data : "'" . $data . "'";
-
-$js = &lt;&lt;&lt;JSCODE
-\n&lt;script&gt;
- // fallback - to deal with IE (or browsers that don't have console)
- if (! window.console) console = {};
- console.log = console.log || function(name, data){};
- // end of fallback
-
- console.log('$name');
- console.log('------------------------------------------');
- console.log('$type');
- console.log($data);
- console.log('\\n');
-&lt;/script&gt;
-JSCODE;
-
-      echo $js;
- } # end logConsole</code></pre>
-<p>Here is an example of how to use it:</p>
-<pre><code>$name = 'sarfraz';
-$fruits = array("banana", "apple", "strawberry", "pineaple");
-
-$user = new stdClass;
-$user-&gt;name = "Sarfraz";
-$user-&gt;desig = "Sr. Software Engineer";
-$user-&gt;lang = "PHP";
-
-logConsole('$name var', $name, true);
-logConsole('An array of fruits', $fruits, true);
-logConsole('$user object', $user, true);</code></pre>
-<p>It would result in:</p>
-<p><img src="https://codeinphp.github.io/images/1428862620552ab69c5381f.gif" alt="enter image description here" /></p>
-<p>Although this does not prevent committing code first to see the code output if you are on facebook application development but it defintely does save some time. I have been using this function successfully so far, please let me know your ideas if any on how to improve this piece of code further. </p></p>
+                        <p class="post-content"><p>Often times, you quickly need to test some PHP code. To do so, you create a file, put it in web root folder, write some code in it, open its URL and then you see its output. This is kind of lot of work and I often need a way to quickly test my PHP code. This requirement made me create my own code testing tool, <strong>PHPExecute</strong>.</p>
+<p>PHPExecute is the fastest way to test PHP code. You write the code, hit the execute button, an ajax request is triggered and you see the output fast without page refresh. Here are some of the cool things about it:</p>
+<ul>
+<li>Very fast way to test your code</li>
+<li>Nice friendly interface</li>
+<li>Code  Highlighting</li>
+<li>Useful PHP, system information panel</li>
+<li>Saving favorite code snippets</li>
+<li>Adding useful classes</li>
+<li>Easy to extend as per your needs</li>
+</ul>
+<p><strong>Screenshot</strong></p>
+<p><a href="https://codeinphp.github.io/images/1428864689552abeb12a929.gif">enter link description here</a></p>
+<h2>Extending PHPExecute</h2>
+<p>The good thing is that you can download (see below) it, see its source code and extend it however you like according to your needs. For example, you can add classes for testing, performance or any other purpose. One can even integrate bash commands (I am not going into details of that) to make it even more useful tool to work with.</p>
+<h2>Usage Notes</h2>
+<ul>
+<li>
+<p>PHPExecute uses <a href="http://php.net/manual/en/function.eval.php"><code>eval</code></a> function to run the code. It is strongly recommended that you should use that tool for local testing only and not on production server due to security reasons. If you do, you use it on your own risk.</p>
+</li>
+<li>
+<p>In order to save snippets, PHPExecute uses <a href="http://en.wikipedia.org/wiki/Web_Storage">localStorage</a> feature which is available in latest browsers (and IE9+) only and also it can be around <strong>5MB</strong> in size. This isn’t that ideal if you are going to save a lot of snippets but you can always extend PHPExecute to add database support and save your snippets there.</p>
+</li>
+<li>The custom functions that can be used in PHPExecute can be found in <strong>includes/functions.php</strong> file. You can add any functions in that file that you want to use directly inside PHPExecute. The custom functions can also be seen in <strong>PHP Info &gt; User Defined Functions</strong>.</li>
+</ul>
+<p><strong>Download</strong></p>
+<p><a href="https://github.com/sarfraznawaz2005/PHPExecute">Download PHPExecute at Github</a></p>
+<p>I hope PHPExecute turns out to be a useful tool for you. Please do share if you add anything to it via comments so that we could know it and integrate ourselves too :)</p></p>
                         <br/>
                 
                         <div class="post-info">
@@ -155,9 +113,9 @@ logConsole('$user object', $user, true);</code></pre>
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
                                 <a href="https://codeinphp.github.io/tag/php.html">php</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/browser.html">browser</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/console.html">console</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/devtools.html">devtools</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/phpexecute.html">phpexecute</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/runner.html">runner</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/tester.html">tester</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -210,11 +168,11 @@ logConsole('$user object', $user, true);</code></pre>
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/phpexecute-php-code-runner.html">PHPExecute – PHP Code Runner</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/outputting-php-to-browser-console.html">Outputting PHP To Browser Console</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/my-local-development-workflow-with-wamp-xampp-git-and-google-drive.html">My Local Development Workflow with WAMP/XAMPP, GIT and Google Drive</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/goodtodo-php-and-sqlite-app.html">GoodTodo PHP and SQlite App</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/bloggercms-an-static-blog-generator-cms.html">BloggerCMS  - An Static Blog Generator CMS</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/welcome.html">Welcome !</a></li>
                 </ul>
             </div>
         
@@ -259,9 +217,12 @@ logConsole('$user object', $user, true);</code></pre>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/drive.html" title="'drive' returned a count of 0">drive</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/git.html" title="'git' returned a count of 0">git</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/googledrive.html" title="'googledrive' returned a count of 0">googledrive</a>
-<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php.html" title="'php' returned a count of 3">php</a>
+<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php.html" title="'php' returned a count of 4">php</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/phpexecute.html" title="'phpexecute' returned a count of 0">phpexecute</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/runner.html" title="'runner' returned a count of 0">runner</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sqlite.html" title="'sqlite' returned a count of 0">sqlite</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/static.html" title="'static' returned a count of 0">static</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/tester.html" title="'tester' returned a count of 0">tester</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/todo.html" title="'todo' returned a count of 0">todo</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/wamp.html" title="'wamp' returned a count of 0">wamp</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/welcome.html" title="'welcome' returned a count of 0">welcome</a>
