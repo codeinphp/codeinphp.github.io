@@ -1,6 +1,7 @@
 body {
     margin-top: 75px;
     line-height: 23px;
+    font-size: 15px;
 }
 
 .post-content, .page-content {
