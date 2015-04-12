@@ -3,7 +3,7 @@ body {
     line-height: 23px;
 }
 
-.post-content, .page-content {
+.post-content, .page-content, .main-content {
     margin-bottom: 20px;
     font-size: 15px;
 }
