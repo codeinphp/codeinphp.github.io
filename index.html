@@ -71,93 +71,86 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/outputting-php-to-browser-console.html">Outputting PHP To Browser Console</a></h3>
-                    <span class="glyphicon glyphicon-time"></span> April 12, 2015 08:23 PM
+                    <h3><a href="https://codeinphp.github.io/post/learning-javascript.html">Learning Javascript</a></h3>
+                    <span class="glyphicon glyphicon-time"></span> April 12, 2015 08:41 PM
                 
                         <hr>
-                        <p class="post-content"><p>Although there exist <strong>classes</strong> for outputting PHP to browser console such as Google’s <strong>PHP Console</strong> and certain others, I was looking for a way to output PHP to browser console without including those classes in my PHP files or installing any browser plugin to do the same. Currently, I am working on Facebook application development in which you have to commit/upload the code to check certain output out of PHP unlike offline development where you check the code output before committing it up. This makes Facebook application development a longer process for a developer but you got to live with it because you don’t have a choice.</p>
-<p>Anyways, to speed up the code output checking process a little and rather using <code>debug_backtrace</code>, <code>print_r</code>, <code>print</code>, <code>echo</code>, <code>var_dump</code>, etc which you need to remove/comment again, I created a function to get output of PHP on the browser console. One could use <code>error_log</code> function but even that makes you go to your log file and then see the output. Of course, browser needs to support/have the console so that code result is output there. Because IE less than 8 doesn't have console, this won’t work in IE less than 8, though result won’t be affected in it. Notice that you can see console in IE=&gt;8 by pressing <kbd>F12</kbd> key and then going to <strong>Script</strong> tab where you need to make sure <strong>Console</strong> tab is selected on the right side.</p>
-<p>Here is the function:</p>
-<pre><code> /**
- * Logs messages/variables/data to browser console from within php
- *
- * @param $name: message to be shown for optional data/vars
- * @param $data: variable (scalar/mixed) arrays/objects, etc to be logged
- * @param $jsEval: whether to apply JS eval() to arrays/objects
- *
- * @return none
- * @author Sarfraz
- */
- function logConsole($name, $data = NULL, $jsEval = FALSE)
- {
-      if (! $name) return false;
+                        <p class="post-content"><p>JavaScript is <a href="http://en.wikipedia.org/wiki/JavaScript">cross-platform</a>, cross-browser language; javascript is everywhere; web, <a href="http://en.wikipedia.org/wiki/Rich_Internet_application">RIA</a> (rich internet applications), <a href="http://sixrevisions.com/javascript/mobile%C2%A0web-development-frameworks/">mobile, tablets</a>, <a href="https://github.com/mrdoob/three.js/">animations</a> and even on server with the advent of <a href="http://nodejs.org/">node.js</a>. Javascript is the language of the future.</p>
+<p>I started off with jQuery without knowing anything much about javascript because by the time I didn’t find any reason to learn it due to fact that  javascript libraries did everything we needed putting complexities out of the way. Today I realize that I chose the wrong path, a good understanding of javascript language is crucial if you look at the reasons I have mentioned in the very beginning but it is never too late to start again, that’s exactly what I have decided, learning javascript seriously. I am not the only one who has started realizing the power and future of javascript, there are <a href="http://shiflett.org/blog/2012/feb/learning-javascript">giants</a> who have started learning it too. If you are also javascript-library-only developer, or even <strong>copy-paster</strong> programmer, <a href="http://phpadvent.org/2009/you-really-need-to-learn-javascript-by-ed-finkler">you should really</a> <a href="http://net.tutsplus.com/tutorials/javascript-ajax/from-jquery-to-javascript-a-reference/?utm_source=feedburner&amp;utm_medium=feed&amp;utm_campaign=Feed:%20nettuts%20%28Nettuts%2b%29">learn javascript</a> seriously !</p>
+<p>Despite design flaws and bad reputation of the language <a href="http://javascript.crockford.com/javascript.html">as they say</a> and probably rightly so, javascript is popular and language of the choice for those who have gone into deeper <a href="http://ejohn.org/">understating</a> <a href="http://sstephenson.us/">of</a> <a href="http://infrequently.org/about-me/">it</a>. Javascript language <a href="http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/">does</a> <a href="http://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/">have</a> <a href="http://www.svennerberg.com/2009/02/global-variables-in-javascript/">bad</a> <a href="http://lucumr.pocoo.org/2011/2/6/automatic-semicolon-insertion/">parts</a> but its <a href="http://www.amazon.com/dp/0596517742/?tag=stackoverfl08-20">good parts</a> over-weigh its bad parts and there is always room to avoid bad parts if you know the language right and use it effectively.</p>
+<p>Javascript turns out to be extremely <a href="http://bonsaiden.github.com/JavaScript-Garden/">tricky</a> language, consider:</p>
+<pre><code>// Comparison
+'' == '0';    //false
+0 == '';    // true
+0 =='0';    // true
 
-      $isevaled = false;
-      $type = ($data || gettype($data)) ? 'Type: ' . gettype($data) : '';
+// Type checking
+typeof null;    // object
 
-      if ($jsEval &amp;&amp; (is_array($data) || is_object($data)))
-      {
-           $data = 'eval(' . preg_replace('#[\s\r\n\t\0\x0B]+#', '', json_encode($data)) . ')';
-           $isevaled = true;
-      }
-      else
-      {
-           $data = json_encode($data);
-      }
+// Scope
+function myFunc() {
+  return
+  {
+    name: 'sarfraz'
+  };
+}
 
-      # sanitalize
-      $data = $data ? $data : '';
-      $search_array = array("#'#", '#""#', "#''#", "#\n#", "#\r\n#");
-      $replace_array = array('"', '', '', '\\n', '\\n');
-      $data = preg_replace($search_array,  $replace_array, $data);
-      $data = ltrim(rtrim($data, '"'), '"');
-      $data = $isevaled ? $data : ($data[0] === "'") ? $data : "'" . $data . "'";
-
-$js = &lt;&lt;&lt;JSCODE
-\n&lt;script&gt;
- // fallback - to deal with IE (or browsers that don't have console)
- if (! window.console) console = {};
- console.log = console.log || function(name, data){};
- // end of fallback
-
- console.log('$name');
- console.log('------------------------------------------');
- console.log('$type');
- console.log($data);
- console.log('\\n');
-&lt;/script&gt;
-JSCODE;
-
-      echo $js;
- } # end logConsole</code></pre>
-<p>Here is an example of how to use it:</p>
-<pre><code>$name = 'sarfraz';
-$fruits = array("banana", "apple", "strawberry", "pineaple");
-
-$user = new stdClass;
-$user-&gt;name = "Sarfraz";
-$user-&gt;desig = "Sr. Software Engineer";
-$user-&gt;lang = "PHP";
-
-logConsole('$name var', $name, true);
-logConsole('An array of fruits', $fruits, true);
-logConsole('$user object', $user, true);</code></pre>
-<p>It would result in:</p>
-<p><img src="https://codeinphp.github.io/images/1428862620552ab69c5381f.gif" alt="enter image description here" /></p>
-<p>Although this does not prevent committing code first to see the code output if you are on facebook application development but it defintely does save some time. I have been using this function successfully so far, please let me know your ideas if any on how to improve this piece of code further. </p></p>
+var f = myFunc();
+console.log(f);    // undefined</code></pre>
+<p>I did <strong>a lot of research</strong> to find best javascript learning resources. On the journey of my exploration, I came across some of the great resources with a lot of reviews and user feedback. By now, if you made your mind to take javascript seriously, here are the best resources out there you should check out.</p>
+<h2>Books</h2>
+<ul>
+<li><a href="http://shop.oreilly.com/product/9780596517748.do">JavaScript: The Good Parts</a> by <a href="http://crockford.com/">Douglas Crockford</a></li>
+<li><a href="http://jsninja.com/">Secrets of the JavaScript Ninja</a> by <a href="http://ejohn.org/">John Resig</a></li>
+<li><a href="http://jspro.org/">Pro JavaScript Techniques</a> by <a href="http://ejohn.org/">John Resig</a></li>
+<li><a href="http://www.amazon.com/Performance-JavaScript-Faster-Application-Interfaces/dp/059680279X">High Performance JavaScript</a> by <a href="http://www.nczonline.net/blog/about/">Nicholas C. Zaka</a></li>
+<li><a href="http://www.amazon.com/gp/product/B004XQX4K0/ref=pd_lpo_k2_dp_sr_3?pf_rd_p=486539851&amp;pf_rd_s=lpo-top-stripe-1&amp;pf_rd_t=201&amp;pf_rd_i=0596805527&amp;pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_r=1GJCJ4PSFS8516NGDG28">JavaScript: The Definitive Guide</a> by <a href="http://www.davidflanagan.com/">David Flanagan</a></li>
+</ul>
+<h2>Online</h2>
+<ul>
+<li><a href="http://eloquentjavascript.net/">Eloquent JavaScript</a> by Marijn Haverbeke</li>
+<li><a href="http://javascript.info/">The JavaScript Tutorial</a></li>
+<li><a href="https://developer.mozilla.org/en/JavaScript/Guide">JavaScript Guide MDN</a></li>
+<li><a href="http://bonsaiden.github.com/JavaScript-Garden/">JavaScript Garden</a> (For intermediate &amp; advanced programmers – must read !)</li>
+</ul>
+<h2>Videos</h2>
+<ul>
+<li><a href="http://learn.appendto.com/">appendto.com</a></li>
+<li><a href="http://yuiblog.com/crockford/">Douglas Crockford’s JavaScript Video Series</a></li>
+<li><a href="http://www.youtube.com/watch?v=hQVTIJBZook">JavaScript: The Good Parts</a></li>
+</ul>
+<h2>Blogs to Subscribe</h2>
+<ul>
+<li><a href="http://perfectionkills.com/">PerfectionKills</a></li>
+<li><a href="http://dmitrysoshnikov.com/">Dmitry A. Soshnikov</a></li>
+<li><a href="http://javascriptweblog.wordpress.com/">JavaScript, JavaScript</a></li>
+<li><a href="http://www.adequatelygood.com/">Adequately Good</a></li>
+<li><a href="http://ejohn.org/">John Resig</a></li>
+<li><a href="http://www.2ality.com/">2ality</a></li>
+<li><a href="http://nemisj.com/">Notes of Maks Nemisj</a></li>
+<li><a href="http://addyosmani.com/blog/">Addy Osmani</a></li>
+<li>Bonus: <a href="http://net.tutsplus.com/articles/web-roundups/30-developers-you-must-subscribe-to-as-a-javascript-junkie/">33 Developers you MUST Subscribe to as a JavaScript Junkie</a></li>
+</ul>
+<h2>Tools</h2>
+<ul>
+<li><a href="http://gruntjs.com/">Grunt</a> (The JavaScript Task Runner)</li>
+<li><a href="http://www.jshint.com/">JSHint</a> (JS Code Quality Tool)</li>
+<li><a href="http://jsperf.com/">JSPerf</a> (JS Performance Testing)</li>
+<li><a href="http://www.jsunit.net/">JSUnit</a> (JS Unit Testing)</li>
+<li><a href="http://siliconforks.com/jscoverage/">JSCoverage</a> (JS Code Coverage)</li>
+<li><a href="http://code.google.com/p/jsdoc-toolkit/">JDDoc-Toolkit</a> (JS Documentation Tool)</li>
+<li>Bonus: <a href="http://coding.smashingmagazine.com/2009/02/08/50-extremely-useful-javascript-tools/">50 Useful JavaScript Tools</a></li>
+</ul></p>
                         <br/>
                 
                         <div class="post-info">
                                 <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
-                                <a href="https://codeinphp.github.io/category/php.html">PHP</a>
+                                <a href="https://codeinphp.github.io/category/javascript.html">Javascript</a>
                                 &nbsp;&nbsp;
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
-                                <a href="https://codeinphp.github.io/tag/php.html">php</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/browser.html">browser</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/console.html">console</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/devtools.html">devtools</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/javascript.html">javascript</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -210,11 +203,11 @@ logConsole('$user object', $user, true);</code></pre>
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/learning-javascript.html">Learning Javascript</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/outputting-php-to-browser-console.html">Outputting PHP To Browser Console</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/my-local-development-workflow-with-wamp-xampp-git-and-google-drive.html">My Local Development Workflow with WAMP/XAMPP, GIT and Google Drive</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/goodtodo-php-and-sqlite-app.html">GoodTodo PHP and SQlite App</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/bloggercms-an-static-blog-generator-cms.html">BloggerCMS  - An Static Blog Generator CMS</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/welcome.html">Welcome !</a></li>
                 </ul>
             </div>
         
@@ -227,6 +220,7 @@ logConsole('$user object', $user, true);</code></pre>
                 <ul class="list-group">
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/blog.html">Blog</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/bloggercms.html">BloggerCMS</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/category/javascript.html">Javascript</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/php.html">PHP</a></li>
                 </ul>
             </div>
@@ -259,6 +253,7 @@ logConsole('$user object', $user, true);</code></pre>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/drive.html" title="'drive' returned a count of 0">drive</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/git.html" title="'git' returned a count of 0">git</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/googledrive.html" title="'googledrive' returned a count of 0">googledrive</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/javascript.html" title="'javascript' returned a count of 0">javascript</a>
 <a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php.html" title="'php' returned a count of 3">php</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sqlite.html" title="'sqlite' returned a count of 0">sqlite</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/static.html" title="'static' returned a count of 0">static</a>

@@ -6,6 +6,77 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Learning Javascript</title>
+<description><![CDATA[<p>JavaScript is <a href="http://en.wikipedia.org/wiki/JavaScript">cross-platform</a>, cross-browser language; javascript is everywhere; web, <a href="http://en.wikipedia.org/wiki/Rich_Internet_application">RIA</a> (rich internet applications), <a href="http://sixrevisions.com/javascript/mobile%C2%A0web-development-frameworks/">mobile, tablets</a>, <a href="https://github.com/mrdoob/three.js/">animations</a> and even on server with the advent of <a href="http://nodejs.org/">node.js</a>. Javascript is the language of the future.</p>
+<p>I started off with jQuery without knowing anything much about javascript because by the time I didn’t find any reason to learn it due to fact that  javascript libraries did everything we needed putting complexities out of the way. Today I realize that I chose the wrong path, a good understanding of javascript language is crucial if you look at the reasons I have mentioned in the very beginning but it is never too late to start again, that’s exactly what I have decided, learning javascript seriously. I am not the only one who has started realizing the power and future of javascript, there are <a href="http://shiflett.org/blog/2012/feb/learning-javascript">giants</a> who have started learning it too. If you are also javascript-library-only developer, or even <strong>copy-paster</strong> programmer, <a href="http://phpadvent.org/2009/you-really-need-to-learn-javascript-by-ed-finkler">you should really</a> <a href="http://net.tutsplus.com/tutorials/javascript-ajax/from-jquery-to-javascript-a-reference/?utm_source=feedburner&amp;utm_medium=feed&amp;utm_campaign=Feed:%20nettuts%20%28Nettuts%2b%29">learn javascript</a> seriously !</p>
+<p>Despite design flaws and bad reputation of the language <a href="http://javascript.crockford.com/javascript.html">as they say</a> and probably rightly so, javascript is popular and language of the choice for those who have gone into deeper <a href="http://ejohn.org/">understating</a> <a href="http://sstephenson.us/">of</a> <a href="http://infrequently.org/about-me/">it</a>. Javascript language <a href="http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/">does</a> <a href="http://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/">have</a> <a href="http://www.svennerberg.com/2009/02/global-variables-in-javascript/">bad</a> <a href="http://lucumr.pocoo.org/2011/2/6/automatic-semicolon-insertion/">parts</a> but its <a href="http://www.amazon.com/dp/0596517742/?tag=stackoverfl08-20">good parts</a> over-weigh its bad parts and there is always room to avoid bad parts if you know the language right and use it effectively.</p>
+<p>Javascript turns out to be extremely <a href="http://bonsaiden.github.com/JavaScript-Garden/">tricky</a> language, consider:</p>
+<pre><code>// Comparison
+'' == '0';    //false
+0 == '';    // true
+0 =='0';    // true
+
+// Type checking
+typeof null;    // object
+
+// Scope
+function myFunc() {
+  return
+  {
+    name: 'sarfraz'
+  };
+}
+
+var f = myFunc();
+console.log(f);    // undefined</code></pre>
+<p>I did <strong>a lot of research</strong> to find best javascript learning resources. On the journey of my exploration, I came across some of the great resources with a lot of reviews and user feedback. By now, if you made your mind to take javascript seriously, here are the best resources out there you should check out.</p>
+<h2>Books</h2>
+<ul>
+<li><a href="http://shop.oreilly.com/product/9780596517748.do">JavaScript: The Good Parts</a> by <a href="http://crockford.com/">Douglas Crockford</a></li>
+<li><a href="http://jsninja.com/">Secrets of the JavaScript Ninja</a> by <a href="http://ejohn.org/">John Resig</a></li>
+<li><a href="http://jspro.org/">Pro JavaScript Techniques</a> by <a href="http://ejohn.org/">John Resig</a></li>
+<li><a href="http://www.amazon.com/Performance-JavaScript-Faster-Application-Interfaces/dp/059680279X">High Performance JavaScript</a> by <a href="http://www.nczonline.net/blog/about/">Nicholas C. Zaka</a></li>
+<li><a href="http://www.amazon.com/gp/product/B004XQX4K0/ref=pd_lpo_k2_dp_sr_3?pf_rd_p=486539851&amp;pf_rd_s=lpo-top-stripe-1&amp;pf_rd_t=201&amp;pf_rd_i=0596805527&amp;pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_r=1GJCJ4PSFS8516NGDG28">JavaScript: The Definitive Guide</a> by <a href="http://www.davidflanagan.com/">David Flanagan</a></li>
+</ul>
+<h2>Online</h2>
+<ul>
+<li><a href="http://eloquentjavascript.net/">Eloquent JavaScript</a> by Marijn Haverbeke</li>
+<li><a href="http://javascript.info/">The JavaScript Tutorial</a></li>
+<li><a href="https://developer.mozilla.org/en/JavaScript/Guide">JavaScript Guide MDN</a></li>
+<li><a href="http://bonsaiden.github.com/JavaScript-Garden/">JavaScript Garden</a> (For intermediate &amp; advanced programmers – must read !)</li>
+</ul>
+<h2>Videos</h2>
+<ul>
+<li><a href="http://learn.appendto.com/">appendto.com</a></li>
+<li><a href="http://yuiblog.com/crockford/">Douglas Crockford’s JavaScript Video Series</a></li>
+<li><a href="http://www.youtube.com/watch?v=hQVTIJBZook">JavaScript: The Good Parts</a></li>
+</ul>
+<h2>Blogs to Subscribe</h2>
+<ul>
+<li><a href="http://perfectionkills.com/">PerfectionKills</a></li>
+<li><a href="http://dmitrysoshnikov.com/">Dmitry A. Soshnikov</a></li>
+<li><a href="http://javascriptweblog.wordpress.com/">JavaScript, JavaScript</a></li>
+<li><a href="http://www.adequatelygood.com/">Adequately Good</a></li>
+<li><a href="http://ejohn.org/">John Resig</a></li>
+<li><a href="http://www.2ality.com/">2ality</a></li>
+<li><a href="http://nemisj.com/">Notes of Maks Nemisj</a></li>
+<li><a href="http://addyosmani.com/blog/">Addy Osmani</a></li>
+<li>Bonus: <a href="http://net.tutsplus.com/articles/web-roundups/30-developers-you-must-subscribe-to-as-a-javascript-junkie/">33 Developers you MUST Subscribe to as a JavaScript Junkie</a></li>
+</ul>
+<h2>Tools</h2>
+<ul>
+<li><a href="http://gruntjs.com/">Grunt</a> (The JavaScript Task Runner)</li>
+<li><a href="http://www.jshint.com/">JSHint</a> (JS Code Quality Tool)</li>
+<li><a href="http://jsperf.com/">JSPerf</a> (JS Performance Testing)</li>
+<li><a href="http://www.jsunit.net/">JSUnit</a> (JS Unit Testing)</li>
+<li><a href="http://siliconforks.com/jscoverage/">JSCoverage</a> (JS Code Coverage)</li>
+<li><a href="http://code.google.com/p/jsdoc-toolkit/">JDDoc-Toolkit</a> (JS Documentation Tool)</li>
+<li>Bonus: <a href="http://coding.smashingmagazine.com/2009/02/08/50-extremely-useful-javascript-tools/">50 Useful JavaScript Tools</a></li>
+</ul>]]></description>
+<link>https://codeinphp.github.io/post/learning-javascript.html</link>
+<pubDate>Sun, 12 Apr 2015 20:41:00 +0200</pubDate>
+</item>
+<item>
 <title>Outputting PHP To Browser Console</title>
 <description><![CDATA[<p>Although there exist <strong>classes</strong> for outputting PHP to browser console such as Google’s <strong>PHP Console</strong> and certain others, I was looking for a way to output PHP to browser console without including those classes in my PHP files or installing any browser plugin to do the same. Currently, I am working on Facebook application development in which you have to commit/upload the code to check certain output out of PHP unlike offline development where you check the code output before committing it up. This makes Facebook application development a longer process for a developer but you got to live with it because you don’t have a choice.</p>
 <p>Anyways, to speed up the code output checking process a little and rather using <code>debug_backtrace</code>, <code>print_r</code>, <code>print</code>, <code>echo</code>, <code>var_dump</code>, etc which you need to remove/comment again, I created a function to get output of PHP on the browser console. One could use <code>error_log</code> function but even that makes you go to your log file and then see the output. Of course, browser needs to support/have the console so that code result is output there. Because IE less than 8 doesn't have console, this won’t work in IE less than 8, though result won’t be affected in it. Notice that you can see console in IE=&gt;8 by pressing <kbd>F12</kbd> key and then going to <strong>Script</strong> tab where you need to make sure <strong>Console</strong> tab is selected on the right side.</p>
