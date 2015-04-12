@@ -1,5 +1,22 @@
 [
 	{
+		"title": "PHPExecute \u2013 PHP Code Runner",
+		"tags": [
+			"php",
+			"phpexecute",
+			"runner",
+			"tester"
+		],
+		"category": "PHP",
+		"body": "Often times, you quickly need to test some PHP code. To do so, you create a file, put it in web root folder, write some code in it, open its URL and then you see its output. This is kind of lot of work and I often need a way to quickly test my PHP code. This requirement made me create my own code testing tool, **PHPExecute**.\r\n\r\nPHPExecute is the fastest way to test PHP code. You write the code, hit the execute button, an ajax request is triggered and you see the output fast without page refresh. Here are some of the cool things about it:\r\n\r\n- Very fast way to test your code\r\n- Nice friendly interface\r\n- Code  Highlighting\r\n- Useful PHP, system information panel\r\n- Saving favorite code snippets\r\n- Adding useful classes\r\n- Easy to extend as per your needs\r\n\r\n**Screenshot**\r\n\r\n![enter image description here][1]\r\n\r\n## Extending PHPExecute ##\r\n\r\nThe good thing is that you can download (see below) it, see its source code and extend it however you like according to your needs. For example, you can add classes for testing, performance or any other purpose. One can even integrate bash commands (I am not going into details of that) to make it even more useful tool to work with.\r\n\r\n## Usage Notes ##\r\n\r\n - PHPExecute uses [`eval`][2] function to run the code. It is strongly recommended that you should use that tool for local testing only and not on production server due to security reasons. If you do, you use it on your own risk.\r\n\r\n - In order to save snippets, PHPExecute uses [localStorage][3] feature which is available in latest browsers (and IE9+) only and also it can be around **5MB** in size. This isn\u2019t that ideal if you are going to save a lot of snippets but you can always extend PHPExecute to add database support and save your snippets there.\r\n\r\n - The custom functions that can be used in PHPExecute can be found in **includes\/functions.php** file. You can add any functions in that file that you want to use directly inside PHPExecute. The custom functions can also be seen in **PHP Info > User Defined Functions**.\r\n\r\n---\r\n\r\n**Download**\r\n\r\n[Download PHPExecute at Github][4]\r\n\r\nI hope PHPExecute turns out to be a useful tool for you. Please do share if you add anything to it via comments so that we could know it and integrate ourselves too :)\r\n\r\n\r\n  [1]: https:\/\/codeinphp.github.io\/images\/1428864689552abeb12a929.gif\r\n  [2]: http:\/\/php.net\/manual\/en\/function.eval.php\r\n  [3]: http:\/\/en.wikipedia.org\/wiki\/Web_Storage\r\n  [4]: https:\/\/github.com\/sarfraznawaz2005\/PHPExecute",
+		"addpost": "addpost",
+		"dated": "April 12, 2015 08:57 PM",
+		"slug": "phpexecute-php-code-runner",
+		"categoryslug": "php",
+		"status": "publised",
+		"prevStatus": "publised"
+	},
+	{
 		"title": "Learning Javascript",
 		"tags": [
 			"javascript"
@@ -98,21 +115,5 @@
 		"generated": "1",
 		"showbody": "1",
 		"categoryslug": "blog"
-	},
-	{
-		"title": "PHPExecute \u2013 PHP Code Runner",
-		"tags": [
-			"php",
-			"phpexecute",
-			"runner",
-			"tester"
-		],
-		"category": "PHP",
-		"body": "Often times, you quickly need to test some PHP code. To do so, you create a file, put it in web root folder, write some code in it, open its URL and then you see its output. This is kind of lot of work and I often need a way to quickly test my PHP code. This requirement made me create my own code testing tool, **PHPExecute**.\r\n\r\nPHPExecute is the fastest way to test PHP code. You write the code, hit the execute button, an ajax request is triggered and you see the output fast without page refresh. Here are some of the cool things about it:\r\n\r\n- Very fast way to test your code\r\n- Nice friendly interface\r\n- Code  Highlighting\r\n- Useful PHP, system information panel\r\n- Saving favorite code snippets\r\n- Adding useful classes\r\n- Easy to extend as per your needs\r\n\r\n**Screenshot**\r\n\r\n[enter link description here][1]\r\n\r\n## Extending PHPExecute ##\r\n\r\nThe good thing is that you can download (see below) it, see its source code and extend it however you like according to your needs. For example, you can add classes for testing, performance or any other purpose. One can even integrate bash commands (I am not going into details of that) to make it even more useful tool to work with.\r\n\r\n## Usage Notes ##\r\n\r\n - PHPExecute uses [`eval`][2] function to run the code. It is strongly recommended that you should use that tool for local testing only and not on production server due to security reasons. If you do, you use it on your own risk.\r\n\r\n - In order to save snippets, PHPExecute uses [localStorage][3] feature which is available in latest browsers (and IE9+) only and also it can be around **5MB** in size. This isn\u2019t that ideal if you are going to save a lot of snippets but you can always extend PHPExecute to add database support and save your snippets there.\r\n\r\n - The custom functions that can be used in PHPExecute can be found in **includes\/functions.php** file. You can add any functions in that file that you want to use directly inside PHPExecute. The custom functions can also be seen in **PHP Info > User Defined Functions**.\r\n\r\n**Download**\r\n\r\n[Download PHPExecute at Github][4]\r\n\r\nI hope PHPExecute turns out to be a useful tool for you. Please do share if you add anything to it via comments so that we could know it and integrate ourselves too :)\r\n\r\n\r\n  [1]: https:\/\/codeinphp.github.io\/images\/1428864689552abeb12a929.gif\r\n  [2]: http:\/\/php.net\/manual\/en\/function.eval.php\r\n  [3]: http:\/\/en.wikipedia.org\/wiki\/Web_Storage\r\n  [4]: https:\/\/github.com\/sarfraznawaz2005\/PHPExecute",
-		"addpost": "addpost",
-		"dated": "April 12, 2015 08:57 PM",
-		"slug": "phpexecute-php-code-runner",
-		"categoryslug": "php",
-		"status": "publised"
 	}
 ]
