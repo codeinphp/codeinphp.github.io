@@ -1,11 +1,11 @@
 body {
     margin-top: 75px;
     line-height: 23px;
-    font-size: 15px;
 }
 
 .post-content, .page-content {
     margin-bottom: 20px;
+    font-size: 15px;
 }
 
 .fa-rss {
