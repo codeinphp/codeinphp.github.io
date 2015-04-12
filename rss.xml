@@ -113,6 +113,19 @@ and so on</code></pre>
 <pubDate>Sun, 12 Apr 2015 13:24:00 +0200</pubDate>
 </item>
 <item>
+<title>GoodTodo PHP and SQlite App</title>
+<description><![CDATA[<p>I really like to keep track of tasks and projects (personal or otherwise) I work on. I used to keep my todos list in notepad or by using some other sticky notes application but I wanted dead simple todos app with beautiful looks and simple to use without irrelevant options or goodies. So here I introduce GoodTodo; a todo app made via PHP and SQlite. I chose SQlite because I wanted to make sure that app is portable and of course since it’s small todo app, choosing SQlite for it makes perfect sense. I have used <a href="http://flightphp.com/">flightPHP</a> framework and <a href="http://j4mie.github.io/idiormandparis/">idiorm ORM</a> for it.</p>
+<p>Here are its screenshots:</p>
+<p><img src="https://codeinphp.github.io/images/1428836471552a507761961.png" alt="enter image description here" /></p>
+<p><img src="https://codeinphp.github.io/images/1428836475552a507b38615.png" alt="enter image description here" /></p>
+<p><img src="https://codeinphp.github.io/images/1428836467552a50733de24.png" alt="enter image description here" /></p>
+<p><strong>How to use:</strong></p>
+<p>Make sure you have wamp/xampp or other stack installed. Download the app and put in www/htdocs folder and browse to that folder via browser something like <a href="http://localhost/todo">http://localhost/todo</a>. Please make sure you have sqlite extension turned on from php.ini if it isn’t already.</p>
+<p>So go ahead and <a href="https://dl.dropboxusercontent.com/u/11600057/todo.zip">download GoodTodo</a> to keep track of your todos.</p>]]></description>
+<link>https://codeinphp.github.io/post/goodtodo-php-and-sqlite-app.html</link>
+<pubDate>Sun, 12 Apr 2015 13:03:00 +0200</pubDate>
+</item>
+<item>
 <title>BloggerCMS  - An Static Blog Generator CMS</title>
 <description><![CDATA[<p>In the <a href="https://codeinphp.github.io/post/welcome.html">last post</a>, I had mentioned about BloggerCMS which is used to build this very blog. BloggerCMS is dead simple CMS that can be used to create fully functional static blogs. Although there are <a href="https://github.com/pinceladasdaweb/Static-Site-Generators#php">quite some static site generators</a> out there but I created BloggerCMS because I was missing these features in any of those static site generators:</p>
 <ul>
