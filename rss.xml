@@ -6,6 +6,81 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Outputting PHP To Browser Console</title>
+<description><![CDATA[<p>Although there exist <strong>classes</strong> for outputting PHP to browser console such as Google’s <strong>PHP Console</strong> and certain others, I was looking for a way to output PHP to browser console without including those classes in my PHP files or installing any browser plugin to do the same. Currently, I am working on Facebook application development in which you have to commit/upload the code to check certain output out of PHP unlike offline development where you check the code output before committing it up. This makes Facebook application development a longer process for a developer but you got to live with it because you don’t have a choice.</p>
+<p>Anyways, to speed up the code output checking process a little and rather using <code>debug_backtrace</code>, <code>print_r</code>, <code>print</code>, <code>echo</code>, <code>var_dump</code>, etc which you need to remove/comment again, I created a function to get output of PHP on the browser console. One could use <code>error_log</code> function but even that makes you go to your log file and then see the output. Of course, browser needs to support/have the console so that code result is output there. Because IE less than 8 doesn't have console, this won’t work in IE less than 8, though result won’t be affected in it. Notice that you can see console in IE=&gt;8 by pressing <kbd>F12</kbd> key and then going to <strong>Script</strong> tab where you need to make sure <strong>Console</strong> tab is selected on the right side.</p>
+<p>Here is the function:</p>
+<pre><code> /**
+ * Logs messages/variables/data to browser console from within php
+ *
+ * @param $name: message to be shown for optional data/vars
+ * @param $data: variable (scalar/mixed) arrays/objects, etc to be logged
+ * @param $jsEval: whether to apply JS eval() to arrays/objects
+ *
+ * @return none
+ * @author Sarfraz
+ */
+ function logConsole($name, $data = NULL, $jsEval = FALSE)
+ {
+      if (! $name) return false;
+
+      $isevaled = false;
+      $type = ($data || gettype($data)) ? 'Type: ' . gettype($data) : '';
+
+      if ($jsEval &amp;&amp; (is_array($data) || is_object($data)))
+      {
+           $data = 'eval(' . preg_replace('#[\s\r\n\t\0\x0B]+#', '', json_encode($data)) . ')';
+           $isevaled = true;
+      }
+      else
+      {
+           $data = json_encode($data);
+      }
+
+      # sanitalize
+      $data = $data ? $data : '';
+      $search_array = array("#'#", '#""#', "#''#", "#\n#", "#\r\n#");
+      $replace_array = array('"', '', '', '\\n', '\\n');
+      $data = preg_replace($search_array,  $replace_array, $data);
+      $data = ltrim(rtrim($data, '"'), '"');
+      $data = $isevaled ? $data : ($data[0] === "'") ? $data : "'" . $data . "'";
+
+$js = &lt;&lt;&lt;JSCODE
+\n&lt;script&gt;
+ // fallback - to deal with IE (or browsers that don't have console)
+ if (! window.console) console = {};
+ console.log = console.log || function(name, data){};
+ // end of fallback
+
+ console.log('$name');
+ console.log('------------------------------------------');
+ console.log('$type');
+ console.log($data);
+ console.log('\\n');
+&lt;/script&gt;
+JSCODE;
+
+      echo $js;
+ } # end logConsole</code></pre>
+<p>Here is an example of how to use it:</p>
+<pre><code>$name = 'sarfraz';
+$fruits = array("banana", "apple", "strawberry", "pineaple");
+
+$user = new stdClass;
+$user-&gt;name = "Sarfraz";
+$user-&gt;desig = "Sr. Software Engineer";
+$user-&gt;lang = "PHP";
+
+logConsole('$name var', $name, true);
+logConsole('An array of fruits', $fruits, true);
+logConsole('$user object', $user, true);</code></pre>
+<p>It would result in:</p>
+<p><img src="https://codeinphp.github.io/images/1428862620552ab69c5381f.gif" alt="enter image description here" /></p>
+<p>Although this does not prevent committing code first to see the code output if you are on facebook application development but it defintely does save some time. I have been using this function successfully so far, please let me know your ideas if any on how to improve this piece of code further. </p>]]></description>
+<link>https://codeinphp.github.io/post/outputting-php-to-browser-console.html</link>
+<pubDate>Sun, 12 Apr 2015 20:23:00 +0200</pubDate>
+</item>
+<item>
 <title>My Local Development Workflow with WAMP/XAMPP, GIT and Google Drive</title>
 <description><![CDATA[<p>I like to share my local development workflow which has turned out to be <strong>extremely useful</strong> in that all my projects’ files are <strong>version-ed and on the cloud</strong>. I use <strong>git</strong> to keep my files versioned and <strong>Google Drive</strong> so that I can access my projects anywhere. In this post, I will share really cool stuff that you definitely should consider implementing for your own projects.</p>
 <p>If you don’t know about git and its benefits, there are numerous compelling reasons why it is useful, you might want to check out:</p>
