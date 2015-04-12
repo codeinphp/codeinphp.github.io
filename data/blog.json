@@ -62,7 +62,8 @@
 			"slug": "bloggercms-an-static-blog-generator-cms",
 			"status": "publised",
 			"generated": "1",
-			"showbody": "1"
+			"showbody": "1",
+			"categoryslug": "bloggercms"
 		},
 		{
 			"title": "Welcome !",
@@ -77,12 +78,19 @@
 			"slug": "welcome",
 			"status": "publised",
 			"generated": "1",
-			"showbody": "1"
+			"showbody": "1",
+			"categoryslug": "blog"
 		}
 	],
 	"categories": [
-		"Blog",
-		"BloggerCMS"
+		{
+			"category": "Blog",
+			"categoryslug": "blog"
+		},
+		{
+			"category": "BloggerCMS",
+			"categoryslug": "bloggercms"
+		}
 	],
 	"latestPosts": [
 		{
@@ -100,7 +108,8 @@
 			"slug": "bloggercms-an-static-blog-generator-cms",
 			"status": "publised",
 			"generated": "1",
-			"showbody": "1"
+			"showbody": "1",
+			"categoryslug": "bloggercms"
 		},
 		{
 			"title": "Welcome !",
@@ -115,7 +124,8 @@
 			"slug": "welcome",
 			"status": "publised",
 			"generated": "1",
-			"showbody": "1"
+			"showbody": "1",
+			"categoryslug": "blog"
 		}
 	],
 	"homePosts": [
@@ -134,7 +144,8 @@
 			"slug": "bloggercms-an-static-blog-generator-cms",
 			"status": "publised",
 			"generated": "1",
-			"showbody": "1"
+			"showbody": "1",
+			"categoryslug": "bloggercms"
 		}
 	],
 	"tagsCloud": "<a style=\"font-size: 12px\" class=\"tag_cloud\" href=\"https:\/\/codeinphp.github.io\/tag\/blog.html\" title=\"'blog' returned a count of 0\">blog<\/a>\n<a style=\"font-size: 12px\" class=\"tag_cloud\" href=\"https:\/\/codeinphp.github.io\/tag\/bloggercms.html\" title=\"'bloggercms' returned a count of 0\">bloggercms<\/a>\n<a style=\"font-size: 12px\" class=\"tag_cloud\" href=\"https:\/\/codeinphp.github.io\/tag\/cms.html\" title=\"'cms' returned a count of 0\">cms<\/a>\n<a style=\"font-size: 12px\" class=\"tag_cloud\" href=\"https:\/\/codeinphp.github.io\/tag\/php.html\" title=\"'php' returned a count of 0\">php<\/a>\n<a style=\"font-size: 12px\" class=\"tag_cloud\" href=\"https:\/\/codeinphp.github.io\/tag\/static.html\" title=\"'static' returned a count of 0\">static<\/a>\n<a style=\"font-size: 12px\" class=\"tag_cloud\" href=\"https:\/\/codeinphp.github.io\/tag\/welcome.html\" title=\"'welcome' returned a count of 0\">welcome<\/a>\n",

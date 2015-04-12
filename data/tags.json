@@ -1,10 +1,9 @@
 [
-	"php",
-	"javascript",
-	"welcome",
 	"blog",
-	"cms",
-	"static",
 	"bloggercms",
-	"love"
+	"cms",
+	"javascript",
+	"php",
+	"static",
+	"welcome"
 ]
