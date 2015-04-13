@@ -100,7 +100,8 @@
                     <a class="prevpost btn btn-primary"><i class="fa fa-chevron-circle-left"></i> Prev Post</a>
                 </div>
                 <div class="col-sm-4 col-md-4">
-                    <a class="btn btn-primary" href="https://codeinphp.github.io/posts.html"><i class="fa fa-navicon"></i> View All Post</a>
+                    <a class="btn btn-primary" href="https://codeinphp.github.io/posts.html"><i class="fa fa-navicon"></i> View All
+                        Post</a>
                 </div>
                 <div class="col-sm-4 col-md-4">
                     <a class="nextpost btn btn-primary"><i class="fa fa-chevron-circle-right"></i> Next Post</a>
@@ -120,17 +121,6 @@
             <!-- Comment form -->
             <div class="well">
                 <div id="disqus_thread"></div>
-                <script type="text/javascript">
-                    var disqus_shortname = 'codeinphp'; // required: replace example with your forum shortname
-                    /* * * DON'T EDIT BELOW THIS LINE * * */
-                    (function () {
-                        var dsq = document.createElement('script');
-                        dsq.type = 'text/javascript';
-                        dsq.async = true;
-                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                    })();
-                </script>
                 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">Comments
                     powered by Disqus.</a></noscript>
                 <a href="http://disqus.com" class="dsq-brlink">Comments powered by
@@ -336,6 +326,14 @@
                 $nextPostSelector.hide();
             }
         });
+
+        // for Disqus
+        var disqus_shortname = 'codeinphp';
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 
     });
 </script>
