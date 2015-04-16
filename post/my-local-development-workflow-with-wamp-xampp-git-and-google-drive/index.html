@@ -334,17 +334,6 @@ and so on</code></pre>
     </div>
 </div>
 
-<!-- for sharethis -->
-<script type="text/javascript">var switchTo5x = true;</script>
-<script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
-<script type="text/javascript">stLight.options({
-    publisher: "18a13a28-cab8-4bb2-9a13-25708fa3cd9b",
-    doNotHash: false,
-    doNotCopy: false,
-    hashAddressBar: false
-});
-</script>
-
 <!-- Footer -->
 <footer>
     <div class="container">
@@ -396,8 +385,6 @@ and so on</code></pre>
             currentPageSlug = pageArray[pageArray.length - 2];
         }
 
-        alert(currentPageSlug);
-
         $.ajax({
             url: __blogURL + "/data/blog.json",
             type: "GET",
@@ -446,4 +433,15 @@ and so on</code></pre>
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 
     });
+</script>
+
+<!-- for sharethis -->
+<script type="text/javascript">var switchTo5x = true;</script>
+<script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({
+    publisher: "18a13a28-cab8-4bb2-9a13-25708fa3cd9b",
+    doNotHash: false,
+    doNotCopy: false,
+    hashAddressBar: false
+});
 </script>
