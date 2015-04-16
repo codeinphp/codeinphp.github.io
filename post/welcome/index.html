@@ -287,6 +287,11 @@
 
         var pageArray = document.location.href.split('/');
         var currentPageSlug = pageArray[pageArray.length - 1];
+
+        if (! currentPageSlug) {
+            currentPageSlug = pageArray[pageArray.length - 2];
+        }
+
         alert(currentPageSlug);
 
         $.ajax({
