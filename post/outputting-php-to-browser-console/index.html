@@ -8,7 +8,7 @@
     <meta name="description" content="PHP and more...">
     <meta name="author" content="Sarfraz Ahmed">
 
-    <title>Outputting PHP To Browser Console - Code In PHP</title>
+    <title>Outputting PHP To Browser Console :: Code In PHP</title>
 
     <!-- rss feed url -->
     <link rel="alternate" type="application/rss+xml" title="Code In PHP" href="https://codeinphp.github.io/rss.xml"/>
@@ -363,7 +363,7 @@ logConsole('$user object', $user, true);</code></pre>
             success: function (data) {
                 if (data.posts !== undefined && data.posts !== null) {
                     $.each(data.posts, function (i, post) {
-                        if (post.slug === currentPageSlug) {
+                        if (post.slug === currentPageSlug || post.slug + '/' === currentPageSlug) {
 
                             var prevPost = data.posts[i - 1];
                             var nextPost = data.posts[i + 1];
