@@ -355,6 +355,7 @@ logConsole('$user object', $user, true);</code></pre>
 
         var pageArray = document.location.href.split('/');
         var currentPageSlug = pageArray[pageArray.length - 1];
+        alert(currentPageSlug);
 
         $.ajax({
             url: __blogURL + "/data/blog.json",
