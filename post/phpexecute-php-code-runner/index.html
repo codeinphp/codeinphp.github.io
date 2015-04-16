@@ -44,7 +44,7 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a href="https://codeinphp.github.io/index.html" class="navbar-brand"><i class="fa fa-code"></i> Code In PHP</a>
+            <a href="https://codeinphp.github.io" class="navbar-brand"><i class="fa fa-code"></i> Code In PHP</a>
         </div>
 
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
@@ -59,9 +59,9 @@
             </div>
 
             <ul class="nav navbar-nav page-links">
-                    <li><a href="https://codeinphp.github.io/page/about.html">About</a></li>
-                    <li><a href="https://codeinphp.github.io/page/projects.html">Projects</a></li>
-                    <li><a href="https://codeinphp.github.io/page/contact.html">Contact</a></li>
+                    <li><a href="https://codeinphp.github.io/page/about">About</a></li>
+                    <li><a href="https://codeinphp.github.io/page/projects">Projects</a></li>
+                    <li><a href="https://codeinphp.github.io/page/contact">Contact</a></li>
             </ul>
 
         </nav>
@@ -108,15 +108,15 @@
 
                 <div class="post-info">
                         <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
-                        <a href="https://codeinphp.github.io/category/php.html">PHP</a>
+                        <a href="https://codeinphp.github.io/category/php">PHP</a>
                         &nbsp;&nbsp;
 
                     <span class="glyphicon glyphicon-bookmark"></span>
 
-                        <a href="https://codeinphp.github.io/tag/php.html">php</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/phpexecute.html">phpexecute</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/runner.html">runner</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/tester.html">tester</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/phpexecute">phpexecute</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/runner">runner</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/tester">tester</a>&nbsp;&nbsp;
                 </div>
 
             </article>
@@ -188,11 +188,11 @@
                 </div>
         
                 <ul class="list-group">
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/phpexecute-php-code-runner.html">PHPExecute – PHP Code Runner</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/outputting-php-to-browser-console.html">Outputting PHP To Browser Console</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/my-local-development-workflow-with-wamp-xampp-git-and-google-drive.html">My Local Development Workflow with WAMP/XAMPP, GIT and Google Drive</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/goodtodo-php-and-sqlite-app.html">GoodTodo PHP and SQlite App</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/bloggercms-an-static-blog-generator-cms.html">BloggerCMS  - An Static Blog Generator CMS</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/phpexecute-php-code-runner">PHPExecute – PHP Code Runner</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/outputting-php-to-browser-console">Outputting PHP To Browser Console</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/my-local-development-workflow-with-wamp-xampp-git-and-google-drive">My Local Development Workflow with WAMP/XAMPP, GIT and Google Drive</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/goodtodo-php-and-sqlite-app">GoodTodo PHP and SQlite App</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/bloggercms-an-static-blog-generator-cms">BloggerCMS  - An Static Blog Generator CMS</a></li>
                 </ul>
             </div>
         
@@ -203,9 +203,9 @@
                 </div>
         
                 <ul class="list-group">
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/category/blog.html">Blog</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/category/bloggercms.html">BloggerCMS</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/category/php.html">PHP</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/category/blog">Blog</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/category/bloggercms">BloggerCMS</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/category/php">PHP</a></li>
                 </ul>
             </div>
         
@@ -322,7 +322,7 @@
             success: function (data) {
                 if (data.posts !== undefined && data.posts !== null) {
                     $.each(data.posts, function (i, post) {
-                        if (post.slug + '.html' === currentPageSlug) {
+                        if (post.slug === currentPageSlug) {
 
                             var prevPost = data.posts[i - 1];
                             var nextPost = data.posts[i + 1];
@@ -332,7 +332,7 @@
                                 $prevPostSelector.hide();
                             }
                             else {
-                                $prevPostSelector.attr('href', __blogURL + '/post/' + prevPost.slug + '.html');
+                                $prevPostSelector.attr('href', __blogURL + '/post/' + prevPost.slug);
                             }
 
                             if (nextPost === undefined || nextPost === null) {
@@ -340,7 +340,7 @@
                                 $nextPostSelector.hide();
                             }
                             else {
-                                $nextPostSelector.attr('href', __blogURL + '/post/' + nextPost.slug + '.html');
+                                $nextPostSelector.attr('href', __blogURL + '/post/' + nextPost.slug);
                             }
 
                             return false; // break out of each
