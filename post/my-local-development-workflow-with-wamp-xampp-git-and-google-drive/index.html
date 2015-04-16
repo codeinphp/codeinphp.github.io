@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="BloggerCMS" />
+    <meta name="description" content="PHP and more...">
+    <meta name="author" content="Sarfraz Ahmed">
+
+    <title>Code In PHP</title>
+
+    <!-- rss feed url -->
+    <link rel="alternate" type="application/rss+xml" title="Code In PHP" href="https://codeinphp.github.io/rss.xml"/>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <link rel="shortcut icon" href="https://codeinphp.github.io/favicon.ico"/>
+
+    <!-- Bootstrap CSS file -->
+    <link href="https://codeinphp.github.io/js/plugins/bootstrap-3.0.3/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://codeinphp.github.io/js/plugins/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://codeinphp.github.io/js/plugins/bootstrap-3.0.3/plugins/social-buttons.css" rel="stylesheet"/>
+
+    <!-- syntax highlighter css file -->
+    <link href="https://codeinphp.github.io/js/plugins/highlight/styles/github.css" rel="stylesheet"/>
+
+    <!-- lightbox for images -->
+    <link href="https://codeinphp.github.io/js/plugins/lightbox/ekko-lightbox.min.css" rel="stylesheet"/>
+
+    <!-- blog custom CSS file -->
+    <link href="https://codeinphp.github.io/css/style.css" rel="stylesheet"/>
+</head><body>
+<!-- Header -->
+<header class="navbar navbar-default
+ navbar-fixed-top bs-docs-nav" role="banner">
+    <div class="container">
+
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a href="https://codeinphp.github.io/index.html" class="navbar-brand"><i class="fa fa-code"></i> Code In PHP</a>
+        </div>
+
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+            <div class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input type="text" class="searchQuery form-control" placeholder="Search Posts">
+                </div>
+
+                <button type="button" class="searchButton btn btn-default"><i class="glyphicon glyphicon-search"></i>
+                    Submit
+                </button>
+            </div>
+
+            <ul class="nav navbar-nav page-links">
+                    <li><a href="https://codeinphp.github.io/page/about.html">About</a></li>
+                    <li><a href="https://codeinphp.github.io/page/projects.html">Projects</a></li>
+                    <li><a href="https://codeinphp.github.io/page/contact.html">Contact</a></li>
+            </ul>
+
+        </nav>
+    </div>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 main-content">
+            <article>
+                <h3>My Local Development Workflow with WAMP/XAMPP, GIT and Google Drive</h3>
+                <span class="glyphicon glyphicon-time"></span> April 12, 2015 01:24 PM
+                <hr>
+
+                <p class="post-content"><p>I like to share my local development workflow which has turned out to be <strong>extremely useful</strong> in that all my projects’ files are <strong>version-ed and on the cloud</strong>. I use <strong>git</strong> to keep my files versioned and <strong>Google Drive</strong> so that I can access my projects anywhere. In this post, I will share really cool stuff that you definitely should consider implementing for your own projects.</p>
+<p>If you don’t know about git and its benefits, there are numerous compelling reasons why it is useful, you might want to check out:</p>
+<ul>
+<li><a href="http://learn.github.com/p/intro.html">Introduction To Git</a></li>
+<li><a href="http://www.gitology.com/chapter/benefits-of-using-git">The Benefits of Using Git</a></li>
+<li><a href="http://coding.smashingmagazine.com/2011/07/26/modern-version-control-with-git-series/">Modern Version Control With Git</a></li>
+<li><a href="http://whygitisbetterthanx.com/#svn">whygitisbetterthanx.com</a></li>
+</ul>
+<p>The benefits of keeping all my files and projects on the cloud like Google Drive should be obvious but if you are still not sure, check out:</p>
+<ul>
+<li><a href="http://www.salesforce.com/uk/socialsuccess/cloud-computing/why-move-to-cloud-10-benefits-cloud-computing.jsp">Why Move to the Cloud? 10 Benefits of Cloud Computing</a></li>
+<li><a href="http://www.go-oodles.com/index.php/2012/08/the-six-key-business-benefits-of-google-drive/">The Six Key Business Benefits of Google Drive</a></li>
+</ul>
+<p>Although there are many other cloud storage services such as <a href="https://skydrive.live.com/">Microsoft SkyDrive</a>, <a href="https://www.dropbox.com/">Dropbox</a>, <a href="https://www.box.com/">Box</a>, <a href="http://www.bitcasa.com/">Bitcasa</a>, etc but I chose Google Drive since it gives 10GB of free space which should be enough for my development needs. If that’s not enough for you, you can create another Gmail account and get another 10GB free. You might want to read their usage policies too if you want.  You may also consider using Bitcasa which gives you unlimited space but since it is new, I can’t personally trust it as yet.</p>
+<h2>Installing Google Drive</h2>
+<p><strong>Step 1:</strong> <a href="https://mail.google.com/">Create a new Gmail account</a> to be used with Google Drive client software. Although you can use your existing account but it is good idea to create a new one used for your projects’ backup only.</p>
+<p><strong>Step 2:</strong> Download Google Drive from <a href="https://tools.google.com/dlpage/drive">here</a> or <a href="http://filehippo.com/download_google_drive/">here</a>. During the installation, you would be asked to specify the folder path which will be synchronized with Google Drive. Make sure that you specify a folder present on any drive other than your OS drive so that even if your system crashes or corrupts, your projects remain intact. For example, I have that folder on path D:/Google Drive/</p>
+<p><strong>Step 3:</strong>  Once installed, run Google Drive software and specify the credentials of your newly created Gmail account.</p>
+<h2>Using Google Drive with WAMP/XAMPP</h2>
+<p>Now that we’ve setup google drive, it is time to setup document root to google drive folder and create virtual host. This would allow you to run your local projects through WAMP/XAMPP from google drive folder. The reason why we do this is that since google drive folder will be sync by google drive software, any project we put in that folder will automatically be uploaded in your google drive account.</p>
+<blockquote>
+<p><strong>Note:</strong> I am using XAMPP but if you are using WAMP, some settings or file paths might be different, you should consider reading its
+documentation.</p>
+</blockquote>
+<p><strong>Step 1:</strong> Inside your google drive folder, create a new folder named <strong>webroot</strong> making whole path <strong>X:\Google Drive\webroot</strong> where <strong>X</strong> represents your drive letter.</p>
+<p><strong>Step 2:</strong> Assuming you have specified google drive folder to be  <strong>D:/Google Drive/</strong>, open <strong>httpd.conf</strong> (normally located at <strong>apache\conf</strong> folder) file in notepad or other text editor and find the line <strong>Include “conf/extra/httpd-vhosts.conf”</strong>. If there is a hash (#) before that line, remove it. Now find the line with <strong><Directory /></strong> and you should see something similar to:</p>
+<pre><code>&lt;Directory /&gt;
+   AllowOverride none
+   Require all denied
+&lt;/Directory&gt;</code></pre>
+<p>Change <strong>Require all denied</strong>  to <strong>Require all granted</strong></p>
+<p>Or if you see something like:</p>
+<pre><code>&lt;Directory /&gt;
+    Options FollowSymLinks
+    AllowOverride None
+    Order deny,allow
+    Deny from all
+&lt;/Directory&gt;</code></pre>
+<p>Change it to:</p>
+<pre><code>&lt;Directory /&gt;
+    ........
+    Allow from all
+&lt;/Directory&gt;</code></pre>
+<p>Now come to bottom of the file and add:</p>
+<pre><code>&lt;Directory "D:\Google Drive\webroot"&gt;
+  Options Indexes MultiViews
+  Order Allow,Deny
+  Allow from all
+&lt;/Directory&gt;</code></pre>
+<p>Save the file and close it.</p>
+<p><strong>Step 3:</strong> Open <strong>httpd-vhosts.conf</strong> (normally located at <strong>apache\conf\extra</strong> folder) and add these lines at the end of it:</p>
+<pre><code>&lt;VirtualHost 127.0.0.1:80&gt;
+    DocumentRoot "D:/Google Drive/webroot"
+    ServerName gdroot.loc
+    ServerAlias gdroot.loc
+    ErrorLog "D:/Google Drive/webroot/logs/error.log"
+    CustomLog "D:/Google Drive/webroot/logs/access.log" combined
+&lt;/VirtualHost&gt;</code></pre>
+<p>Save the file and close it. Notice that we have specified <strong>gdroot.loc</strong> as address which actually means google drive root (<strong>.loc</strong> signals that it is local folder) which actually maps to your google drive webroot folder eg <strong>D:/Google Drive/webroot</strong>. Notice that you could name it anything you want like <strong>mycoolwebsite.com, yourname.com</strong>, etc but of course that is local folder running from your own computer.</p>
+<p><strong>Step 4:</strong> Open <strong>hosts</strong> file in notepad or other text editor located at <strong>X:\Windows\System32\drivers\etc</strong> where <strong>X</strong> stands for drive letter where your OS is installed. At the end of that file add this line assuming you specified URL in above step as <strong>gdroot.loc</strong>:</p>
+<pre><code>127.0.0.1       gdroot.loc</code></pre>
+<p>Or if you also use port to access your LAMP/XAMPP URLs, specify that as well:</p>
+<pre><code>127.0.0.1:PORT_NUMBER_HERE       gdroot.loc</code></pre>
+<blockquote>
+<p><strong>Note:</strong> If you can’t edit hosts file, you need to have file owner permission, search on Google how to do that.</p>
+</blockquote>
+<p>Restart apache and access the new url by typing <strong>gdroot.loc</strong> in your browser. You should see screen similar to when you go to <a href="http://localhost">http://localhost</a>.</p>
+<p>Congratulations ! you have a nice workflow now. You can now put all your existing our new projects inside your new document root which was assumed to be located at <strong>D:\Google Drive\webroot</strong> and now all your projects are sync with google drive and automatically uploaded to your google account which you can access anywhere. For example, you can now access your projects at office or any other computer by installing google drive client software  there and telling it sync/download your webroot folder. Your projects are now always there and backed up on the cloud :)</p>
+<p>Let’s take cool stuff one step further by using <strong>git</strong> so that our projects file are also <strong>version-ed</strong>. If you don’t know much about git and its benefits consider reading links posted above or below in the <strong>Git Resources</strong> section.</p>
+<h2>Using Git with a Central Repository</h2>
+<p>Creating and using central repository is especially useful in a team. If you just want to keep your projects version-ed and are the only developer working on a project, the normal flow is (unless you track your project to remote host such as <a href="http://github.com/">github</a>):</p>
+<ul>
+<li>modify files</li>
+<li>commit your changes</li>
+<li>repeat</li>
+</ul>
+<p>So essentially you can skip this section if you just want to version your project files and are only developer working on a project.</p>
+<p><strong>Step 1:</strong> Download msysgit from <a href="http://code.google.com/p/msysgit/downloads/list">here</a>, choose first link from there. Install it with default settings.</p>
+<p><strong>Step 2:</strong> Go to your google drive folder (<strong>D:\Google Drive\</strong>) and create a new folder there named <strong>central.git</strong></p>
+<p><strong>Step 3:</strong> Right click on newly created folder and choose <strong>Git Bash Here</strong> and type: </p>
+<pre><code>git init –bare</code></pre>
+<p><strong>Step 4:</strong> Create a test project folder named <strong>myproject</strong> inside your normal WAMP/XAMPP webroot/htdocs folder or google drive webroot folder mentioned above (Although you can git-manage any folder anywhere on the drive but naturally we want to git-manage projects that we run from webroot/htdocs folder).</p>
+<p><strong>Step 5:</strong> Right click on newly created folder, choose <strong>Git Bash Here</strong> and issue these commands one by one:</p>
+<pre><code>git init
+git remote add central /e/Google\ Drive/central.git/
+git push --all central
+git push --set-upstream-to central master</code></pre>
+<p>Great! now we’ve setup central repository for all our git-managed projects and we can commit, push, fetch all changes from that central repository. For any new repository, you can now issue commands like:</p>
+<pre><code>git clone /e/Google\ Drive/central.git/
+git fetch /e/Google\ Drive/central.git/
+git push central
+and so on</code></pre>
+<p>That's it.</p>
+<h2>Git Resources</h2>
+<ul>
+<li><a href="http://learn.github.com/p/intro.html">Introduction To Git</a></li>
+<li><a href="http://stackoverflow.com/questions/315911/git-for-beginners-the-definitive-practical-guide">Git for beginners: The definitive practical guide</a></li>
+<li><a href="http://net.tutsplus.com/tutorials/other/easy-version-control-with-git/">Easy Version Control with Git</a></li>
+<li><a href="http://git-scm.com/book">Pro Git Book</a></li>
+<li><a href="http://gitref.org/">Git Reference</a></li>
+<li><a href="http://net.tutsplus.com/?s=git">and more</a></li>
+</ul></p>
+                <br/><br/>
+
+                <div class="post-info">
+                        <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
+                        <a href="https://codeinphp.github.io/category/php.html">PHP</a>
+                        &nbsp;&nbsp;
+
+                    <span class="glyphicon glyphicon-bookmark"></span>
+
+                        <a href="https://codeinphp.github.io/tag/development.html">development</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/drive.html">drive</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/git.html">git</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/googledrive.html">googledrive</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/php.html">php</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/wamp.html">wamp</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/workflow.html">workflow</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/xampp.html">xampp</a>&nbsp;&nbsp;
+                </div>
+
+            </article>
+            <hr/>
+
+            <div class="text-center clearfix">
+                <div class="col-sm-4 col-md-4">
+                    <a class="prevpost btn btn-primary"><i class="fa fa-chevron-circle-left"></i> Prev Post</a>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <a class="btn btn-primary" href="https://codeinphp.github.io/posts.html"><i class="fa fa-navicon"></i> View All
+                        Post</a>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <a class="nextpost btn btn-primary"><i class="fa fa-chevron-circle-right"></i> Next Post</a>
+                </div>
+            </div>
+
+            <hr/>
+            <span class='st_facebook_large' displayText='Facebook'></span>
+            <span class='st_twitter_large' displayText='Tweet'></span>
+            <span class='st_pocket_large' displayText='Pocket'></span>
+            <span class='st_flipboard_large' displayText='Flipboard'></span>
+            <span class='st_googleplus_large' displayText='Google +'></span>
+            <span class='st_linkedin_large' displayText='LinkedIn'></span>
+            <span class='st_email_large' displayText='Email'></span>
+            <br/><br/>
+
+            <!-- Comment form -->
+            <div class="well">
+                <div id="disqus_thread"></div>
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">Comments
+                    powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">Comments powered by
+                    <span class="logo-disqus">Disqus</span></a>
+            </div>
+
+        </div>
+
+        <div class="sidebar col-md-4">
+        
+            <!-- Follow Panel -->
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <strong>Follow Me</strong>
+                    </div>
+        
+                    <div class="panel-body">
+                        <a target="_blank" href="https://codeinphp.github.io/rss.xml" class="btn btn-social-icon btn-outline"><i class="fa fa-rss"></i></a>
+        
+                            <a target="_blank" href="https://twitter.com/sarfraznawaz" class="btn btn-social-icon btn-twitter"><i class="fa fa-twitter"></i></a>
+                            <a target="_blank" href="https://www.linkedin.com/profile/view?id=48808377" class="btn btn-social-icon btn-linkedin"><i class="fa fa-linkedin"></i></a>
+                            <a target="_blank" href="https://github.com/sarfraznawaz2005" class="btn btn-social-icon btn-github"><i class="fa fa-github"></i></a>
+                    </div>
+                </div>
+        
+            <!-- Custom Values from Settings page -->
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <strong>On Stackoverflow</strong>
+                    </div>
+                    <a href="http://stackoverflow.com/users/139459/sarfraz"> <img src="http://stackoverflow.com/users/flair/139459.png?theme=clean" width="355" height="100" alt="Sarfraz at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="Sarfraz at Stack Overflow, Q&amp;A for professional and enthusiast programmers" class="img-responsive"> </a>
+                </div>
+        
+            <!-- Latest Posts -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <strong>Latest Posts</strong>
+                </div>
+        
+                <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/phpexecute-php-code-runner.html">PHPExecute – PHP Code Runner</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/outputting-php-to-browser-console.html">Outputting PHP To Browser Console</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/my-local-development-workflow-with-wamp-xampp-git-and-google-drive.html">My Local Development Workflow with WAMP/XAMPP, GIT and Google Drive</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/goodtodo-php-and-sqlite-app.html">GoodTodo PHP and SQlite App</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/bloggercms-an-static-blog-generator-cms.html">BloggerCMS  - An Static Blog Generator CMS</a></li>
+                </ul>
+            </div>
+        
+            <!-- Categories -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <strong>Categories</strong>
+                </div>
+        
+                <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/category/blog.html">Blog</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/category/bloggercms.html">BloggerCMS</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/category/php.html">PHP</a></li>
+                </ul>
+            </div>
+        
+            <!-- Archives -->
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <strong>Archives</strong>
+                    </div>
+        
+                    <ul class="archives list-group"><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/april-2015">April 2015</a></li></ul>
+                </div>
+        
+            <!-- Tags -->
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <strong>Tags Cloud</strong>
+                    </div>
+        
+                    <div class="panel-body">
+                        <ul class="list-inline">
+                            <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/app" title="'app' returned a count of 0">app</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/blog" title="'blog' returned a count of 0">blog</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/bloggercms" title="'bloggercms' returned a count of 0">bloggercms</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/browser" title="'browser' returned a count of 0">browser</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/cms" title="'cms' returned a count of 0">cms</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/console" title="'console' returned a count of 0">console</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/development" title="'development' returned a count of 0">development</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/devtools" title="'devtools' returned a count of 0">devtools</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/drive" title="'drive' returned a count of 0">drive</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/git" title="'git' returned a count of 0">git</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/googledrive" title="'googledrive' returned a count of 0">googledrive</a>
+<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="'php' returned a count of 4">php</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/phpexecute" title="'phpexecute' returned a count of 0">phpexecute</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/runner" title="'runner' returned a count of 0">runner</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sqlite" title="'sqlite' returned a count of 0">sqlite</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/static" title="'static' returned a count of 0">static</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/tester" title="'tester' returned a count of 0">tester</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/todo" title="'todo' returned a count of 0">todo</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/wamp" title="'wamp' returned a count of 0">wamp</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/welcome" title="'welcome' returned a count of 0">welcome</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/workflow" title="'workflow' returned a count of 0">workflow</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/xampp" title="'xampp' returned a count of 0">xampp</a>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+</div>
+
+<!-- for sharethis -->
+<script type="text/javascript">var switchTo5x = true;</script>
+<script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({
+    publisher: "18a13a28-cab8-4bb2-9a13-25708fa3cd9b",
+    doNotHash: false,
+    doNotCopy: false,
+    hashAddressBar: false
+});
+</script>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <hr/>
+        <p class="text-center">Published by <strong><a target="_blank" href="https://github.com/sarfraznawaz2005/BloggerCMS">BloggerCMS</a></strong></p>
+    </div>
+</footer>
+
+<!-- Jquery and Bootstrap Script files -->
+<script src="https://codeinphp.github.io/js/jquery-2.0.3.min.js"></script>
+<script src="https://codeinphp.github.io/js/plugins/bootstrap-3.0.3/js/bootstrap.min.js"></script>
+<script src="https://codeinphp.github.io/js/plugins/highlight/highlight.pack.js"></script>
+<script src="https://codeinphp.github.io/js/plugins/lightbox/ekko-lightbox.min.js"></script>
+
+<script>
+    var __blogURL = 'https://codeinphp.github.io';
+</script>
+
+<script src="https://codeinphp.github.io/js/blog.js"></script>
+<script src="https://codeinphp.github.io/js/search.js"></script>
+
+<!-- google analytics -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-61657332-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+<!-- for pagination -->
+<script>
+    $(function () {
+
+        ///////////////////////////////////////////////////
+        // class/id/selector of prev link
+        var $prevPostSelector = $('.prevpost');
+        var $nextPostSelector = $('.nextpost');
+        ///////////////////////////////////////////////////
+
+        var pageArray = document.location.href.split('/');
+        var currentPageSlug = pageArray[pageArray.length - 1];
+
+        $.ajax({
+            url: __blogURL + "/data/blog.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                if (data.posts !== undefined && data.posts !== null) {
+                    $.each(data.posts, function (i, post) {
+                        if (post.slug + '.html' === currentPageSlug) {
+
+                            var prevPost = data.posts[i - 1];
+                            var nextPost = data.posts[i + 1];
+
+                            if (prevPost === undefined || prevPost === null) {
+                                // hide previous link if it is first post
+                                $prevPostSelector.hide();
+                            }
+                            else {
+                                $prevPostSelector.attr('href', __blogURL + '/post/' + prevPost.slug + '.html');
+                            }
+
+                            if (nextPost === undefined || nextPost === null) {
+                                // hide previous link if it is last post
+                                $nextPostSelector.hide();
+                            }
+                            else {
+                                $nextPostSelector.attr('href', __blogURL + '/post/' + nextPost.slug + '.html');
+                            }
+
+                            return false; // break out of each
+                        }
+                    });
+                }
+            },
+            error: function (e) {
+                $prevPostSelector.hide();
+                $nextPostSelector.hide();
+            }
+        });
+
+        // for Disqus
+        var disqus_shortname = 'codeinphp';
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+
+    });
+</script>

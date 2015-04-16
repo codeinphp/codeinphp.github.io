@@ -36,7 +36,7 @@
 <p><strong>Download</strong></p>
 <p><a href="https://github.com/sarfraznawaz2005/PHPExecute">Download PHPExecute at Github</a></p>
 <p>I hope PHPExecute turns out to be a useful tool for you. Please do share if you add anything to it via comments so that we could know it and integrate ourselves too :)</p>]]></description>
-<link>https://codeinphp.github.io/post/phpexecute-php-code-runner.html</link>
+<link>https://codeinphp.github.io/post/phpexecute-php-code-runner</link>
 <pubDate>Sun, 12 Apr 2015 20:57:00 +0200</pubDate>
 </item>
 <item>
@@ -111,7 +111,7 @@ logConsole('$user object', $user, true);</code></pre>
 <p>It would result in:</p>
 <p><img src="https://codeinphp.github.io/images/1428862620552ab69c5381f.gif" alt="enter image description here" /></p>
 <p>Although this does not prevent committing code first to see the code output if you are on facebook application development but it defintely does save some time. I have been using this function successfully so far, please let me know your ideas if any on how to improve this piece of code further. </p>]]></description>
-<link>https://codeinphp.github.io/post/outputting-php-to-browser-console.html</link>
+<link>https://codeinphp.github.io/post/outputting-php-to-browser-console</link>
 <pubDate>Sun, 12 Apr 2015 20:23:00 +0200</pubDate>
 </item>
 <item>
@@ -218,7 +218,7 @@ and so on</code></pre>
 <li><a href="http://gitref.org/">Git Reference</a></li>
 <li><a href="http://net.tutsplus.com/?s=git">and more</a></li>
 </ul>]]></description>
-<link>https://codeinphp.github.io/post/my-local-development-workflow-with-wamp-xampp-git-and-google-drive.html</link>
+<link>https://codeinphp.github.io/post/my-local-development-workflow-with-wamp-xampp-git-and-google-drive</link>
 <pubDate>Sun, 12 Apr 2015 13:24:00 +0200</pubDate>
 </item>
 <item>
@@ -231,7 +231,7 @@ and so on</code></pre>
 <p><strong>How to use:</strong></p>
 <p>Make sure you have wamp/xampp or other stack installed. Download the app and put in www/htdocs folder and browse to that folder via browser something like <a href="http://localhost/todo">http://localhost/todo</a>. Please make sure you have sqlite extension turned on from php.ini if it isn’t already.</p>
 <p>So go ahead and <a href="https://dl.dropboxusercontent.com/u/11600057/todo.zip">download GoodTodo</a> to keep track of your todos.</p>]]></description>
-<link>https://codeinphp.github.io/post/goodtodo-php-and-sqlite-app.html</link>
+<link>https://codeinphp.github.io/post/goodtodo-php-and-sqlite-app</link>
 <pubDate>Sun, 12 Apr 2015 13:03:00 +0200</pubDate>
 </item>
 <item>
@@ -264,7 +264,7 @@ and so on</code></pre>
 <li><strong>Archives Section</strong></li>
 </ul>
 <p>To know more about BloggerCMS, head over to <a href="https://bloggercms.github.io">it's blog</a> or see <a href="https://bloggercms.github.io/post/introducing-bloggercms.html">introductory post</a>.</p>]]></description>
-<link>https://codeinphp.github.io/post/bloggercms-an-static-blog-generator-cms.html</link>
+<link>https://codeinphp.github.io/post/bloggercms-an-static-blog-generator-cms</link>
 <pubDate>Mon, 06 Apr 2015 21:41:00 +0200</pubDate>
 </item>
 <item>
@@ -273,7 +273,7 @@ and so on</code></pre>
 <p>This is my first post on this blog hosted at awesome <a href="https://pages.github.com/">github pages</a>. Previously I used to blog on wordpress <a href="http://sarfraznawaz.wordpress.com">here</a> but I switched to github pages because I really wanted to have static blog with free hosting and ability to write up quick posts using <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax. In the <a href="https://codeinphp.github.io/post/bloggercms-an-static-blog-generator-cms.html">next post</a>, I will write about <strong><a href="https://bloggercms.github.io">BloggerCMS</a></strong>, a CMS I have made that helps create static blogs. This blog has also been generated via BloggerCMS :)</p>
 <p>On this blog, I intend to write my ideas mainly about PHP as well as other related web development technologies. </p>
 <p><em>Stay tuned :)</em></p>]]></description>
-<link>https://codeinphp.github.io/post/welcome.html</link>
+<link>https://codeinphp.github.io/post/welcome</link>
 <pubDate>Sun, 05 Apr 2015 15:46:00 +0200</pubDate>
 </item>
 </channel>

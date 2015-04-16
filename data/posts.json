@@ -15,7 +15,8 @@
 		"categoryslug": "php",
 		"status": "publised",
 		"prevStatus": "publised",
-		"summary": "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD HTML 4.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/REC-html40\/loose.dtd\">\n<html><body><p>Often times, you quickly need to test some PHP code. To do so, you create a file, put it in web root folder, write some code in it, open its URL and then you see its output. This is kind of lot of work and I often need a way to quickly test my PHP code. This requirement made me create my own code...<\/p><\/body><\/html>\n"
+		"summary": "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD HTML 4.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/REC-html40\/loose.dtd\">\n<html><body><p>Often times, you quickly need to test some PHP code. To do so, you create a file, put it in web root folder, write some code in it, open its URL and then you see its output. This is kind of lot of work and I often need a way to quickly test my PHP code. This requirement made me create my own code...<\/p><\/body><\/html>\n",
+		"author": "Sarfraz Ahmed"
 	},
 	{
 		"title": "Learning Javascript",
@@ -29,7 +30,9 @@
 		"slug": "learning-javascript",
 		"categoryslug": "javascript",
 		"status": "draft",
-		"prevStatus": "trashed"
+		"prevStatus": "draft",
+		"author": "Sarfraz Ahmed",
+		"summary": "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD HTML 4.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/REC-html40\/loose.dtd\">\n<html><body><p>JavaScript is <a href=\"http:\/\/en.wikipedia.org\/wiki\/JavaScript\">cross-platform<\/a>, cross-browser language; javascript is everywhere; web, <a href=\"http:\/\/en.wikipedia.org\/wiki\/Rich_Internet_application\">RIA<\/a> (rich internet applications), <a href=\"http:\/\/sixrevisions.com\/javascript\/mobile%C2%A...\"\/><\/p><\/body><\/html>\n"
 	},
 	{
 		"title": "Outputting PHP To Browser Console",
@@ -47,7 +50,8 @@
 		"categoryslug": "php",
 		"status": "publised",
 		"prevStatus": "publised",
-		"summary": "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD HTML 4.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/REC-html40\/loose.dtd\">\n<html><body><p>Although there exist <strong>classes<\/strong> for outputting PHP to browser console such as Google&#x2019;s <strong>PHP Console<\/strong> and certain others, I was looking for a way to output PHP to browser console without including those classes in my PHP files or installing any browser plugin to ...<\/p><\/body><\/html>\n"
+		"summary": "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD HTML 4.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/REC-html40\/loose.dtd\">\n<html><body><p>Although there exist <strong>classes<\/strong> for outputting PHP to browser console such as Google&#x2019;s <strong>PHP Console<\/strong> and certain others, I was looking for a way to output PHP to browser console without including those classes in my PHP files or installing any browser plugin to ...<\/p><\/body><\/html>\n",
+		"author": "Sarfraz Ahmed"
 	},
 	{
 		"title": "My Local Development Workflow with WAMP\/XAMPP, GIT and Google Drive",
@@ -69,7 +73,8 @@
 		"categoryslug": "php",
 		"status": "publised",
 		"prevStatus": "publised",
-		"summary": "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD HTML 4.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/REC-html40\/loose.dtd\">\n<html><body><p>I like to share my local development workflow which has turned out to be <strong>extremely useful<\/strong> in that all my projects&#xE2;&#x80;&#x99; files are <strong>version-ed and on the cloud<\/strong>. I use <strong>git<\/strong> to keep my files versioned and <strong>Google Drive<\/strong> so that I can acces<\/p><\/body><\/html>\n..."
+		"summary": "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD HTML 4.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/REC-html40\/loose.dtd\">\n<html><body><p>I like to share my local development workflow which has turned out to be <strong>extremely useful<\/strong> in that all my projects&#x2019; files are <strong>version-ed and on the cloud<\/strong>. I use <strong>git<\/strong> to keep my files versioned and <strong>Google Drive<\/strong> so that I can a...<\/p><\/body><\/html>\n",
+		"author": "Sarfraz Ahmed"
 	},
 	{
 		"title": "GoodTodo PHP and SQlite App",
@@ -88,7 +93,8 @@
 		"status": "publised",
 		"addpost": "addpost",
 		"prevStatus": "publised",
-		"summary": "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD HTML 4.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/REC-html40\/loose.dtd\">\n<html><body><p>I really like to keep track of tasks and projects (personal or otherwise) I work on. I used to keep my todos list in notepad or by using some other sticky notes application but I wanted dead simple todos app with beautiful looks and simple to use without irrelevant options or goodies. So here I intr<\/p><\/body><\/html>\n"
+		"summary": "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD HTML 4.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/REC-html40\/loose.dtd\">\n<html><body><p>I really like to keep track of tasks and projects (personal or otherwise) I work on. I used to keep my todos list in notepad or by using some other sticky notes application but I wanted dead simple todos app with beautiful looks and simple to use without irrelevant options or goodies. So here I i...<\/p><\/body><\/html>\n",
+		"author": "Sarfraz Ahmed"
 	},
 	{
 		"title": "BloggerCMS  - An Static Blog Generator CMS",
@@ -106,7 +112,10 @@
 		"status": "publised",
 		"generated": "1",
 		"showbody": "1",
-		"categoryslug": "bloggercms"
+		"categoryslug": "bloggercms",
+		"author": "Sarfraz Ahmed",
+		"prevStatus": "publised",
+		"summary": "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD HTML 4.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/REC-html40\/loose.dtd\">\n<html><body><p>In the <a href=\"https:\/\/codeinphp.github.io\/post\/welcome.html\">last post<\/a>, I had mentioned about BloggerCMS which is used to build this very blog. BloggerCMS is dead simple CMS that can be used to create fully functional static blogs. Although there are <a href=\"https:\/\/github.com\/pinceladasda...\"\/><\/p><\/body><\/html>\n"
 	},
 	{
 		"title": "Welcome !",
@@ -122,6 +131,9 @@
 		"status": "publised",
 		"generated": "1",
 		"showbody": "1",
-		"categoryslug": "blog"
+		"categoryslug": "blog",
+		"author": "Sarfraz Ahmed",
+		"prevStatus": "publised",
+		"summary": "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD HTML 4.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/REC-html40\/loose.dtd\">\n<html><body><p><strong>Hello, World !<\/strong><\/p>\n<p>This is my first post on this blog hosted at awesome <a href=\"https:\/\/pages.github.com\/\">github pages<\/a>. Previously I used to blog on wordpress <a href=\"http:\/\/sarfraznawaz.wordpress.com\">here<\/a> but I switched to github pages because I really wanted to h...<\/p><\/body><\/html>\n"
 	}
 ]
