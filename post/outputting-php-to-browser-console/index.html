@@ -345,13 +345,9 @@ logConsole('$user object', $user, true);</code></pre>
         var pageArray = document.location.href.split('/');
         var currentPageSlug = pageArray[pageArray.length - 1];
 
-        if (! currentPageSlug) {
+        if (!currentPageSlug) {
             currentPageSlug = pageArray[pageArray.length - 2];
         }
-
-        // hide pagination buttons initially
-        $prevPostSelector.hide();
-        $nextPostSelector.hide();
 
         $.ajax({
             url: __blogURL + "/data/blog.json",
@@ -370,7 +366,6 @@ logConsole('$user object', $user, true);</code></pre>
                                 $prevPostSelector.hide();
                             }
                             else {
-                                $prevPostSelector.show();
                                 $prevPostSelector.attr('href', __blogURL + '/post/' + prevPost.slug);
                             }
 
@@ -379,7 +374,6 @@ logConsole('$user object', $user, true);</code></pre>
                                 $nextPostSelector.hide();
                             }
                             else {
-                                $nextPostSelector.show();
                                 $nextPostSelector.attr('href', __blogURL + '/post/' + nextPost.slug);
                             }
 
@@ -389,6 +383,8 @@ logConsole('$user object', $user, true);</code></pre>
                 }
             },
             error: function (e) {
+                $prevPostSelector.hide();
+                $nextPostSelector.hide();
             }
         });
 

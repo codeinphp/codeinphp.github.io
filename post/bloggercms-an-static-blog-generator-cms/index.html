@@ -303,13 +303,9 @@
         var pageArray = document.location.href.split('/');
         var currentPageSlug = pageArray[pageArray.length - 1];
 
-        if (! currentPageSlug) {
+        if (!currentPageSlug) {
             currentPageSlug = pageArray[pageArray.length - 2];
         }
-
-        // hide pagination buttons initially
-        $prevPostSelector.hide();
-        $nextPostSelector.hide();
 
         $.ajax({
             url: __blogURL + "/data/blog.json",
@@ -328,7 +324,6 @@
                                 $prevPostSelector.hide();
                             }
                             else {
-                                $prevPostSelector.show();
                                 $prevPostSelector.attr('href', __blogURL + '/post/' + prevPost.slug);
                             }
 
@@ -337,7 +332,6 @@
                                 $nextPostSelector.hide();
                             }
                             else {
-                                $nextPostSelector.show();
                                 $nextPostSelector.attr('href', __blogURL + '/post/' + nextPost.slug);
                             }
 
@@ -347,6 +341,8 @@
                 }
             },
             error: function (e) {
+                $prevPostSelector.hide();
+                $nextPostSelector.hide();
             }
         });
 
