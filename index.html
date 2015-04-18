@@ -71,41 +71,136 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/phpexecute-php-code-runner">PHPExecute – PHP Code Runner</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/abstract-class-vs-interface">Abstract Class vs Interface</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> April 12, 2015 08:57 PM
+                    <span class="glyphicon glyphicon-time"></span> April 18, 2015 08:26 PM
                 
                         <hr>
-                        <p class="post-content"><p>Often times, you quickly need to test some PHP code. To do so, you create a file, put it in web root folder, write some code in it, open its URL and then you see its output. This is kind of lot of work and I often need a way to quickly test my PHP code. This requirement made me create my own code testing tool, <strong>PHPExecute</strong>.</p>
-<p>PHPExecute is the fastest way to test PHP code. You write the code, hit the execute button, an ajax request is triggered and you see the output fast without page refresh. Here are some of the cool things about it:</p>
-<ul>
-<li>Very fast way to test your code</li>
-<li>Nice friendly interface</li>
-<li>Code  Highlighting</li>
-<li>Useful PHP, system information panel</li>
-<li>Saving favorite code snippets</li>
-<li>Adding useful classes</li>
-<li>Easy to extend as per your needs</li>
-</ul>
-<p><strong>Screenshot</strong></p>
-<p><img src="https://codeinphp.github.io/images/1428864689552abeb12a929.gif" alt="enter image description here" /></p>
-<h2>Extending PHPExecute</h2>
-<p>The good thing is that you can download (see below) it, see its source code and extend it however you like according to your needs. For example, you can add classes for testing, performance or any other purpose. One can even integrate bash commands (I am not going into details of that) to make it even more useful tool to work with.</p>
-<h2>Usage Notes</h2>
-<ul>
-<li>
-<p>PHPExecute uses <a href="http://php.net/manual/en/function.eval.php"><code>eval</code></a> function to run the code. It is strongly recommended that you should use that tool for local testing only and not on production server due to security reasons. If you do, you use it on your own risk.</p>
-</li>
-<li>
-<p>In order to save snippets, PHPExecute uses <a href="http://en.wikipedia.org/wiki/Web_Storage">localStorage</a> feature which is available in latest browsers (and IE9+) only and also it can be around <strong>5MB</strong> in size. This isn’t that ideal if you are going to save a lot of snippets but you can always extend PHPExecute to add database support and save your snippets there.</p>
-</li>
-<li>The custom functions that can be used in PHPExecute can be found in <strong>includes/functions.php</strong> file. You can add any functions in that file that you want to use directly inside PHPExecute. The custom functions can also be seen in <strong>PHP Info &gt; User Defined Functions</strong>.</li>
-</ul>
+                        <p class="post-content"><p>I found this picture that tells the difference between <code>abstract class</code> and <code>interface</code>:</p>
+<p><img src="https://codeinphp.github.io/images/142937584655328b66dcedc.png" alt="enter image description here" /></p>
 <hr />
-<p><strong>Download</strong></p>
-<p><a href="https://github.com/sarfraznawaz2005/PHPExecute">Download PHPExecute at Github</a></p>
-<p>I hope PHPExecute turns out to be a useful tool for you. Please do share if you add anything to it via comments so that we could know it and integrate ourselves too :)</p></p>
+<p>Let's see each comparison practically so we know what it means.</p>
+<pre>
+Interface support multiple inheritance | Abstract class does not support multiple inheritance
+</pre>
+<p>It means you can extend an <code>interface</code> with one or more (hence <em>multiple inheritance</em>) interfaces like:</p>
+<pre><code>interface Interface_A { }
+interface Interface_B { }
+interface Interface_C { }
+
+interface MyInterface extends Interface_A, Interface_B, Interface_C { }</code></pre>
+<p>As can be seen, we are extending <code>MyInterface</code> with three other interfaces <code>Interface_A</code>, <code>Interface_A</code> and <code>Interface_C</code>.</p>
+<p>Let's now try to extend an <code>abstract class</code>:</p>
+<pre><code>class Class_A { }
+
+abstract class MyAbstractClass extends Class_A { }</code></pre>
+<p>No problem there, you CAN extend an abstract class with exactly one class but if you try to add one more:</p>
+<pre><code>class Class_A { }
+class Class_B { }
+
+abstract class MyAbstractClass extends Class_A, Class_B { }</code></pre>
+<p>This time PHP would give you strange error without telling you what you are doing wrong:</p>
+<p><code>Parse error: syntax error, unexpected ',', expecting '{'</code></p>
+<p>I wish PHP would have given message somewhat like (hope PHP gives smarter error messages in future versions):</p>
+<p><code>Fatal Error: You cannot extend an abstract class with more than one classes</code></p>
+<hr />
+<pre>
+Interface does'n Contains Data Member | Abstract class contains Data Member
+</pre>
+<p>By data members, it means class properties or variables. So you cannot add data members to an interface:</p>
+<pre><code>interface MyInterface {
+    public $foo = null;
+}</code></pre>
+<p>So in an interface, only method stubs can be provided.</p>
+<p>You can add data members to an abstract class though, this is valid code of course:</p>
+<pre><code>abstract class MyAbstractClass {
+    public $foo = null;
+}</code></pre>
+<hr />
+<pre>
+Interface does'n contains Constructors | Abstract class contains Constructors
+</pre>
+<p>It sounds like this point applies to may be other languages but in PHP an interface CAN have an empty constructor shell:</p>
+<pre><code>interface MyInterface {
+    public function __construct();
+}</code></pre>
+<p>Like other languages, PHP shouldn't have allowed having a constructor inside an interface. But anyways, it doesn't make much sense here and should be avoided anyway.</p>
+<p>On the other hand, an abstract class can contain constructor method:</p>
+<pre><code>abstract class MyAbstractClass {
+    abstract public function __construct();
+}</code></pre>
+<p>Here constructor is said to be <code>abstract</code> and therefore expends child classes to complement for it. However, you can also have common initialization code in constructor of an abstract class too in which case, you would need to remove the <code>abstract</code> keyword and provide the body for it:</p>
+<pre><code>abstract class MyAbstractClass {
+    public function __construct() {
+         // initialization code
+    };
+}</code></pre>
+<hr />
+<pre>
+An interface Contains only incomplete member (signature of member) | An abstract class Contains both incomplete (abstract) and complete member
+</pre>
+<p>This simply means an interface can only contain method stubs not their implementation. This is pretty same as second point in the image above. This is why in methods of an interface, they don't have bodies marked with <code>{ }</code> braces. So an interface is completely empty shell that enforces some rules that child classes must implement and that's it.</p>
+<p>Abstract classes can have both; empty method definitions as well as full method implementation. Generally empty method stubs are prefixed with <code>abstract</code> keyword so that child classes must provide their implementation details. But an abstract class can also contain full method implementation inside it which are generally used for common piece of functionality that each child class may need. For example:</p>
+<pre><code>abstract class Animal {
+    // child classes must implement this
+    abstract function prey();
+
+    public function run() {
+        echo 'I am running!';
+    }
+}
+
+class Dog extends Animal {
+    public function prey() {
+        echo 'I killed the cat !';
+    }
+}
+
+class Cat extends Animal {
+    public function prey() {
+        echo 'I killed the rat !';
+    }
+}
+
+$dog = new Dog();
+$cat = new Cat();
+
+$dog-&gt;prey(); // I killed the cat !
+$cat-&gt;prey(); // I killed the rat !
+
+$dog-&gt;run(); // I am running!
+$cat-&gt;run(); // I am running!</code></pre>
+<p>In above code, we can see that <code>Animal</code> class has one <code>abstract</code> method called <code>prey</code> because each child class (animal) have their own ways of finding prey and a full implemented method called <code>run</code> because all animals can run, this doesn't need to be defined in each of child classes. So here <code>run</code> method is fully implemented and represents common data that needs to be shared across child classes.</p>
+<p>Notice that other than common fully implemented methods inside an abstract class, you can also have common data members eg variables that need to be shared across child classes.</p>
+<hr />
+<pre>
+An interface cannot have access modifiers by default everything is assumed as public | An abstract class can contain access modifiers for the subs, functions, properties
+</pre>
+<p>By access modifiers, we mean ability to change scoping by using keywords like <a href="http://stackoverflow.com/questions/4361553/php-public-private-protected"><code>public</code>, <code>private</code> and <code>protected</code></a>. We cannot use these for interfaces but we can use them for everything in abstract classes.</p>
+<hr />
+<pre>
+Members of interface can not be Static | Only Complete Member of abstract class can be Static
+</pre>
+<p>This is again possible in PHP (as of now with PHP 5.4) unlike other languages, so you CAN do:</p>
+<pre><code>interface MyInterface {
+    static function foo();
+}</code></pre>
+<p>Notice the addition of keyword <code>static</code> to mark it as static method.</p>
+<p>For abstract class, you can have static members as well as those methods that are implemented in the abstract class:</p>
+<pre><code>abstract class MyAbstractClass {
+    public static $foo = null;
+
+    public static function foo() {}
+}</code></pre>
+<p>But you cannot have a method to be both <code>static</code> and <code>abstract</code>, so you cannot do this, which is common across the languages:</p>
+<pre><code>abstract class MyAbstractClass {
+    public static $foo = null;
+
+    abstract static function foo() {} // error
+}</code></pre>
+<hr />
+<p>In conclusion, interface and abstract classes are completely different from each other, you cannot interchange them or use one as alternative over the other. Interfaces are completely empty shells that expect child classes to implement everything for them. On the other hand, abstract class can not only contain <em>common piece of information</em> by implementing inside them but also expect child classes to fill in the remaining gaps.</p></p>
                         <br/>
                 
                         <div class="post-info">
@@ -115,10 +210,9 @@
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
-                                <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/phpexecute">phpexecute</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/runner">runner</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/tester">tester</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/abstract">abstract</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/interface">interface</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/oop">oop</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -171,11 +265,11 @@
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/abstract-class-vs-interface">Abstract Class vs Interface</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/phpexecute-php-code-runner">PHPExecute – PHP Code Runner</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/outputting-php-to-browser-console">Outputting PHP To Browser Console</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/my-local-development-workflow-with-wamp-xampp-git-and-google-drive">My Local Development Workflow with WAMP/XAMPP, GIT and Google Drive</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/goodtodo-php-and-sqlite-app">GoodTodo PHP and SQlite App</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/bloggercms-an-static-blog-generator-cms">BloggerCMS  - An Static Blog Generator CMS</a></li>
                 </ul>
             </div>
         
@@ -209,7 +303,8 @@
         
                     <div class="panel-body">
                         <ul class="list-inline">
-                            <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/app" title="'app' returned a count of 0">app</a>
+                            <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/abstract" title="'abstract' returned a count of 0">abstract</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/app" title="'app' returned a count of 0">app</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/blog" title="'blog' returned a count of 0">blog</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/bloggercms" title="'bloggercms' returned a count of 0">bloggercms</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/browser" title="'browser' returned a count of 0">browser</a>
@@ -220,6 +315,8 @@
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/drive" title="'drive' returned a count of 0">drive</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/git" title="'git' returned a count of 0">git</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/googledrive" title="'googledrive' returned a count of 0">googledrive</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/interface" title="'interface' returned a count of 0">interface</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="'oop' returned a count of 0">oop</a>
 <a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="'php' returned a count of 4">php</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/phpexecute" title="'phpexecute' returned a count of 0">phpexecute</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/runner" title="'runner' returned a count of 0">runner</a>

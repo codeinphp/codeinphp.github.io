@@ -27,5 +27,12 @@
 	"31": "devtools",
 	"32": "phpexecute",
 	"33": "runner",
-	"34": "tester"
+	"34": "tester",
+	"35": "lambda",
+	"36": "function",
+	"37": "closure",
+	"38": "php5.3",
+	"39": "abstract",
+	"40": "interface",
+	"41": "oop"
 }
