@@ -112,7 +112,7 @@ $sayHello('Hello'); // Hello, World!</code></pre>
 };
 
 echo $factorial( 5 );</code></pre>
-<p>Notice that <code>$factorial</code> is passed by reference using <code>&amp;</code> otherwise it won't .</p>
+<p>Notice that <code>$factorial</code> is passed by reference using <code>&amp;</code> otherwise it won't work.</p>
 <hr />
 <p>The difference between an anonymous function and closure is that closure has ability to access a variable outside of its scope by using the <code>use</code> keyword. So that is the subtle difference between an anonymous function and a closure. In fact, both are of them are instances of <code>Closure</code> class internally:</p>
 <pre><code>// anonymous function
@@ -175,7 +175,8 @@ Array
 
 $app-&gt;get('/', function () use ($app) {
     $app-&gt;render('home', array('content' =&gt; 'Hello, World!!!'));
-});</code></pre>]]></description>
+});</code></pre>
+<p>Here <code>$app</code> is imported from outside scope into the scope of closure so that it can be used to render the view <code>$app-&gt;render(...)</code></p>]]></description>
 <link>https://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php</link>
 <pubDate>Sat, 18 Apr 2015 23:57:00 +0200</pubDate>
 </item>
