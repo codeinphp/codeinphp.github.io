@@ -71,88 +71,194 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/learning-javascript">Learning Javascript</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php">Exploring Lambda Functions and Closures in PHP</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> April 18, 2015 08:35 PM
+                    <span class="glyphicon glyphicon-time"></span> April 18, 2015 11:57 PM
                 
                         <hr>
-                        <p class="post-content"><p>JavaScript is <a href="http://en.wikipedia.org/wiki/JavaScript">cross-platform</a>, cross-browser language; javascript is everywhere; web, <a href="http://en.wikipedia.org/wiki/Rich_Internet_application">RIA</a> (rich internet applications), <a href="http://sixrevisions.com/javascript/mobile%C2%A0web-development-frameworks/">mobile, tablets</a>, <a href="https://github.com/mrdoob/three.js/">animations</a> and even on server with the advent of <a href="http://nodejs.org/">node.js</a>. Javascript is the language of the future.</p>
-<p>I started off with jQuery without knowing anything much about javascript because by the time I didn’t find any reason to learn it due to fact that  javascript libraries did everything we needed putting complexities out of the way. Today I realize that I chose the wrong path, a good understanding of javascript language is crucial if you look at the reasons I have mentioned in the very beginning but it is never too late to start again, that’s exactly what I have decided, learning javascript seriously. I am not the only one who has started realizing the power and future of javascript, there are <a href="http://shiflett.org/blog/2012/feb/learning-javascript">giants</a> who have started learning it too. If you are also javascript-library-only developer, or even <strong>copy-paster</strong> programmer, <a href="http://phpadvent.org/2009/you-really-need-to-learn-javascript-by-ed-finkler">you should really</a> <a href="http://net.tutsplus.com/tutorials/javascript-ajax/from-jquery-to-javascript-a-reference/?utm_source=feedburner&amp;utm_medium=feed&amp;utm_campaign=Feed:%20nettuts%20%28Nettuts%2b%29">learn javascript</a> seriously !</p>
-<p>Despite design flaws and bad reputation of the language <a href="http://javascript.crockford.com/javascript.html">as they say</a> and probably rightly so, javascript is popular and language of the choice for those who have gone into deeper <a href="http://ejohn.org/">understating</a> <a href="http://sstephenson.us/">of</a> <a href="http://infrequently.org/about-me/">it</a>. Javascript language <a href="http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/">does</a> <a href="http://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/">have</a> <a href="http://www.svennerberg.com/2009/02/global-variables-in-javascript/">bad</a> <a href="http://lucumr.pocoo.org/2011/2/6/automatic-semicolon-insertion/">parts</a> but its <a href="http://www.amazon.com/dp/0596517742/?tag=stackoverfl08-20">good parts</a> over-weigh its bad parts and there is always room to avoid bad parts if you know the language right and use it effectively.</p>
-<p>Javascript turns out to be extremely <a href="http://bonsaiden.github.com/JavaScript-Garden/">tricky</a> language, consider:</p>
-<pre><code>// Comparison
-'' == '0';    //false
-0 == '';    // true
-0 =='0';    // true
+                        <p class="post-content"><h1>What is a Lambda Function</h1>
+<p>A lambda function (also known as <strong>anonymous function</strong>) is a function that has:</p>
+<ol>
+<li>No Name</li>
+<li>Can be assigned to a variable</li>
+<li>Can be passed as argument to other functions or methods of a class</li>
+</ol>
+<p>In the past, this was possible with <a href="http://php.net/manual/en/function.create-function.php"><code>create_function</code></a> like:</p>
+<pre><code>$multiply = create_function('$a, $b','return $a * $b;');
+echo $multiply(5, 5); // 25</code></pre>
+<p>But it was a nuisance if you needed to write longer anonymous functions using <code>create_function</code> because it was difficult to write function body that way inside quotes and then escaping quotes and stuff...</p>
+<p>PHP 5.3 introduced true support of lambda/anonymous functions similar to how you see in Javascript, so you could write above code like:</p>
+<pre><code>$multiply = function ($a, $b) {
+    return $a * $b;
+};
 
-// Type checking
-typeof null;    // object
-
-// Scope
-function myFunc() {
-  return
-  {
-    name: 'sarfraz'
-  };
+echo $multiply(5, 5); // 25</code></pre>
+<p>As can be seen, above anonymous function has no name and has been assigned to variable  <code>$multiply</code>. You can also pass it other functions:</p>
+<pre><code>function countEmails($number) {
+    echo 'you have ' . $number . ' emails!';
 }
 
-var f = myFunc();
-console.log(f);    // undefined</code></pre>
-<p>I did <strong>a lot of research</strong> to find best javascript learning resources. On the journey of my exploration, I came across some of the great resources with a lot of reviews and user feedback. By now, if you made your mind to take javascript seriously, here are the best resources out there you should check out.</p>
-<h2>Books</h2>
+$multiply = function ($a, $b) {
+    return $a * $b;
+};
+
+echo countEmails($multiply(2, 5)); // you have 10 emails!</code></pre>
+<p>You could have also written above like this if you wanted:</p>
+<pre><code>function countEmails($multiply, $a, $b) {
+    echo 'you have ' . $multiply($a, $b) . ' emails!';
+}
+
+$multiply = function ($a, $b) {
+    return $a * $b;
+};
+
+echo countEmails($multiply, 2, 5); // you have 10 emails!</code></pre>
+<p>And even like this:</p>
+<pre><code>function countEmails($multiply, $a, $b) {
+    echo 'you have ' . $multiply($a, $b) . ' emails!';
+}
+
+echo countEmails(function ($a, $b) {
+    return $a * $b;
+}, 2, 5); // you have 10 emails!</code></pre>
+<p>You can also assign it to array:</p>
+<pre><code>$array['multiply'] = function ($a, $b) {
+     return $a * $b;
+};
+
+echo $array['multiply'](2, 10); // 20</code></pre>
+<p>And even an object:</p>
+<pre><code>$obj = new StdClass();
+
+$obj-&gt;multiply = function ($a, $b) {
+     return $a * $b;
+};</code></pre>
+<p>But caveat here is that instead of calling it like <code>echo $obj-&gt;multiply(2, 10)</code>, you would instead need to do:</p>
+<pre><code>$multiply = $obj-&gt;multiply;
+echo $multiply(2, 10); // 20</code></pre>
+<p>Now let's create little program which says <code>Hello, World</code> using anonymous function:</p>
+<pre><code>$message = 'Hello, World!';
+
+$sayHello = function () {
+    echo $message;
+};
+
+$sayHello();</code></pre>
+<p>Oops, it results in error:</p>
+<p><code>Notice: Undefined variable: message</code></p>
+<p>It means anonymous function does not have access to <code>$message</code> inside it. This is exactly when we need a closure to have access to that <code>$message</code> variable.</p>
+<h1>What is a Closure</h1>
+<p>A closure is a lambda/anonymous function that is aware of its surrounding context through the use of <code>use</code> keyword. It can access a variable outside of the scope where it is defined. Consider last <code>$sayHello</code> anonymous function and we convert it into closure through the use of <code>use</code> keyword and gain access to the <code>$message</code> variable:</p>
+<pre><code>$message = 'Hello, World!';
+
+$sayHello = function () use ($message) {
+    echo $message;
+};
+
+$sayHello(); // Hello, World!</code></pre>
+<p>If you need to change the value of passed outside variable, you need to use reference of course:</p>
+<pre><code>$message = 'Hello, World!';
+
+$sayHello = function () use (&amp;$message) {
+    echo $message;
+    $message = 'Hello World Again!';
+};
+
+$sayHello(); // Hello, World!
+$sayHello(); // Hello World Again!</code></pre>
+<p>You can also pass regular arguments to closure:</p>
+<pre><code>$message = 'World!';
+
+$sayHello = function ($arg) use ($message) {
+    echo $arg . ' ' . $message;
+};
+
+$sayHello('Hello'); // Hello, World!</code></pre>
+<p>You can also create a recursive function using closure easily, here is example of how you can create a factorial function:</p>
+<pre><code>$factorial = function( $n ) use ( &amp;$factorial ) {
+    if( $n == 1 ) return 1;
+    return $factorial( $n - 1 ) * $n;
+};
+
+echo $factorial( 5 );</code></pre>
+<p>Notice that <code>$factorial</code> is passed by reference using <code>&amp;</code> otherwise it won't .</p>
+<hr />
+<p>The difference between an anonymous function and closure is that closure has ability to access a variable outside of its scope by using the <code>use</code> keyword. So that is the subtle difference between an anonymous function and a closure. In fact, both are of them are instances of <code>Closure</code> class internally:</p>
+<pre><code>// anonymous function
+$multiply = function ($a, $b) {
+    return $a * $b;
+};
+
+$message = 'Hello, World';
+
+// closure
+$sayHello = function () use ($message) {
+    echo $message;
+};
+
+var_dump ($multiply instanceof Closure); // true
+var_dump ($sayHello instanceof Closure); // true</code></pre>
+<h1>Type Hinting</h1>
+<p>We know that you can already type hint few things:</p>
 <ul>
-<li><a href="http://shop.oreilly.com/product/9780596517748.do">JavaScript: The Good Parts</a> by <a href="http://crockford.com/">Douglas Crockford</a></li>
-<li><a href="http://jsninja.com/">Secrets of the JavaScript Ninja</a> by <a href="http://ejohn.org/">John Resig</a></li>
-<li><a href="http://jspro.org/">Pro JavaScript Techniques</a> by <a href="http://ejohn.org/">John Resig</a></li>
-<li><a href="http://www.amazon.com/Performance-JavaScript-Faster-Application-Interfaces/dp/059680279X">High Performance JavaScript</a> by <a href="http://www.nczonline.net/blog/about/">Nicholas C. Zaka</a></li>
-<li><a href="http://www.amazon.com/gp/product/B004XQX4K0/ref=pd_lpo_k2_dp_sr_3?pf_rd_p=486539851&amp;pf_rd_s=lpo-top-stripe-1&amp;pf_rd_t=201&amp;pf_rd_i=0596805527&amp;pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_r=1GJCJ4PSFS8516NGDG28">JavaScript: The Definitive Guide</a> by <a href="http://www.davidflanagan.com/">David Flanagan</a></li>
+<li>Object</li>
+<li>Array</li>
+<li>Interface</li>
+<li>callable</li>
 </ul>
-<h2>Online</h2>
-<ul>
-<li><a href="http://eloquentjavascript.net/">Eloquent JavaScript</a> by Marijn Haverbeke</li>
-<li><a href="http://javascript.info/">The JavaScript Tutorial</a></li>
-<li><a href="https://developer.mozilla.org/en/JavaScript/Guide">JavaScript Guide MDN</a></li>
-<li><a href="http://bonsaiden.github.com/JavaScript-Garden/">JavaScript Garden</a> (For intermediate &amp; advanced programmers – must read !)</li>
-</ul>
-<h2>Videos</h2>
-<ul>
-<li><a href="http://learn.appendto.com/">appendto.com</a></li>
-<li><a href="http://yuiblog.com/crockford/">Douglas Crockford’s JavaScript Video Series</a></li>
-<li><a href="http://www.youtube.com/watch?v=hQVTIJBZook">JavaScript: The Good Parts</a></li>
-</ul>
-<h2>Blogs to Subscribe</h2>
-<ul>
-<li><a href="http://perfectionkills.com/">PerfectionKills</a></li>
-<li><a href="http://dmitrysoshnikov.com/">Dmitry A. Soshnikov</a></li>
-<li><a href="http://javascriptweblog.wordpress.com/">JavaScript, JavaScript</a></li>
-<li><a href="http://www.adequatelygood.com/">Adequately Good</a></li>
-<li><a href="http://ejohn.org/">John Resig</a></li>
-<li><a href="http://www.2ality.com/">2ality</a></li>
-<li><a href="http://nemisj.com/">Notes of Maks Nemisj</a></li>
-<li><a href="http://addyosmani.com/blog/">Addy Osmani</a></li>
-<li>Bonus: <a href="http://net.tutsplus.com/articles/web-roundups/30-developers-you-must-subscribe-to-as-a-javascript-junkie/">33 Developers you MUST Subscribe to as a JavaScript Junkie</a></li>
-</ul>
-<h2>Tools</h2>
-<ul>
-<li><a href="http://gruntjs.com/">Grunt</a> (The JavaScript Task Runner)</li>
-<li><a href="http://www.jshint.com/">JSHint</a> (JS Code Quality Tool)</li>
-<li><a href="http://jsperf.com/">JSPerf</a> (JS Performance Testing)</li>
-<li><a href="http://www.jsunit.net/">JSUnit</a> (JS Unit Testing)</li>
-<li><a href="http://siliconforks.com/jscoverage/">JSCoverage</a> (JS Code Coverage)</li>
-<li><a href="http://code.google.com/p/jsdoc-toolkit/">JDDoc-Toolkit</a> (JS Documentation Tool)</li>
-<li>Bonus: <a href="http://coding.smashingmagazine.com/2009/02/08/50-extremely-useful-javascript-tools/">50 Useful JavaScript Tools</a></li>
-</ul></p>
+<p>But you can also type hint <code>Closure</code> as shown below:</p>
+<pre><code>function multiply($number, Closure $closure)
+{
+    return $closure($number);
+}
+
+$closure = function($x){ return $x * 2; };
+echo multiply(10, $closure);</code></pre>
+<p>Here we have made <code>multiply</code> function to require type of <code>Closure</code> as second parameter.</p>
+<h1>Use Cases</h1>
+<p>Anonymous functions and closures can be used in variety of situations.</p>
+<p><strong>As Callbacks</strong></p>
+<p>You can use them in your custom functions as callback or some of the PHP's built-in functions such as <code>array_map()</code>, <code>array_reduce()</code>, <code>array_filter()</code>, <code>array_walk()</code>, etc. Let's take example of <code>array_walk()</code>. If you <a href="http://php.net/manual/en/function.array-walk.php">look at it's definition</a>, here is how it looks:</p>
+<pre><code>bool array_walk ( array &amp;$array , callable $callback [, mixed $userdata = NULL ] )</code></pre>
+<p>Notice the second parameter <code>callable $callback</code>. It means it expects something to be callable function. Anytime you see such parameter in some function definition, it means you can apply anonymous functions to it. Here is example:</p>
+<pre><code>$myArray = array(1, 2, 3, 4, 5);
+
+// multiply each array value with 2    
+array_walk($myArray, function(&amp;$value, $index){
+    $value *= 2;
+});
+
+print_r($myArray);
+
+Array
+(
+    [0] =&gt; 2
+    [1] =&gt; 4
+    [2] =&gt; 6
+    [3] =&gt; 8
+    [4] =&gt; 10
+)</code></pre>
+<p><strong>In Routing</strong></p>
+<p>You might have seen closures being used in routing in framework like Laravel, Slim, Silex, etc:</p>
+<pre><code>$app = new \Slim\Slim($options);
+
+$app-&gt;get('/', function () use ($app) {
+    $app-&gt;render('home', array('content' =&gt; 'Hello, World!!!'));
+});</code></pre></p>
                         <br/>
                 
                         <div class="post-info">
                                 <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
-                                <a href="https://codeinphp.github.io/category/javascript">Javascript</a>
+                                <a href="https://codeinphp.github.io/category/php">PHP</a>
                                 &nbsp;&nbsp;
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
-                                <a href="https://codeinphp.github.io/tag/javascript">javascript</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/closure">closure</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/function">function</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/lambda">lambda</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/php5.3">php5.3</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -205,11 +311,11 @@ console.log(f);    // undefined</code></pre>
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php">Exploring Lambda Functions and Closures in PHP</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/learning-javascript">Learning Javascript</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/abstract-class-vs-interface">Abstract Class vs Interface</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/phpexecute-php-code-runner">PHPExecute – PHP Code Runner</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/outputting-php-to-browser-console">Outputting PHP To Browser Console</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/my-local-development-workflow-with-wamp-xampp-git-and-google-drive">My Local Development Workflow with WAMP/XAMPP, GIT and Google Drive</a></li>
                 </ul>
             </div>
         
@@ -249,17 +355,20 @@ console.log(f);    // undefined</code></pre>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/blog" title="'blog' returned a count of 0">blog</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/bloggercms" title="'bloggercms' returned a count of 0">bloggercms</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/browser" title="'browser' returned a count of 0">browser</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/closure" title="'closure' returned a count of 0">closure</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/cms" title="'cms' returned a count of 0">cms</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/console" title="'console' returned a count of 0">console</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/development" title="'development' returned a count of 0">development</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/devtools" title="'devtools' returned a count of 0">devtools</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/drive" title="'drive' returned a count of 0">drive</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/function" title="'function' returned a count of 0">function</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/git" title="'git' returned a count of 0">git</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/googledrive" title="'googledrive' returned a count of 0">googledrive</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/interface" title="'interface' returned a count of 0">interface</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/javascript" title="'javascript' returned a count of 0">javascript</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/lambda" title="'lambda' returned a count of 0">lambda</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="'oop' returned a count of 0">oop</a>
-<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="'php' returned a count of 4">php</a>
+<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="'php' returned a count of 5">php</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/phpexecute" title="'phpexecute' returned a count of 0">phpexecute</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/runner" title="'runner' returned a count of 0">runner</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sqlite" title="'sqlite' returned a count of 0">sqlite</a>

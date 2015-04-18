@@ -6,6 +6,180 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Exploring Lambda Functions and Closures in PHP</title>
+<description><![CDATA[<h1>What is a Lambda Function</h1>
+<p>A lambda function (also known as <strong>anonymous function</strong>) is a function that has:</p>
+<ol>
+<li>No Name</li>
+<li>Can be assigned to a variable</li>
+<li>Can be passed as argument to other functions or methods of a class</li>
+</ol>
+<p>In the past, this was possible with <a href="http://php.net/manual/en/function.create-function.php"><code>create_function</code></a> like:</p>
+<pre><code>$multiply = create_function('$a, $b','return $a * $b;');
+echo $multiply(5, 5); // 25</code></pre>
+<p>But it was a nuisance if you needed to write longer anonymous functions using <code>create_function</code> because it was difficult to write function body that way inside quotes and then escaping quotes and stuff...</p>
+<p>PHP 5.3 introduced true support of lambda/anonymous functions similar to how you see in Javascript, so you could write above code like:</p>
+<pre><code>$multiply = function ($a, $b) {
+    return $a * $b;
+};
+
+echo $multiply(5, 5); // 25</code></pre>
+<p>As can be seen, above anonymous function has no name and has been assigned to variable  <code>$multiply</code>. You can also pass it other functions:</p>
+<pre><code>function countEmails($number) {
+    echo 'you have ' . $number . ' emails!';
+}
+
+$multiply = function ($a, $b) {
+    return $a * $b;
+};
+
+echo countEmails($multiply(2, 5)); // you have 10 emails!</code></pre>
+<p>You could have also written above like this if you wanted:</p>
+<pre><code>function countEmails($multiply, $a, $b) {
+    echo 'you have ' . $multiply($a, $b) . ' emails!';
+}
+
+$multiply = function ($a, $b) {
+    return $a * $b;
+};
+
+echo countEmails($multiply, 2, 5); // you have 10 emails!</code></pre>
+<p>And even like this:</p>
+<pre><code>function countEmails($multiply, $a, $b) {
+    echo 'you have ' . $multiply($a, $b) . ' emails!';
+}
+
+echo countEmails(function ($a, $b) {
+    return $a * $b;
+}, 2, 5); // you have 10 emails!</code></pre>
+<p>You can also assign it to array:</p>
+<pre><code>$array['multiply'] = function ($a, $b) {
+     return $a * $b;
+};
+
+echo $array['multiply'](2, 10); // 20</code></pre>
+<p>And even an object:</p>
+<pre><code>$obj = new StdClass();
+
+$obj-&gt;multiply = function ($a, $b) {
+     return $a * $b;
+};</code></pre>
+<p>But caveat here is that instead of calling it like <code>echo $obj-&gt;multiply(2, 10)</code>, you would instead need to do:</p>
+<pre><code>$multiply = $obj-&gt;multiply;
+echo $multiply(2, 10); // 20</code></pre>
+<p>Now let's create little program which says <code>Hello, World</code> using anonymous function:</p>
+<pre><code>$message = 'Hello, World!';
+
+$sayHello = function () {
+    echo $message;
+};
+
+$sayHello();</code></pre>
+<p>Oops, it results in error:</p>
+<p><code>Notice: Undefined variable: message</code></p>
+<p>It means anonymous function does not have access to <code>$message</code> inside it. This is exactly when we need a closure to have access to that <code>$message</code> variable.</p>
+<h1>What is a Closure</h1>
+<p>A closure is a lambda/anonymous function that is aware of its surrounding context through the use of <code>use</code> keyword. It can access a variable outside of the scope where it is defined. Consider last <code>$sayHello</code> anonymous function and we convert it into closure through the use of <code>use</code> keyword and gain access to the <code>$message</code> variable:</p>
+<pre><code>$message = 'Hello, World!';
+
+$sayHello = function () use ($message) {
+    echo $message;
+};
+
+$sayHello(); // Hello, World!</code></pre>
+<p>If you need to change the value of passed outside variable, you need to use reference of course:</p>
+<pre><code>$message = 'Hello, World!';
+
+$sayHello = function () use (&amp;$message) {
+    echo $message;
+    $message = 'Hello World Again!';
+};
+
+$sayHello(); // Hello, World!
+$sayHello(); // Hello World Again!</code></pre>
+<p>You can also pass regular arguments to closure:</p>
+<pre><code>$message = 'World!';
+
+$sayHello = function ($arg) use ($message) {
+    echo $arg . ' ' . $message;
+};
+
+$sayHello('Hello'); // Hello, World!</code></pre>
+<p>You can also create a recursive function using closure easily, here is example of how you can create a factorial function:</p>
+<pre><code>$factorial = function( $n ) use ( &amp;$factorial ) {
+    if( $n == 1 ) return 1;
+    return $factorial( $n - 1 ) * $n;
+};
+
+echo $factorial( 5 );</code></pre>
+<p>Notice that <code>$factorial</code> is passed by reference using <code>&amp;</code> otherwise it won't .</p>
+<hr />
+<p>The difference between an anonymous function and closure is that closure has ability to access a variable outside of its scope by using the <code>use</code> keyword. So that is the subtle difference between an anonymous function and a closure. In fact, both are of them are instances of <code>Closure</code> class internally:</p>
+<pre><code>// anonymous function
+$multiply = function ($a, $b) {
+    return $a * $b;
+};
+
+$message = 'Hello, World';
+
+// closure
+$sayHello = function () use ($message) {
+    echo $message;
+};
+
+var_dump ($multiply instanceof Closure); // true
+var_dump ($sayHello instanceof Closure); // true</code></pre>
+<h1>Type Hinting</h1>
+<p>We know that you can already type hint few things:</p>
+<ul>
+<li>Object</li>
+<li>Array</li>
+<li>Interface</li>
+<li>callable</li>
+</ul>
+<p>But you can also type hint <code>Closure</code> as shown below:</p>
+<pre><code>function multiply($number, Closure $closure)
+{
+    return $closure($number);
+}
+
+$closure = function($x){ return $x * 2; };
+echo multiply(10, $closure);</code></pre>
+<p>Here we have made <code>multiply</code> function to require type of <code>Closure</code> as second parameter.</p>
+<h1>Use Cases</h1>
+<p>Anonymous functions and closures can be used in variety of situations.</p>
+<p><strong>As Callbacks</strong></p>
+<p>You can use them in your custom functions as callback or some of the PHP's built-in functions such as <code>array_map()</code>, <code>array_reduce()</code>, <code>array_filter()</code>, <code>array_walk()</code>, etc. Let's take example of <code>array_walk()</code>. If you <a href="http://php.net/manual/en/function.array-walk.php">look at it's definition</a>, here is how it looks:</p>
+<pre><code>bool array_walk ( array &amp;$array , callable $callback [, mixed $userdata = NULL ] )</code></pre>
+<p>Notice the second parameter <code>callable $callback</code>. It means it expects something to be callable function. Anytime you see such parameter in some function definition, it means you can apply anonymous functions to it. Here is example:</p>
+<pre><code>$myArray = array(1, 2, 3, 4, 5);
+
+// multiply each array value with 2    
+array_walk($myArray, function(&amp;$value, $index){
+    $value *= 2;
+});
+
+print_r($myArray);
+
+Array
+(
+    [0] =&gt; 2
+    [1] =&gt; 4
+    [2] =&gt; 6
+    [3] =&gt; 8
+    [4] =&gt; 10
+)</code></pre>
+<p><strong>In Routing</strong></p>
+<p>You might have seen closures being used in routing in framework like Laravel, Slim, Silex, etc:</p>
+<pre><code>$app = new \Slim\Slim($options);
+
+$app-&gt;get('/', function () use ($app) {
+    $app-&gt;render('home', array('content' =&gt; 'Hello, World!!!'));
+});</code></pre>]]></description>
+<link>https://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php</link>
+<pubDate>Sat, 18 Apr 2015 23:57:00 +0200</pubDate>
+</item>
+<item>
 <title>Learning Javascript</title>
 <description><![CDATA[<p>JavaScript is <a href="http://en.wikipedia.org/wiki/JavaScript">cross-platform</a>, cross-browser language; javascript is everywhere; web, <a href="http://en.wikipedia.org/wiki/Rich_Internet_application">RIA</a> (rich internet applications), <a href="http://sixrevisions.com/javascript/mobile%C2%A0web-development-frameworks/">mobile, tablets</a>, <a href="https://github.com/mrdoob/three.js/">animations</a> and even on server with the advent of <a href="http://nodejs.org/">node.js</a>. Javascript is the language of the future.</p>
 <p>I started off with jQuery without knowing anything much about javascript because by the time I didn’t find any reason to learn it due to fact that  javascript libraries did everything we needed putting complexities out of the way. Today I realize that I chose the wrong path, a good understanding of javascript language is crucial if you look at the reasons I have mentioned in the very beginning but it is never too late to start again, that’s exactly what I have decided, learning javascript seriously. I am not the only one who has started realizing the power and future of javascript, there are <a href="http://shiflett.org/blog/2012/feb/learning-javascript">giants</a> who have started learning it too. If you are also javascript-library-only developer, or even <strong>copy-paster</strong> programmer, <a href="http://phpadvent.org/2009/you-really-need-to-learn-javascript-by-ed-finkler">you should really</a> <a href="http://net.tutsplus.com/tutorials/javascript-ajax/from-jquery-to-javascript-a-reference/?utm_source=feedburner&amp;utm_medium=feed&amp;utm_campaign=Feed:%20nettuts%20%28Nettuts%2b%29">learn javascript</a> seriously !</p>

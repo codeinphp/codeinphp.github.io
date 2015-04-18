@@ -8,7 +8,7 @@
     <meta name="description" content="PHP and more...">
     <meta name="author" content="Sarfraz Ahmed">
 
-    <title>Abstract Class vs Interface :: Code In PHP</title>
+    <title>Exploring Lambda Functions and Closures in PHP :: Code In PHP</title>
 
     <!-- rss feed url -->
     <link rel="alternate" type="application/rss+xml" title="Code In PHP" href="https://codeinphp.github.io/rss.xml"/>
@@ -71,136 +71,181 @@
     <div class="row">
         <div class="col-md-8 main-content">
             <article>
-                <h3>Abstract Class vs Interface</h3>
+                <h3>Exploring Lambda Functions and Closures in PHP</h3>
                 <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                 &nbsp;&nbsp;
-                <span class="glyphicon glyphicon-time"></span> April 18, 2015 08:26 PM
+                <span class="glyphicon glyphicon-time"></span> April 18, 2015 11:57 PM
                 <hr>
 
-                <p class="post-content"><p>I found this picture that tells the difference between <code>abstract class</code> and <code>interface</code>:</p>
-<p><img src="https://codeinphp.github.io/images/142937584655328b66dcedc.png" alt="enter image description here" /></p>
-<hr />
-<p>Let's see each comparison practically so we know what it means.</p>
-<pre>
-Interface support multiple inheritance | Abstract class does not support multiple inheritance
-</pre>
-<p>It means you can extend an <code>interface</code> with one or more (hence <em>multiple inheritance</em>) interfaces like:</p>
-<pre><code>interface Interface_A { }
-interface Interface_B { }
-interface Interface_C { }
+                <p class="post-content"><h1>What is a Lambda Function</h1>
+<p>A lambda function (also known as <strong>anonymous function</strong>) is a function that has:</p>
+<ol>
+<li>No Name</li>
+<li>Can be assigned to a variable</li>
+<li>Can be passed as argument to other functions or methods of a class</li>
+</ol>
+<p>In the past, this was possible with <a href="http://php.net/manual/en/function.create-function.php"><code>create_function</code></a> like:</p>
+<pre><code>$multiply = create_function('$a, $b','return $a * $b;');
+echo $multiply(5, 5); // 25</code></pre>
+<p>But it was a nuisance if you needed to write longer anonymous functions using <code>create_function</code> because it was difficult to write function body that way inside quotes and then escaping quotes and stuff...</p>
+<p>PHP 5.3 introduced true support of lambda/anonymous functions similar to how you see in Javascript, so you could write above code like:</p>
+<pre><code>$multiply = function ($a, $b) {
+    return $a * $b;
+};
 
-interface MyInterface extends Interface_A, Interface_B, Interface_C { }</code></pre>
-<p>As can be seen, we are extending <code>MyInterface</code> with three other interfaces <code>Interface_A</code>, <code>Interface_A</code> and <code>Interface_C</code>.</p>
-<p>Let's now try to extend an <code>abstract class</code>:</p>
-<pre><code>class Class_A { }
-
-abstract class MyAbstractClass extends Class_A { }</code></pre>
-<p>No problem there, you CAN extend an abstract class with exactly one class but if you try to add one more:</p>
-<pre><code>class Class_A { }
-class Class_B { }
-
-abstract class MyAbstractClass extends Class_A, Class_B { }</code></pre>
-<p>This time PHP would give you strange error without telling you what you are doing wrong:</p>
-<p><code>Parse error: syntax error, unexpected ',', expecting '{'</code></p>
-<p>I wish PHP would have given message somewhat like (hope PHP gives smarter error messages in future versions):</p>
-<p><code>Fatal Error: You cannot extend an abstract class with more than one classes</code></p>
-<hr />
-<pre>
-Interface does'n Contains Data Member | Abstract class contains Data Member
-</pre>
-<p>By data members, it means class properties or variables. So you cannot add data members to an interface:</p>
-<pre><code>interface MyInterface {
-    public $foo = null;
-}</code></pre>
-<p>So in an interface, only method stubs can be provided.</p>
-<p>You can add data members to an abstract class though, this is valid code of course:</p>
-<pre><code>abstract class MyAbstractClass {
-    public $foo = null;
-}</code></pre>
-<hr />
-<pre>
-Interface does'n contains Constructors | Abstract class contains Constructors
-</pre>
-<p>It sounds like this point applies to may be other languages but in PHP an interface CAN have an empty constructor shell:</p>
-<pre><code>interface MyInterface {
-    public function __construct();
-}</code></pre>
-<p>Like other languages, PHP shouldn't have allowed having a constructor inside an interface. But anyways, it doesn't make much sense here and should be avoided anyway.</p>
-<p>On the other hand, an abstract class can contain constructor method:</p>
-<pre><code>abstract class MyAbstractClass {
-    abstract public function __construct();
-}</code></pre>
-<p>Here constructor is said to be <code>abstract</code> and therefore expends child classes to complement for it. However, you can also have common initialization code in constructor of an abstract class too in which case, you would need to remove the <code>abstract</code> keyword and provide the body for it:</p>
-<pre><code>abstract class MyAbstractClass {
-    public function __construct() {
-         // initialization code
-    };
-}</code></pre>
-<hr />
-<pre>
-An interface Contains only incomplete member (signature of member) | An abstract class Contains both incomplete (abstract) and complete member
-</pre>
-<p>This simply means an interface can only contain method stubs not their implementation. This is pretty same as second point in the image above. This is why in methods of an interface, they don't have bodies marked with <code>{ }</code> braces. So an interface is completely empty shell that enforces some rules that child classes must implement and that's it.</p>
-<p>Abstract classes can have both; empty method definitions as well as full method implementation. Generally empty method stubs are prefixed with <code>abstract</code> keyword so that child classes must provide their implementation details. But an abstract class can also contain full method implementation inside it which are generally used for common piece of functionality that each child class may need. For example:</p>
-<pre><code>abstract class Animal {
-    // child classes must implement this
-    abstract function prey();
-
-    public function run() {
-        echo 'I am running!';
-    }
+echo $multiply(5, 5); // 25</code></pre>
+<p>As can be seen, above anonymous function has no name and has been assigned to variable  <code>$multiply</code>. You can also pass it other functions:</p>
+<pre><code>function countEmails($number) {
+    echo 'you have ' . $number . ' emails!';
 }
 
-class Dog extends Animal {
-    public function prey() {
-        echo 'I killed the cat !';
-    }
+$multiply = function ($a, $b) {
+    return $a * $b;
+};
+
+echo countEmails($multiply(2, 5)); // you have 10 emails!</code></pre>
+<p>You could have also written above like this if you wanted:</p>
+<pre><code>function countEmails($multiply, $a, $b) {
+    echo 'you have ' . $multiply($a, $b) . ' emails!';
 }
 
-class Cat extends Animal {
-    public function prey() {
-        echo 'I killed the rat !';
-    }
+$multiply = function ($a, $b) {
+    return $a * $b;
+};
+
+echo countEmails($multiply, 2, 5); // you have 10 emails!</code></pre>
+<p>And even like this:</p>
+<pre><code>function countEmails($multiply, $a, $b) {
+    echo 'you have ' . $multiply($a, $b) . ' emails!';
 }
 
-$dog = new Dog();
-$cat = new Cat();
+echo countEmails(function ($a, $b) {
+    return $a * $b;
+}, 2, 5); // you have 10 emails!</code></pre>
+<p>You can also assign it to array:</p>
+<pre><code>$array['multiply'] = function ($a, $b) {
+     return $a * $b;
+};
 
-$dog-&gt;prey(); // I killed the cat !
-$cat-&gt;prey(); // I killed the rat !
+echo $array['multiply'](2, 10); // 20</code></pre>
+<p>And even an object:</p>
+<pre><code>$obj = new StdClass();
 
-$dog-&gt;run(); // I am running!
-$cat-&gt;run(); // I am running!</code></pre>
-<p>In above code, we can see that <code>Animal</code> class has one <code>abstract</code> method called <code>prey</code> because each child class (animal) have their own ways of finding prey and a full implemented method called <code>run</code> because all animals can run, this doesn't need to be defined in each of child classes. So here <code>run</code> method is fully implemented and represents common data that needs to be shared across child classes.</p>
-<p>Notice that other than common fully implemented methods inside an abstract class, you can also have common data members eg variables that need to be shared across child classes.</p>
+$obj-&gt;multiply = function ($a, $b) {
+     return $a * $b;
+};</code></pre>
+<p>But caveat here is that instead of calling it like <code>echo $obj-&gt;multiply(2, 10)</code>, you would instead need to do:</p>
+<pre><code>$multiply = $obj-&gt;multiply;
+echo $multiply(2, 10); // 20</code></pre>
+<p>Now let's create little program which says <code>Hello, World</code> using anonymous function:</p>
+<pre><code>$message = 'Hello, World!';
+
+$sayHello = function () {
+    echo $message;
+};
+
+$sayHello();</code></pre>
+<p>Oops, it results in error:</p>
+<p><code>Notice: Undefined variable: message</code></p>
+<p>It means anonymous function does not have access to <code>$message</code> inside it. This is exactly when we need a closure to have access to that <code>$message</code> variable.</p>
+<h1>What is a Closure</h1>
+<p>A closure is a lambda/anonymous function that is aware of its surrounding context through the use of <code>use</code> keyword. It can access a variable outside of the scope where it is defined. Consider last <code>$sayHello</code> anonymous function and we convert it into closure through the use of <code>use</code> keyword and gain access to the <code>$message</code> variable:</p>
+<pre><code>$message = 'Hello, World!';
+
+$sayHello = function () use ($message) {
+    echo $message;
+};
+
+$sayHello(); // Hello, World!</code></pre>
+<p>If you need to change the value of passed outside variable, you need to use reference of course:</p>
+<pre><code>$message = 'Hello, World!';
+
+$sayHello = function () use (&amp;$message) {
+    echo $message;
+    $message = 'Hello World Again!';
+};
+
+$sayHello(); // Hello, World!
+$sayHello(); // Hello World Again!</code></pre>
+<p>You can also pass regular arguments to closure:</p>
+<pre><code>$message = 'World!';
+
+$sayHello = function ($arg) use ($message) {
+    echo $arg . ' ' . $message;
+};
+
+$sayHello('Hello'); // Hello, World!</code></pre>
+<p>You can also create a recursive function using closure easily, here is example of how you can create a factorial function:</p>
+<pre><code>$factorial = function( $n ) use ( &amp;$factorial ) {
+    if( $n == 1 ) return 1;
+    return $factorial( $n - 1 ) * $n;
+};
+
+echo $factorial( 5 );</code></pre>
+<p>Notice that <code>$factorial</code> is passed by reference using <code>&amp;</code> otherwise it won't .</p>
 <hr />
-<pre>
-An interface cannot have access modifiers by default everything is assumed as public | An abstract class can contain access modifiers for the subs, functions, properties
-</pre>
-<p>By access modifiers, we mean ability to change scoping by using keywords like <a href="http://stackoverflow.com/questions/4361553/php-public-private-protected"><code>public</code>, <code>private</code> and <code>protected</code></a>. We cannot use these for interfaces but we can use them for everything in abstract classes.</p>
-<hr />
-<pre>
-Members of interface can not be Static | Only Complete Member of abstract class can be Static
-</pre>
-<p>This is again possible in PHP (as of now with PHP 5.4) unlike other languages, so you CAN do:</p>
-<pre><code>interface MyInterface {
-    static function foo();
-}</code></pre>
-<p>Notice the addition of keyword <code>static</code> to mark it as static method.</p>
-<p>For abstract class, you can have static members as well as those methods that are implemented in the abstract class:</p>
-<pre><code>abstract class MyAbstractClass {
-    public static $foo = null;
+<p>The difference between an anonymous function and closure is that closure has ability to access a variable outside of its scope by using the <code>use</code> keyword. So that is the subtle difference between an anonymous function and a closure. In fact, both are of them are instances of <code>Closure</code> class internally:</p>
+<pre><code>// anonymous function
+$multiply = function ($a, $b) {
+    return $a * $b;
+};
 
-    public static function foo() {}
-}</code></pre>
-<p>But you cannot have a method to be both <code>static</code> and <code>abstract</code>, so you cannot do this, which is common across the languages:</p>
-<pre><code>abstract class MyAbstractClass {
-    public static $foo = null;
+$message = 'Hello, World';
 
-    abstract static function foo() {} // error
-}</code></pre>
-<hr />
-<p>In conclusion, interface and abstract classes are completely different from each other, you cannot interchange them or use one as alternative over the other. Interfaces are completely empty shells that expect child classes to implement everything for them. On the other hand, abstract class can not only contain <em>common piece of information</em> by implementing inside them but also expect child classes to fill in the remaining gaps.</p></p>
+// closure
+$sayHello = function () use ($message) {
+    echo $message;
+};
+
+var_dump ($multiply instanceof Closure); // true
+var_dump ($sayHello instanceof Closure); // true</code></pre>
+<h1>Type Hinting</h1>
+<p>We know that you can already type hint few things:</p>
+<ul>
+<li>Object</li>
+<li>Array</li>
+<li>Interface</li>
+<li>callable</li>
+</ul>
+<p>But you can also type hint <code>Closure</code> as shown below:</p>
+<pre><code>function multiply($number, Closure $closure)
+{
+    return $closure($number);
+}
+
+$closure = function($x){ return $x * 2; };
+echo multiply(10, $closure);</code></pre>
+<p>Here we have made <code>multiply</code> function to require type of <code>Closure</code> as second parameter.</p>
+<h1>Use Cases</h1>
+<p>Anonymous functions and closures can be used in variety of situations.</p>
+<p><strong>As Callbacks</strong></p>
+<p>You can use them in your custom functions as callback or some of the PHP's built-in functions such as <code>array_map()</code>, <code>array_reduce()</code>, <code>array_filter()</code>, <code>array_walk()</code>, etc. Let's take example of <code>array_walk()</code>. If you <a href="http://php.net/manual/en/function.array-walk.php">look at it's definition</a>, here is how it looks:</p>
+<pre><code>bool array_walk ( array &amp;$array , callable $callback [, mixed $userdata = NULL ] )</code></pre>
+<p>Notice the second parameter <code>callable $callback</code>. It means it expects something to be callable function. Anytime you see such parameter in some function definition, it means you can apply anonymous functions to it. Here is example:</p>
+<pre><code>$myArray = array(1, 2, 3, 4, 5);
+
+// multiply each array value with 2    
+array_walk($myArray, function(&amp;$value, $index){
+    $value *= 2;
+});
+
+print_r($myArray);
+
+Array
+(
+    [0] =&gt; 2
+    [1] =&gt; 4
+    [2] =&gt; 6
+    [3] =&gt; 8
+    [4] =&gt; 10
+)</code></pre>
+<p><strong>In Routing</strong></p>
+<p>You might have seen closures being used in routing in framework like Laravel, Slim, Silex, etc:</p>
+<pre><code>$app = new \Slim\Slim($options);
+
+$app-&gt;get('/', function () use ($app) {
+    $app-&gt;render('home', array('content' =&gt; 'Hello, World!!!'));
+});</code></pre></p>
                 <br/><br/>
 
                 <div class="post-info">
@@ -210,9 +255,10 @@ Members of interface can not be Static | Only Complete Member of abstract class 
 
                     <span class="glyphicon glyphicon-bookmark"></span>
 
-                        <a href="https://codeinphp.github.io/tag/abstract">abstract</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/interface">interface</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/oop">oop</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/closure">closure</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/function">function</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/lambda">lambda</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/php5.3">php5.3</a>&nbsp;&nbsp;
                 </div>
 
             </article>
