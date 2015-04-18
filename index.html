@@ -71,148 +71,88 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/abstract-class-vs-interface">Abstract Class vs Interface</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/learning-javascript">Learning Javascript</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> April 18, 2015 08:26 PM
+                    <span class="glyphicon glyphicon-time"></span> April 18, 2015 08:35 PM
                 
                         <hr>
-                        <p class="post-content"><p>I found this picture that tells the difference between <code>abstract class</code> and <code>interface</code>:</p>
-<p><img src="https://codeinphp.github.io/images/142937584655328b66dcedc.png" alt="enter image description here" /></p>
-<hr />
-<p>Let's see each comparison practically so we know what it means.</p>
-<pre>
-Interface support multiple inheritance | Abstract class does not support multiple inheritance
-</pre>
-<p>It means you can extend an <code>interface</code> with one or more (hence <em>multiple inheritance</em>) interfaces like:</p>
-<pre><code>interface Interface_A { }
-interface Interface_B { }
-interface Interface_C { }
+                        <p class="post-content"><p>JavaScript is <a href="http://en.wikipedia.org/wiki/JavaScript">cross-platform</a>, cross-browser language; javascript is everywhere; web, <a href="http://en.wikipedia.org/wiki/Rich_Internet_application">RIA</a> (rich internet applications), <a href="http://sixrevisions.com/javascript/mobile%C2%A0web-development-frameworks/">mobile, tablets</a>, <a href="https://github.com/mrdoob/three.js/">animations</a> and even on server with the advent of <a href="http://nodejs.org/">node.js</a>. Javascript is the language of the future.</p>
+<p>I started off with jQuery without knowing anything much about javascript because by the time I didn’t find any reason to learn it due to fact that  javascript libraries did everything we needed putting complexities out of the way. Today I realize that I chose the wrong path, a good understanding of javascript language is crucial if you look at the reasons I have mentioned in the very beginning but it is never too late to start again, that’s exactly what I have decided, learning javascript seriously. I am not the only one who has started realizing the power and future of javascript, there are <a href="http://shiflett.org/blog/2012/feb/learning-javascript">giants</a> who have started learning it too. If you are also javascript-library-only developer, or even <strong>copy-paster</strong> programmer, <a href="http://phpadvent.org/2009/you-really-need-to-learn-javascript-by-ed-finkler">you should really</a> <a href="http://net.tutsplus.com/tutorials/javascript-ajax/from-jquery-to-javascript-a-reference/?utm_source=feedburner&amp;utm_medium=feed&amp;utm_campaign=Feed:%20nettuts%20%28Nettuts%2b%29">learn javascript</a> seriously !</p>
+<p>Despite design flaws and bad reputation of the language <a href="http://javascript.crockford.com/javascript.html">as they say</a> and probably rightly so, javascript is popular and language of the choice for those who have gone into deeper <a href="http://ejohn.org/">understating</a> <a href="http://sstephenson.us/">of</a> <a href="http://infrequently.org/about-me/">it</a>. Javascript language <a href="http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/">does</a> <a href="http://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/">have</a> <a href="http://www.svennerberg.com/2009/02/global-variables-in-javascript/">bad</a> <a href="http://lucumr.pocoo.org/2011/2/6/automatic-semicolon-insertion/">parts</a> but its <a href="http://www.amazon.com/dp/0596517742/?tag=stackoverfl08-20">good parts</a> over-weigh its bad parts and there is always room to avoid bad parts if you know the language right and use it effectively.</p>
+<p>Javascript turns out to be extremely <a href="http://bonsaiden.github.com/JavaScript-Garden/">tricky</a> language, consider:</p>
+<pre><code>// Comparison
+'' == '0';    //false
+0 == '';    // true
+0 =='0';    // true
 
-interface MyInterface extends Interface_A, Interface_B, Interface_C { }</code></pre>
-<p>As can be seen, we are extending <code>MyInterface</code> with three other interfaces <code>Interface_A</code>, <code>Interface_A</code> and <code>Interface_C</code>.</p>
-<p>Let's now try to extend an <code>abstract class</code>:</p>
-<pre><code>class Class_A { }
+// Type checking
+typeof null;    // object
 
-abstract class MyAbstractClass extends Class_A { }</code></pre>
-<p>No problem there, you CAN extend an abstract class with exactly one class but if you try to add one more:</p>
-<pre><code>class Class_A { }
-class Class_B { }
-
-abstract class MyAbstractClass extends Class_A, Class_B { }</code></pre>
-<p>This time PHP would give you strange error without telling you what you are doing wrong:</p>
-<p><code>Parse error: syntax error, unexpected ',', expecting '{'</code></p>
-<p>I wish PHP would have given message somewhat like (hope PHP gives smarter error messages in future versions):</p>
-<p><code>Fatal Error: You cannot extend an abstract class with more than one classes</code></p>
-<hr />
-<pre>
-Interface does'n Contains Data Member | Abstract class contains Data Member
-</pre>
-<p>By data members, it means class properties or variables. So you cannot add data members to an interface:</p>
-<pre><code>interface MyInterface {
-    public $foo = null;
-}</code></pre>
-<p>So in an interface, only method stubs can be provided.</p>
-<p>You can add data members to an abstract class though, this is valid code of course:</p>
-<pre><code>abstract class MyAbstractClass {
-    public $foo = null;
-}</code></pre>
-<hr />
-<pre>
-Interface does'n contains Constructors | Abstract class contains Constructors
-</pre>
-<p>It sounds like this point applies to may be other languages but in PHP an interface CAN have an empty constructor shell:</p>
-<pre><code>interface MyInterface {
-    public function __construct();
-}</code></pre>
-<p>Like other languages, PHP shouldn't have allowed having a constructor inside an interface. But anyways, it doesn't make much sense here and should be avoided anyway.</p>
-<p>On the other hand, an abstract class can contain constructor method:</p>
-<pre><code>abstract class MyAbstractClass {
-    abstract public function __construct();
-}</code></pre>
-<p>Here constructor is said to be <code>abstract</code> and therefore expends child classes to complement for it. However, you can also have common initialization code in constructor of an abstract class too in which case, you would need to remove the <code>abstract</code> keyword and provide the body for it:</p>
-<pre><code>abstract class MyAbstractClass {
-    public function __construct() {
-         // initialization code
-    };
-}</code></pre>
-<hr />
-<pre>
-An interface Contains only incomplete member (signature of member) | An abstract class Contains both incomplete (abstract) and complete member
-</pre>
-<p>This simply means an interface can only contain method stubs not their implementation. This is pretty same as second point in the image above. This is why in methods of an interface, they don't have bodies marked with <code>{ }</code> braces. So an interface is completely empty shell that enforces some rules that child classes must implement and that's it.</p>
-<p>Abstract classes can have both; empty method definitions as well as full method implementation. Generally empty method stubs are prefixed with <code>abstract</code> keyword so that child classes must provide their implementation details. But an abstract class can also contain full method implementation inside it which are generally used for common piece of functionality that each child class may need. For example:</p>
-<pre><code>abstract class Animal {
-    // child classes must implement this
-    abstract function prey();
-
-    public function run() {
-        echo 'I am running!';
-    }
+// Scope
+function myFunc() {
+  return
+  {
+    name: 'sarfraz'
+  };
 }
 
-class Dog extends Animal {
-    public function prey() {
-        echo 'I killed the cat !';
-    }
-}
-
-class Cat extends Animal {
-    public function prey() {
-        echo 'I killed the rat !';
-    }
-}
-
-$dog = new Dog();
-$cat = new Cat();
-
-$dog-&gt;prey(); // I killed the cat !
-$cat-&gt;prey(); // I killed the rat !
-
-$dog-&gt;run(); // I am running!
-$cat-&gt;run(); // I am running!</code></pre>
-<p>In above code, we can see that <code>Animal</code> class has one <code>abstract</code> method called <code>prey</code> because each child class (animal) have their own ways of finding prey and a full implemented method called <code>run</code> because all animals can run, this doesn't need to be defined in each of child classes. So here <code>run</code> method is fully implemented and represents common data that needs to be shared across child classes.</p>
-<p>Notice that other than common fully implemented methods inside an abstract class, you can also have common data members eg variables that need to be shared across child classes.</p>
-<hr />
-<pre>
-An interface cannot have access modifiers by default everything is assumed as public | An abstract class can contain access modifiers for the subs, functions, properties
-</pre>
-<p>By access modifiers, we mean ability to change scoping by using keywords like <a href="http://stackoverflow.com/questions/4361553/php-public-private-protected"><code>public</code>, <code>private</code> and <code>protected</code></a>. We cannot use these for interfaces but we can use them for everything in abstract classes.</p>
-<hr />
-<pre>
-Members of interface can not be Static | Only Complete Member of abstract class can be Static
-</pre>
-<p>This is again possible in PHP (as of now with PHP 5.4) unlike other languages, so you CAN do:</p>
-<pre><code>interface MyInterface {
-    static function foo();
-}</code></pre>
-<p>Notice the addition of keyword <code>static</code> to mark it as static method.</p>
-<p>For abstract class, you can have static members as well as those methods that are implemented in the abstract class:</p>
-<pre><code>abstract class MyAbstractClass {
-    public static $foo = null;
-
-    public static function foo() {}
-}</code></pre>
-<p>But you cannot have a method to be both <code>static</code> and <code>abstract</code>, so you cannot do this, which is common across the languages:</p>
-<pre><code>abstract class MyAbstractClass {
-    public static $foo = null;
-
-    abstract static function foo() {} // error
-}</code></pre>
-<hr />
-<p>In conclusion, interface and abstract classes are completely different from each other, you cannot interchange them or use one as alternative over the other. Interfaces are completely empty shells that expect child classes to implement everything for them. On the other hand, abstract class can not only contain <em>common piece of information</em> by implementing inside them but also expect child classes to fill in the remaining gaps.</p></p>
+var f = myFunc();
+console.log(f);    // undefined</code></pre>
+<p>I did <strong>a lot of research</strong> to find best javascript learning resources. On the journey of my exploration, I came across some of the great resources with a lot of reviews and user feedback. By now, if you made your mind to take javascript seriously, here are the best resources out there you should check out.</p>
+<h2>Books</h2>
+<ul>
+<li><a href="http://shop.oreilly.com/product/9780596517748.do">JavaScript: The Good Parts</a> by <a href="http://crockford.com/">Douglas Crockford</a></li>
+<li><a href="http://jsninja.com/">Secrets of the JavaScript Ninja</a> by <a href="http://ejohn.org/">John Resig</a></li>
+<li><a href="http://jspro.org/">Pro JavaScript Techniques</a> by <a href="http://ejohn.org/">John Resig</a></li>
+<li><a href="http://www.amazon.com/Performance-JavaScript-Faster-Application-Interfaces/dp/059680279X">High Performance JavaScript</a> by <a href="http://www.nczonline.net/blog/about/">Nicholas C. Zaka</a></li>
+<li><a href="http://www.amazon.com/gp/product/B004XQX4K0/ref=pd_lpo_k2_dp_sr_3?pf_rd_p=486539851&amp;pf_rd_s=lpo-top-stripe-1&amp;pf_rd_t=201&amp;pf_rd_i=0596805527&amp;pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_r=1GJCJ4PSFS8516NGDG28">JavaScript: The Definitive Guide</a> by <a href="http://www.davidflanagan.com/">David Flanagan</a></li>
+</ul>
+<h2>Online</h2>
+<ul>
+<li><a href="http://eloquentjavascript.net/">Eloquent JavaScript</a> by Marijn Haverbeke</li>
+<li><a href="http://javascript.info/">The JavaScript Tutorial</a></li>
+<li><a href="https://developer.mozilla.org/en/JavaScript/Guide">JavaScript Guide MDN</a></li>
+<li><a href="http://bonsaiden.github.com/JavaScript-Garden/">JavaScript Garden</a> (For intermediate &amp; advanced programmers – must read !)</li>
+</ul>
+<h2>Videos</h2>
+<ul>
+<li><a href="http://learn.appendto.com/">appendto.com</a></li>
+<li><a href="http://yuiblog.com/crockford/">Douglas Crockford’s JavaScript Video Series</a></li>
+<li><a href="http://www.youtube.com/watch?v=hQVTIJBZook">JavaScript: The Good Parts</a></li>
+</ul>
+<h2>Blogs to Subscribe</h2>
+<ul>
+<li><a href="http://perfectionkills.com/">PerfectionKills</a></li>
+<li><a href="http://dmitrysoshnikov.com/">Dmitry A. Soshnikov</a></li>
+<li><a href="http://javascriptweblog.wordpress.com/">JavaScript, JavaScript</a></li>
+<li><a href="http://www.adequatelygood.com/">Adequately Good</a></li>
+<li><a href="http://ejohn.org/">John Resig</a></li>
+<li><a href="http://www.2ality.com/">2ality</a></li>
+<li><a href="http://nemisj.com/">Notes of Maks Nemisj</a></li>
+<li><a href="http://addyosmani.com/blog/">Addy Osmani</a></li>
+<li>Bonus: <a href="http://net.tutsplus.com/articles/web-roundups/30-developers-you-must-subscribe-to-as-a-javascript-junkie/">33 Developers you MUST Subscribe to as a JavaScript Junkie</a></li>
+</ul>
+<h2>Tools</h2>
+<ul>
+<li><a href="http://gruntjs.com/">Grunt</a> (The JavaScript Task Runner)</li>
+<li><a href="http://www.jshint.com/">JSHint</a> (JS Code Quality Tool)</li>
+<li><a href="http://jsperf.com/">JSPerf</a> (JS Performance Testing)</li>
+<li><a href="http://www.jsunit.net/">JSUnit</a> (JS Unit Testing)</li>
+<li><a href="http://siliconforks.com/jscoverage/">JSCoverage</a> (JS Code Coverage)</li>
+<li><a href="http://code.google.com/p/jsdoc-toolkit/">JDDoc-Toolkit</a> (JS Documentation Tool)</li>
+<li>Bonus: <a href="http://coding.smashingmagazine.com/2009/02/08/50-extremely-useful-javascript-tools/">50 Useful JavaScript Tools</a></li>
+</ul></p>
                         <br/>
                 
                         <div class="post-info">
                                 <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
-                                <a href="https://codeinphp.github.io/category/php">PHP</a>
+                                <a href="https://codeinphp.github.io/category/javascript">Javascript</a>
                                 &nbsp;&nbsp;
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
-                                <a href="https://codeinphp.github.io/tag/abstract">abstract</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/interface">interface</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/oop">oop</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/javascript">javascript</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -265,11 +205,11 @@ Members of interface can not be Static | Only Complete Member of abstract class 
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/learning-javascript">Learning Javascript</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/abstract-class-vs-interface">Abstract Class vs Interface</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/phpexecute-php-code-runner">PHPExecute – PHP Code Runner</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/outputting-php-to-browser-console">Outputting PHP To Browser Console</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/my-local-development-workflow-with-wamp-xampp-git-and-google-drive">My Local Development Workflow with WAMP/XAMPP, GIT and Google Drive</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/goodtodo-php-and-sqlite-app">GoodTodo PHP and SQlite App</a></li>
                 </ul>
             </div>
         
@@ -282,6 +222,7 @@ Members of interface can not be Static | Only Complete Member of abstract class 
                 <ul class="list-group">
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/blog">Blog</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/bloggercms">BloggerCMS</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/category/javascript">Javascript</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/php">PHP</a></li>
                 </ul>
             </div>
@@ -316,6 +257,7 @@ Members of interface can not be Static | Only Complete Member of abstract class 
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/git" title="'git' returned a count of 0">git</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/googledrive" title="'googledrive' returned a count of 0">googledrive</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/interface" title="'interface' returned a count of 0">interface</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/javascript" title="'javascript' returned a count of 0">javascript</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="'oop' returned a count of 0">oop</a>
 <a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="'php' returned a count of 4">php</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/phpexecute" title="'phpexecute' returned a count of 0">phpexecute</a>
