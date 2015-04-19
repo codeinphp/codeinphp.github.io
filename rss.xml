@@ -178,6 +178,11 @@ $user-&gt;getUsers();</code></pre>
 <ul>
 <li>A class needs optional dependencies so it can set itself up with default values or add additional functionality it needs.</li>
 </ul>
+<blockquote>
+<p>Notice that you could also inject dependency via <strong>public property</strong>
+for a class. So instead of using setter function
+<code>$user-&gt;setDatabase($database);</code>, you could also do <code>$user-&gt;database = new Database(...);</code></p>
+</blockquote>
 <p><strong>Interface Injection</strong></p>
 <p>In this type of injection, an interface enforces the dependencies for any classes that implement it, for example:</p>
 <pre><code>interface someInterface {
