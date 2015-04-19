@@ -78,7 +78,7 @@
                 
                         <hr>
                         <p class="post-content"><p>JavaScript is not only amazing language but also very tricky language. To make correct use of it, you need to follow some best practices to avoid any problems that might come about otherwise. I share some of the best practices you really should be following when writing JavaScript code. Of course this is not an exhaustive list but at the most fundamental level, every programmer should know and adhere to it.</p>
-<h2>1 -NEVER FORGET VAR KEYWORD</h2>
+<h2>1 -NEVER FORGET <code>VAR</code> KEYWORD</h2>
 <p>Most of the developers know about this but yet I wanted to mention this because it may not be clear to some or newbies or people having other programming language background that come to JavaScript.</p>
 <p>Consider the following piece of code:</p>
 <pre><code>function myFunc(){
@@ -144,7 +144,7 @@ console.log(encoding); // en
 console.log(lang); // undefined</code></pre>
 <p>Here again, variable <code>encoding</code> has gone into global scope. Since <code>var</code> keyword is only appears before <code>lang</code> variable, that is the one which gets correct functional scope. In short, you should avoid that shorthand initialization unfortunately.</p>
 <h2>4 – STARTING CURLY BRACE ON THE SAME LINE</h2>
-<p>Consider the following code block where starting curly brace “{” is on a new line, this works fine in most situations:</p>
+<p>Consider the following code block where starting curly brace <code>{</code> is on a new line, this works fine in most situations:</p>
 <pre><code>function myFunc()
 {
     // some code
@@ -243,7 +243,7 @@ Person.prototype.display = function(){
 <p>When working with objects or arrays, it is always a good idea to put a comma before the variable or object property eg:</p>
 <pre><code>// jQuery - create a new div with some css
 $('&lt;div&gt;').attr({
- "id" : "myId"
+   "id"       : "myId"
  , "class" : "myClass"
  , "class" : "myClass"
  , "color" : "green"
