@@ -6,9 +6,9 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
-<title>Visual Query - A Basic Database Browser App</title>
+<title>Visual Query - A Basic MySQL Query Builder App</title>
 <description><![CDATA[<p>The client I am working with is <em>somewhat</em> technical and he wanted the ability to create his own reporting out of database. He isn't all that expert in knowing SQL so in order to help him I built <strong>Visual Query</strong> app to help him <strong>build his SQL queries visually</strong> through a provided interface.</p>
-<p>Visual Query is basic MySQL database browser app that has these basic features:</p>
+<p>Visual Query is basic MySQL query builder and database browser app that has these basic features:</p>
 <ul>
 <li>Ability to choose different databases</li>
 <li>Ability to export result set to CSV and Excel</li>
@@ -44,7 +44,7 @@ $config['password'][] = 'admin';
 // user 2
 $config['username'][] = 'admin2';
 $config['password'][] = 'admin2';</code></pre>]]></description>
-<link>https://codeinphp.github.io/post/visual-query-a-basic-database-browser-app</link>
+<link>https://codeinphp.github.io/post/visual-query-a-basic-mysql-query-builder-app</link>
 <pubDate>Sun, 19 Apr 2015 12:31:00 +0200</pubDate>
 </item>
 <item>
