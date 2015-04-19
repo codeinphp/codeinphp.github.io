@@ -6,6 +6,229 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>JavaScript Best Practices</title>
+<description><![CDATA[<p>JavaScript is not only amazing language but also very tricky language. To make correct use of it, you need to follow some best practices to avoid any problems that might come about otherwise. I share some of the best practices you really should be following when writing JavaScript code. Of course this is not an exhaustive list but at the most fundamental level, every programmer should know and adhere to it.</p>
+<h2>1 -NEVER FORGET VAR KEYWORD</h2>
+<p>Most of the developers know about this but yet I wanted to mention this because it may not be clear to some or newbies or people having other programming language background that come to JavaScript.</p>
+<p>Consider the following piece of code:</p>
+<pre><code>function myFunc(){
+    var firstName = 'sarfraz';
+    lastName = 'ahmed';
+}</code></pre>
+<p>It should be noted that in JS, variables have function-level scope which means a variable declared inside a function can not be accessed outside of it. So let’s test above two variables:</p>
+<pre><code>myFunc();
+console.log(lastName); // ahmed
+console.log(firstName); // undefined</code></pre>
+<p>As you will notice, we are still able to access <code>lastName</code> variable. The reason is that it does not have function-level scope because we forgot to put var keyword before it unlike <code>firstName</code> variable. Hence, <code>lastName</code> variable went into <strong>global</strong> scope and became part of <code>window</code> (while inside browser) object eg <code>window.lastName</code> will output the last name too.</p>
+<p>It is therefore always required to put <code>var</code> keyword before variables so that they do not become part of global scope. It has following benefits:</p>
+<ul>
+<li>You save the memory and improve performance</li>
+<li>You don’t pollute the global scope</li>
+<li>You mistakenly don’t overwrite a global variable that might have the same variable name</li>
+</ul>
+<p>This is a very important concept and JS developers have always been finding solutions to avoid this problem. One of the most popular solution is <a href="http://chrisiona.com/learning-modern-javascript/the-singleton-pattern/">Singleton</a> or <a href="http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth">Module Pattern</a> you should check out. By the way, if you want to see other patterns also, take a look at:</p>
+<p><a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/">Essential JavaScript Design Patterns For Beginners</a></p>
+<h2>2 – DECLARE VARIABLES ON TOP</h2>
+<p>Another thing that should be followed is that variables should be declared on top of each function because of what is known as <strong>JavaScript Hoisting</strong>. Here is an example:</p>
+<pre><code>var name = 'sarfraz';
+
+(function(){
+console.log(name); // undefined
+     var name = 'nawaz';
+     console.log(name); // nawaz
+})();</code></pre>
+<p>Notice that even though <code>name</code> variable is outside the scope of function but on the very first line it gives back <code>undefined</code> rather than actual name. The reason for this is that interpreter hoists or moves variables on top of the function, here is how interpreter sees or re-arranges it:</p>
+<pre><code>var name = 'sarfraz';
+
+(function(){
+     var name;
+     console.log(name); // undefined
+     name = 'nawaz';
+     console.log(name); // nawaz
+})();</code></pre>
+<p>As can be seen, <code>name</code> variable has been hoisted to top and declared there and also <code>var</code> keyword has been stripped from it where we assigned the value of <code>nawaz</code>.</p>
+<p>The same is issue is not only with variables but also <strong>function declarations</strong> but NOT with <strong>function expressions</strong>. You can learn more about the difference between function declaration and function expression here:</p>
+<p><a href="http://kangax.github.com/nfe/">Named Functions Demystified</a></p>
+<p>The solution to this problem is to always declare <strong>variables and function declarations</strong> on top of container function:</p>
+<pre><code>function myFunc(){
+     var foo;
+     var bar;
+     var baz;
+
+     // do something foo, bar, baz
+}</code></pre>
+<p>The preferred and recommended syntax though that you must follow is to declare all variables in one go by separating them with a comma:</p>
+<pre><code>function myFunc(){
+     var foo, bar, baz;
+
+     // do something foo, bar, baz
+}</code></pre>
+<h2>3 – INITIALIZING MULTIPLE VARIABLES</h2>
+<p>Declaring variables on top is good practice but not <em>multiple initialization</em>. Consider:</p>
+<pre><code>function myFunc(){
+    var lang = encoding = 'en';
+}</code></pre>
+<p>This is a very common mistake even amongst experienced JS developers where they think they have quickly assigned two variables same scope and same value. Though value for both <code>lang</code> and <code>encoding</code> variable is some but not the scope. Try it out:</p>
+<pre><code>myFunc();
+console.log(encoding); // en
+console.log(lang); // undefined</code></pre>
+<p>Here again, variable <code>encoding</code> has gone into global scope. Since <code>var</code> keyword is only appears before <code>lang</code> variable, that is the one which gets correct functional scope. In short, you should avoid that shorthand initialization unfortunately.</p>
+<h2>4 – STARTING CURLY BRACE ON THE SAME LINE</h2>
+<p>Consider the following code block where starting curly brace “{” is on a new line, this works fine in most situations:</p>
+<pre><code>function myFunc()
+{
+    // some code
+}</code></pre>
+<p>However, same convention will not yield expected results if you happen to write:</p>
+<pre><code>function myFunc()
+{
+     return
+     {
+         name: 'sarfraz'
+     };
+}
+
+var f = myFunc();
+console.log(f);</code></pre>
+<p>The result will be <code>undefined</code> because behind the scenes, interpreter puts a semicolon <code>;</code> after the <code>return</code> keyword making it:</p>
+<pre><code>function myFunc()
+{
+     return; // &lt;----------------
+     {
+         name: 'sarfraz'
+     };
+}</code></pre>
+<p>To remedy such hard-to-debug issues, it is good practice to always put starting curly brace on the <strong>same line</strong>, this would work fine though:</p>
+<pre><code>function myFunc() {
+     return {
+         name: 'sarfraz'
+     };
+}
+
+var f = myFunc();
+console.log(f.name); // sarfraz</code></pre>
+<p>And that’s a reason why <a href="http://www.crockford.com/">Douglas Crockford</a> in his book “<a href="http://www.amazon.com/JavaScript-Good-Parts-Douglas-Crockford/dp/0596517742">JavaScript: The Good Parts</a>“, advocates this syntax for JS:</p>
+<pre><code>function () {
+     // some code
+}
+
+if (expression) {
+     // do something
+}</code></pre>
+<p>Go ahead and check out <a href="http://javascript.crockford.com/code.html">JavaScript Coding Style</a> to learn more as well as naming conventions.</p>
+<p>Notice that it is not the <code>return</code> keyword affected by automatic semi-colon insertion but all these too:</p>
+<ul>
+<li><strong>var</strong> statement</li>
+<li><strong>empty</strong> statement</li>
+<li><strong>expression</strong> statement</li>
+<li><strong>do-while</strong> statement</li>
+<li><strong>continue</strong> statement</li>
+<li><strong>break</strong> statement</li>
+<li><strong>throw</strong> statement</li>
+</ul>
+<p>Experienced JavaScript developers know pretty well about JavaScript’s <em>automatic semi-colon insertion problem</em> and avoid it. The benefit of above coding style however is that you avoid this problem without knowing that this problem exists just by following that coding style.</p>
+<h2>5 – USE ARRAY LITERAL INSTEAD OF NEW ARRAY()</h2>
+<p>There are two ways you can create arrays in JS:</p>
+<pre><code>var arr1 = new Array(); // array constructor
+var arr2 = []; // array literal</code></pre>
+<p>Though both serve the purpose of creating arrays but there is important difference between the two.</p>
+<p>In JS, even an array is an object. With first constructor method above, you are telling interpreter to call constructor of the <code>Array</code> and generate an object. The interpreter looks up into the execution context to find the constructor and once found, it calls it and creates the <code>Array</code> object. It seems that it has performance hit too as compared to latter array literal method. With the array literal method, interpreter just creates the array on run-time with no extra processing done.</p>
+<p>Other than that, Array constructor is mis-guiding the way it handles its parameters. Consider:</p>
+<pre><code>console.log(new Array(5)); // [,,,,]
+console.log(new Array('5')); // ["5"]</code></pre>
+<p>When one argument is passed to Array and that happens to be a number, a new array is returned with its length property equal to that number passed. The important thing to note here is that Array will be initialized from what number you specified to it, for example:</p>
+<pre><code>// Array constructor
+var arr = new Array(2);
+console.log(arr.length); // 2
+console.log(arr[0]); // undefined
+
+// Array literal
+var arr = [2];
+console.log(arr.length); // 1
+console.log(arr[0]); // 2</code></pre>
+<p>So the conclusion is to always use array literal notation rather than Array constructor.</p>
+<h2>6 – USE PROTOTYPE TO SHARE ACROSS</h2>
+<p>The concept of prototypes or prototypal inheritance is rather confusing. I have seen people especially inexperienced JS developers adding class members to parent function which needs to be shared across child classes. Consider the following code:</p>
+<pre><code>function Person(name){
+    this.name = name;
+}</code></pre>
+<p>Now let’s assume we want to have child classes the ability to display the names some how, one of doing it is putting method directly inside <code>Person</code> class:</p>
+<pre><code>function Person(name){
+     this.name = name;
+
+     this.display = function(){
+         alert(this.name);
+     }
+}</code></pre>
+<p>Other way is to use <code>prototype</code>:</p>
+<pre><code>function Person(name){
+     this.name = name;
+}
+
+Person.prototype.display = function(){
+     alert(this.name);
+}</code></pre>
+<p>With both ways, all child classes will be able to use the display method but there is important difference between the two. When you attach any methods or properties via <code>this</code> (first way above) to a class then all instances of inheriting child classes will also have these properties or methods within them or their signature. On the other hand, when you use <code>prototype</code> to add members (properties and methods) to parent class, children classes will still inherit all members but it won’t be present inside their own functionality or signature, rather they will be borrowing that functionality from their parent class thereby saving memory. For this reason, later approach seems good to follow in most situations.</p>
+<h2>7 – PUT COMMA BEFORE PROPERTIES</h2>
+<p>When working with objects or arrays, it is always a good idea to put a comma before the variable or object property eg:</p>
+<pre><code>// jQuery - create a new div with some css
+$('&lt;div&gt;').attr({
+ "id" : "myId"
+ , "class" : "myClass"
+ , "class" : "myClass"
+ , "color" : "green"
+ , "fontWeight" : "bold"
+});</code></pre>
+<p>In this way, we never add an extra comma or forget one from the last property. The reason why this is good practice is that, in IE, with extra comma at the last property, we do not get expected results sometimes (<strong>ExtJS</strong> developers must have learned this). I do the same with multiple variable declarations or arguments of function. It also makes the code look pretty too as far as I see it.</p>
+<h2>8 – DON’T MIX JS AND HTML</h2>
+<p>One of the most important best practices is to always <em>separate JS code from HTML</em> and go <a href="http://en.wikipedia.org/wiki/Unobtrusive_JavaScript">unobtrusive</a>. One would often see code like this:</p>
+<pre><code>&lt;a href="#" onclick="doSomething()"&gt;Some Action&lt;/a&gt;
+&lt;input type="button" onclick="doSomething()" value="Do Something" /&gt;
+&lt;form onsubmit="doSomething();"&gt;...</code></pre>
+<p>That’s a very bad practice in that it is hard to manage and maintain. HTML and JS should not be mixed ever. You could do the same thing like this:</p>
+<pre><code>&lt;a href="#" id="link"&gt;Some Action&lt;/a&gt;
+&lt;input type="button" id="button" value="Do Something" /&gt;
+&lt;form id="frm"&gt;...
+
+&lt;script type="text/javascript"&gt;
+var link = document.getElementById('link'),
+ btn = document.getElementById('button'),
+ frm = document.getElementById('link');
+
+link.onclick = function(){
+ // do something
+};
+
+btn.onclick = function(){
+ // do something
+};
+
+frm.onsubmit = function(){
+ // validate form
+};     
+&lt;/script&gt;</code></pre>
+<p>This way it becomes easy to manage, maintain or enhance both HTML and JavaScript.</p>
+<h2>9 – PUT SCRIPTS AT BOTTOM</h2>
+<p>Normally scripts are put in <code>&lt;head&gt;&lt;/head&gt;</code> tags but this should be avoided. The reason for this is that browser loads your scripts sequentially and by the time they are loading, nothing else is done and website load times slow down (or at least that’s how visitors will perceive it) and you see actual output only after those scripts have been loaded by the browser.</p>
+<p>The best practice is that scripts should be put on bottom of page just before closing body tag eg <code>&lt;/body&gt;</code>. This way browser will instantly display page and page load time will be better for users who view that page.</p>
+<p>By the way, always put CSS on top in <code>&lt;head&gt;&lt;/head&gt;</code> tags because that’s something browser reads first and renders page’s layout accordingly.</p>
+<p>Read more about this at famous <a href="http://developer.yahoo.com/performance/rules.html">Yahoo’s performance article</a>.</p>
+<p>I would also suggest you to use Yahoo’s <a href="http://developer.yahoo.com/yslow/">YSlow</a> or Google’s <a href="http://code.google.com/speed/page-speed/">PageSpeed</a> add-on (add-ons of <a href="http://getfirebug.com/">Firebug</a>) which suggest you a lot of things on how to improve the performance of the page.</p>
+<h2>10 – NEVER FORGET SEMI-COLON</h2>
+<p>Always end statements and function expressions with a semi-colon:</p>
+<pre><code>var name = 'some name'; // &lt;-------------
+
+var myFunc = function(){
+// some doe
+
+}; // &lt;------------</code></pre>
+<p>This is useful when you want to compress the code (for faster load times). If at any place, semi-colon isn’t present, you won’t be able to compress the code or wouldn’t get expected results most likely code-wise. You should always, always use semi-colons.</p>
+<h2>BONUS</h2>
+<p>The good news is that you can solve most of above problems by using <a href="http://www.jshint.com/">JSHint</a> or <a href="http://jslint.com/">JSLint</a> code quality tool. It will tell you about best-practices and any errors that might exist in your code. Having said that, it is good to improve your JS skills and avoid the need to go to such tools.</p>]]></description>
+<link>https://codeinphp.github.io/post/javascript-best-practices</link>
+<pubDate>Sun, 19 Apr 2015 10:00:00 +0200</pubDate>
+</item>
+<item>
 <title>Exploring Lambda Functions and Closures in PHP</title>
 <description><![CDATA[<h1>What is a Lambda Function</h1>
 <p>A lambda function (also known as <strong>anonymous function</strong>) is a function that has:</p>
