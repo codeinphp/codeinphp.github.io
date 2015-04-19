@@ -71,240 +71,349 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/javascript-best-practices">JavaScript Best Practices</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/extending-datamapper-for-codeigniter">Extending DataMapper for CodeIgniter</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> April 19, 2015 10:00 AM
+                    <span class="glyphicon glyphicon-time"></span> April 19, 2015 11:35 AM
                 
                         <hr>
-                        <p class="post-content"><p>JavaScript is not only amazing language but also very tricky language. To make correct use of it, you need to follow some best practices to avoid any problems that might come about otherwise. I share some of the best practices you really should be following when writing JavaScript code. Of course this is not an exhaustive list but at the most fundamental level, every programmer should know and adhere to it.</p>
-<h2>1 -NEVER FORGET <code>VAR</code> KEYWORD</h2>
-<p>Most of the developers know about this but yet I wanted to mention this because it may not be clear to some or newbies or people having other programming language background that come to JavaScript.</p>
-<p>Consider the following piece of code:</p>
-<pre><code>function myFunc(){
-    var firstName = 'sarfraz';
-    lastName = 'ahmed';
-}</code></pre>
-<p>It should be noted that in JS, variables have function-level scope which means a variable declared inside a function can not be accessed outside of it. So let’s test above two variables:</p>
-<pre><code>myFunc();
-console.log(lastName); // ahmed
-console.log(firstName); // undefined</code></pre>
-<p>As you will notice, we are still able to access <code>lastName</code> variable. The reason is that it does not have function-level scope because we forgot to put var keyword before it unlike <code>firstName</code> variable. Hence, <code>lastName</code> variable went into <strong>global</strong> scope and became part of <code>window</code> (while inside browser) object eg <code>window.lastName</code> will output the last name too.</p>
-<p>It is therefore always required to put <code>var</code> keyword before variables so that they do not become part of global scope. It has following benefits:</p>
+                        <p class="post-content"><p>For one of my projects I was using CodeIgniter framework with goodies like <a href="http://datamapper.wanwizard.eu/">DataMapper</a> (by wanwizard.eu), <a href="https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc">HMVC Module</a>, <a href="http://github.com/EllisLab/CodeIgniter/wiki/View-Object-PHP5">View Objects</a> and more. Everything was smooth and sound until client requested that some of database tables must be encrypted. I was already encrypting sensitive information like passwords, etc but client wanted encryption for more tables such that:</p>
 <ul>
-<li>You save the memory and improve performance</li>
-<li>You don’t pollute the global scope</li>
-<li>You mistakenly don’t overwrite a global variable that might have the same variable name</li>
+<li>One-way hashing, once data is encrypted, it can't be decrypted,  we chose <a href="http://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a> (Advanced Encryption Standard)</li>
+<li>For same piece of text, hashing should be able to generate different encrypted text always so no two same text should sound like similar</li>
+<li>Code should know whether provided piece of text is already encrypted or not</li>
 </ul>
-<p>This is a very important concept and JS developers have always been finding solutions to avoid this problem. One of the most popular solution is <a href="http://chrisiona.com/learning-modern-javascript/the-singleton-pattern/">Singleton</a> or <a href="http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth">Module Pattern</a> you should check out. By the way, if you want to see other patterns also, take a look at:</p>
-<p><a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/">Essential JavaScript Design Patterns For Beginners</a></p>
-<h2>2 – DECLARE VARIABLES ON TOP</h2>
-<p>Another thing that should be followed is that variables should be declared on top of each function because of what is known as <strong>JavaScript Hoisting</strong>. Here is an example:</p>
-<pre><code>var name = 'sarfraz';
-
-(function(){
-console.log(name); // undefined
-     var name = 'nawaz';
-     console.log(name); // nawaz
-})();</code></pre>
-<p>Notice that even though <code>name</code> variable is outside the scope of function but on the very first line it gives back <code>undefined</code> rather than actual name. The reason for this is that interpreter hoists or moves variables on top of the function, here is how interpreter sees or re-arranges it:</p>
-<pre><code>var name = 'sarfraz';
-
-(function(){
-     var name;
-     console.log(name); // undefined
-     name = 'nawaz';
-     console.log(name); // nawaz
-})();</code></pre>
-<p>As can be seen, <code>name</code> variable has been hoisted to top and declared there and also <code>var</code> keyword has been stripped from it where we assigned the value of <code>nawaz</code>.</p>
-<p>The same is issue is not only with variables but also <strong>function declarations</strong> but NOT with <strong>function expressions</strong>. You can learn more about the difference between function declaration and function expression here:</p>
-<p><a href="http://kangax.github.com/nfe/">Named Functions Demystified</a></p>
-<p>The solution to this problem is to always declare <strong>variables and function declarations</strong> on top of container function:</p>
-<pre><code>function myFunc(){
-     var foo;
-     var bar;
-     var baz;
-
-     // do something foo, bar, baz
-}</code></pre>
-<p>The preferred and recommended syntax though that you must follow is to declare all variables in one go by separating them with a comma:</p>
-<pre><code>function myFunc(){
-     var foo, bar, baz;
-
-     // do something foo, bar, baz
-}</code></pre>
-<h2>3 – INITIALIZING MULTIPLE VARIABLES</h2>
-<p>Declaring variables on top is good practice but not <em>multiple initialization</em>. Consider:</p>
-<pre><code>function myFunc(){
-    var lang = encoding = 'en';
-}</code></pre>
-<p>This is a very common mistake even amongst experienced JS developers where they think they have quickly assigned two variables same scope and same value. Though value for both <code>lang</code> and <code>encoding</code> variable is some but not the scope. Try it out:</p>
-<pre><code>myFunc();
-console.log(encoding); // en
-console.log(lang); // undefined</code></pre>
-<p>Here again, variable <code>encoding</code> has gone into global scope. Since <code>var</code> keyword is only appears before <code>lang</code> variable, that is the one which gets correct functional scope. In short, you should avoid that shorthand initialization unfortunately.</p>
-<h2>4 – STARTING CURLY BRACE ON THE SAME LINE</h2>
-<p>Consider the following code block where starting curly brace <code>{</code> is on a new line, this works fine in most situations:</p>
-<pre><code>function myFunc()
+<p>I created the encryption class and did some trickery so that it always gave <em>different encryption text</em> for the <em>same string</em>. And also used some kind of prefix information that would later let the code know whether or not something is already encrypted.</p>
+<p>The real problem for me was that by the time project had turned into huge codebase, it would have taken ages to go and modify code everywhere so that new requirement of encryption is applied everywhere. I was using <a href="http://datamapper.wanwizard.eu/">DataMapper</a> library everywhere to interact with database and model classes looked like this:</p>
+<pre><code>class Api_client extends DataMapper
 {
-    // some code
-}</code></pre>
-<p>However, same convention will not yield expected results if you happen to write:</p>
-<pre><code>function myFunc()
-{
-     return
-     {
-         name: 'sarfraz'
-     };
-}
+    # object properties
+    public $id;
+    public $appid;
+    public $apikey;
+    public $request_uri;
 
-var f = myFunc();
-console.log(f);</code></pre>
-<p>The result will be <code>undefined</code> because behind the scenes, interpreter puts a semicolon <code>;</code> after the <code>return</code> keyword making it:</p>
-<pre><code>function myFunc()
-{
-     return; // &lt;----------------
-     {
-         name: 'sarfraz'
-     };
-}</code></pre>
-<p>To remedy such hard-to-debug issues, it is good practice to always put starting curly brace on the <strong>same line</strong>, this would work fine though:</p>
-<pre><code>function myFunc() {
-     return {
-         name: 'sarfraz'
-     };
-}
+    # relations
+    public $has_one = array('client');
 
-var f = myFunc();
-console.log(f.name); // sarfraz</code></pre>
-<p>And that’s a reason why <a href="http://www.crockford.com/">Douglas Crockford</a> in his book “<a href="http://www.amazon.com/JavaScript-Good-Parts-Douglas-Crockford/dp/0596517742">JavaScript: The Good Parts</a>“, advocates this syntax for JS:</p>
-<pre><code>function () {
-     // some code
-}
+    # validation
+    public $validation = array(
+        'appid' =&gt; array(
+            'label' =&gt; 'App ID',
+            'rules' =&gt; array('required', 'trim')
+        ),
+        'apikey' =&gt; array(
+            'label' =&gt; 'API Key',
+            'rules' =&gt; array('required', 'trim')
+        ),
+        'request_uri' =&gt; array(
+            'label' =&gt; 'Request URI',
+            'rules' =&gt; array('required', 'trim')
+        )
+    );
 
-if (expression) {
-     // do something
+    # Default to ordering by id
+    public $default_order_by = array('id' =&gt; 'desc');
+
+    # Optional - useful if a record is to be retrieved by ID eg $user = new User(1);
+    public function __construct($id = null)
+    {
+        parent::__construct($id);
+    }
+
+    # Optional - post model initialisation code
+    public function post_model_init($from_cache = false)
+    {
+    }
 }</code></pre>
-<p>Go ahead and check out <a href="http://javascript.crockford.com/code.html">JavaScript Coding Style</a> to learn more as well as naming conventions.</p>
-<p>Notice that it is not the <code>return</code> keyword affected by automatic semi-colon insertion but all these too:</p>
+<p>We can see that each model class extends the data mapper:</p>
+<pre><code>class Api_client extends DataMapper</code></pre>
+<p>This is what was a clue to me. So in order to avoid modifying lots of code in whole codebase, I knew I can only extend this data mapper and inject my functionality the way I needed.</p>
+<p>I actually needed the ability to:</p>
 <ul>
-<li><strong>var</strong> statement</li>
-<li><strong>empty</strong> statement</li>
-<li><strong>expression</strong> statement</li>
-<li><strong>do-while</strong> statement</li>
-<li><strong>continue</strong> statement</li>
-<li><strong>break</strong> statement</li>
-<li><strong>throw</strong> statement</li>
+<li>automatically encrypt given fields in some table when saving them to database</li>
+<li>automatically getting the right value when reading back from database</li>
 </ul>
-<p>Experienced JavaScript developers know pretty well about JavaScript’s <em>automatic semi-colon insertion problem</em> and avoid it. The benefit of above coding style however is that you avoid this problem without knowing that this problem exists just by following that coding style.</p>
-<h2>5 – USE ARRAY LITERAL INSTEAD OF NEW ARRAY()</h2>
-<p>There are two ways you can create arrays in JS:</p>
-<pre><code>var arr1 = new Array(); // array constructor
-var arr2 = []; // array literal</code></pre>
-<p>Though both serve the purpose of creating arrays but there is important difference between the two.</p>
-<p>In JS, even an array is an object. With first constructor method above, you are telling interpreter to call constructor of the <code>Array</code> and generate an object. The interpreter looks up into the execution context to find the constructor and once found, it calls it and creates the <code>Array</code> object. It seems that it has performance hit too as compared to latter array literal method. With the array literal method, interpreter just creates the array on run-time with no extra processing done.</p>
-<p>Other than that, Array constructor is mis-guiding the way it handles its parameters. Consider:</p>
-<pre><code>console.log(new Array(5)); // [,,,,]
-console.log(new Array('5')); // ["5"]</code></pre>
-<p>When one argument is passed to Array and that happens to be a number, a new array is returned with its length property equal to that number passed. The important thing to note here is that Array will be initialized from what number you specified to it, for example:</p>
-<pre><code>// Array constructor
-var arr = new Array(2);
-console.log(arr.length); // 2
-console.log(arr[0]); // undefined
+<p>By that I mean, instead of going everywhere in codebase and modifying code to encrypt certain fields like this:</p>
+<pre><code>$apiClient = new Api_client();
+$apiClient-&gt;appid = Encode($appId);     // encrypt this field value
+$apiClient-&gt;apikey = Encode($apikey);  // encrypt this field value
+$apiClient-&gt;request_uri = $request_uri;
+$apiClient-&gt;save(); // save to db</code></pre>
+<p>I simply wanted to leave current code as is without modifying it:</p>
+<pre><code>$apiClient = new Api_client();
+$apiClient-&gt;appid = $appId;
+$apiClient-&gt;apikey = $apikey;
+$apiClient-&gt;request_uri = $request_uri;
+$apiClient-&gt;save(); // save to db</code></pre>
+<p>In this case, I wanted data mapper to <strong>automatically</strong> encrypt the <code>appid</code> and <code>apikey</code> values for me. Now imagine I had this code placed in quite some files, it would have been time-consuming process to modify and add <code>Encode()</code> function calls manually everywhere.</p>
+<p>In order to do that, I simply told data mapper which fields need to be encrypted:</p>
+<pre><code>class Api_client extends DataMapper
+{
+    ////////////////////
 
-// Array literal
-var arr = [2];
-console.log(arr.length); // 1
-console.log(arr[0]); // 2</code></pre>
-<p>So the conclusion is to always use array literal notation rather than Array constructor.</p>
-<h2>6 – USE PROTOTYPE TO SHARE ACROSS</h2>
-<p>The concept of prototypes or prototypal inheritance is rather confusing. I have seen people especially inexperienced JS developers adding class members to parent function which needs to be shared across child classes. Consider the following code:</p>
-<pre><code>function Person(name){
-    this.name = name;
+    // for encryption fields
+    private $encryptFields = array(
+       'appid',
+       'apikey',
+    );    
 }</code></pre>
-<p>Now let’s assume we want to have child classes the ability to display the names some how, one of doing it is putting method directly inside <code>Person</code> class:</p>
-<pre><code>function Person(name){
-     this.name = name;
+<p>Now if you look at the code of data mapper, you would see it uses <code>_to_object()</code> function to map fields and <code>save()</code> function to save the info to database. So I tapped into these in my child classes and modified them a bit so that <code>$encryptFields</code> are auto-magically encrypted on my behalf. Since we are extending data mapper (<code>class Api_client extends DataMapper</code>), I modified it like this to do the encryption for me:</p>
+<pre><code>class Api_client extends DataMapper
+{
+    # object properties
+    public $id;
+    public $appid;
+    public $apikey;
+    public $request_uri;
 
-     this.display = function(){
-         alert(this.name);
-     }
+    # relations
+    public $has_one = array('client');
+
+    # validation
+    public $validation = array(
+    'appid' =&gt; array('label' =&gt; 'App ID', 'rules' =&gt; array('required', 'trim')), 
+    'apikey' =&gt; array('label' =&gt; 'API Key', 'rules' =&gt; array('required', 'trim')), 
+    'request_uri' =&gt; array('label' =&gt; 'Request URI', 'rules' =&gt; array('required', 'trim'))
+    );
+
+    // for encryption fields
+    private $encryptFields = array('appid', 'apikey');
+
+    # Default to ordering by id
+    public $default_order_by = array('id' =&gt; 'desc');
+
+    # Optional - useful if a record is to be retrieved by ID eg $user = new User(1);
+    public function __construct($id = null)
+    {
+        parent::__construct($id);
+    }
+
+    # Optional - post model initialisation code
+    public function post_model_init($from_cache = false)
+    {
+    }
+
+    // extending date modal here //
+    public function _to_object($item, $row)
+    {
+        // Populate this object with values from first record
+        foreach ($row as $key =&gt; $value) {
+            if ($this-&gt;isEncryptedField($key)) {
+                $item-&gt;{$key} = decodeField($value);
+            } else {
+                $item-&gt;{$key} = $value;
+            }
+        }
+
+        foreach ($this-&gt;fields as $field) {
+            if (!isset($row-&gt;{$field})) {
+                $item-&gt;{$field} = null;
+            }
+        }
+
+        // Force IDs to integers
+        foreach ($this-&gt;_field_tracking['intval'] as $field) {
+            if (isset($item-&gt;{$field})) {
+                $item-&gt;{$field} = intval($item-&gt;{$field});
+            }
+        }
+
+        if (!empty($this-&gt;_field_tracking['get_rules'])) {
+            $item-&gt;_run_get_rules();
+        }
+
+        $item-&gt;_refresh_stored_values();
+
+        if ($this-&gt;_instantiations) {
+            foreach ($this-&gt;_instantiations as $related_field =&gt; $field_map) {
+                // convert fields to a 'row' object
+                $row = new stdClass();
+                foreach ($field_map as $item_field =&gt; $c_field) {
+                    $row-&gt;{$c_field} = $item-&gt;{$item_field};
+                }
+
+                // get the related item
+                $c =&amp; $item-&gt;_get_without_auto_populating($related_field);
+                // set the values
+                $c-&gt;_to_object($c, $row);
+
+                // also set up the -&gt;all array
+                $c-&gt;all    = array();
+                $c-&gt;all[0] = $c-&gt;get_clone();
+            }
+        }
+    }
+
+    public function save($object = '', $related_field = '')
+    {
+        // Temporarily store the success/failure
+        $result = array();
+
+        // Validate this objects properties
+        $this-&gt;validate($object, $related_field);
+
+        // If validation passed
+        if ($this-&gt;valid) {
+
+            // Begin auto transaction
+            $this-&gt;_auto_trans_begin();
+
+            $trans_complete_label = array();
+
+            // Get current timestamp
+            $timestamp = $this-&gt;_get_generated_timestamp();
+
+            // Check if object has a 'created' field, and it is not already set
+            if (in_array($this-&gt;created_field, $this-&gt;fields) &amp;&amp; empty($this-&gt;{$this-&gt;created_field})) {
+                $this-&gt;{$this-&gt;created_field} = $timestamp;
+            }
+
+            // SmartSave: if there are objects being saved, and they are stored
+            // as in-table foreign keys, we can save them at this step.
+            if (!empty($object)) {
+                if (!is_array($object)) {
+                    $object = array(
+                        $object
+                    );
+                }
+
+                $this-&gt;_save_itfk($object, $related_field);
+            }
+
+            // Convert this object to array
+            $data = $this-&gt;_to_array();
+            $data = $this-&gt;changeWithEncrypted($data);
+            //pretty_print($data);
+
+            if (!empty($data)) {
+                if (!$this-&gt;_force_save_as_new &amp;&amp; !empty($data['id'])) {
+                    // Prepare data to send only changed fields
+                    foreach ($data as $field =&gt; $value) {
+                        // Unset field from data if it hasn't been changed
+                        if ($this-&gt;{$field} === $this-&gt;stored-&gt;{$field}) {
+                            unset($data[$field]);
+                        }
+                    }
+
+                    // if there are changes, check if we need to update the update timestamp
+                    if (count($data) &amp;&amp; in_array($this-&gt;updated_field, $this-&gt;fields) &amp;&amp; !isset($data[$this-&gt;updated_field])) {
+                        // update it now
+                        $data[$this-&gt;updated_field] = $this-&gt;{$this-&gt;updated_field} = $timestamp;
+                    }
+
+                    // Only go ahead with save if there is still data
+                    if (!empty($data)) {
+                        // Update existing record
+                        $this-&gt;db-&gt;where('id', $this-&gt;id);
+                        $this-&gt;db-&gt;update($this-&gt;table, $data);
+
+                        $trans_complete_label[] = 'update';
+                    }
+
+                    // Reset validated
+                    $this-&gt;_validated = false;
+
+                    $result[] = true;
+                } else {
+                    // Prepare data to send only populated fields
+                    foreach ($data as $field =&gt; $value) {
+                        // Unset field from data
+                        if (!isset($value)) {
+                            unset($data[$field]);
+                        }
+                    }
+
+                    // Create new record
+                    $this-&gt;db-&gt;insert($this-&gt;table, $data);
+
+                    if (!$this-&gt;_force_save_as_new) {
+                        // Assign new ID
+                        $this-&gt;id = $this-&gt;db-&gt;insert_id();
+                    }
+
+                    $trans_complete_label[] = 'insert';
+
+                    // Reset validated
+                    $this-&gt;_validated = false;
+
+                    $result[] = true;
+                }
+            }
+
+            $this-&gt;_refresh_stored_values();
+
+            // Check if a relationship is being saved
+            if (!empty($object)) {
+                // save recursively
+                $this-&gt;_save_related_recursive($object, $related_field);
+
+                $trans_complete_label[] = 'relationships';
+            }
+
+            if (!empty($trans_complete_label)) {
+                $trans_complete_label = 'save (' . implode(', ', $trans_complete_label) . ')';
+            } else {
+                $trans_complete_label = '-nothing done-';
+            }
+
+            $this-&gt;_auto_trans_complete($trans_complete_label);
+
+        }
+
+        $this-&gt;_force_save_as_new = false;
+
+        // If no failure was recorded, return TRUE
+        return (!empty($result) &amp;&amp; !in_array(false, $result));
+    }
+
+    private function isEncryptedField($key)
+    {
+        if (false !== in_array($key, $this-&gt;encryptFields)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function changeWithEncrypted(array $array)
+    {
+        foreach ($array as $key =&gt; $value) {
+            if ($this-&gt;isEncryptedField($key)) {
+                if ($value !== '') {
+                    $array[$key] = encodeField($value);
+                } else {
+                    $array[$key] = $value;
+                }
+            }
+        }
+
+        return $array;
+    }
+
+    private function _get_generated_timestamp()
+    {
+        // Get current timestamp
+        $timestamp = ($this-&gt;local_time) ? date($this-&gt;timestamp_format) : gmdate($this-&gt;timestamp_format);
+
+        // Check if unix timestamp
+        return ($this-&gt;unix_timestamp) ? strtotime($timestamp) : $timestamp;
+    }
+
 }</code></pre>
-<p>Other way is to use <code>prototype</code>:</p>
-<pre><code>function Person(name){
-     this.name = name;
-}
-
-Person.prototype.display = function(){
-     alert(this.name);
-}</code></pre>
-<p>With both ways, all child classes will be able to use the display method but there is important difference between the two. When you attach any methods or properties via <code>this</code> (first way above) to a class then all instances of inheriting child classes will also have these properties or methods within them or their signature. On the other hand, when you use <code>prototype</code> to add members (properties and methods) to parent class, children classes will still inherit all members but it won’t be present inside their own functionality or signature, rather they will be borrowing that functionality from their parent class thereby saving memory. For this reason, later approach seems good to follow in most situations.</p>
-<h2>7 – PUT COMMA BEFORE PROPERTIES</h2>
-<p>When working with objects or arrays, it is always a good idea to put a comma before the variable or object property eg:</p>
-<pre><code>// jQuery - create a new div with some css
-$('&lt;div&gt;').attr({
-   "id"       : "myId"
- , "class" : "myClass"
- , "class" : "myClass"
- , "color" : "green"
- , "fontWeight" : "bold"
-});</code></pre>
-<p>In this way, we never add an extra comma or forget one from the last property. The reason why this is good practice is that, in IE, with extra comma at the last property, we do not get expected results sometimes (<strong>ExtJS</strong> developers must have learned this). I do the same with multiple variable declarations or arguments of function. It also makes the code look pretty too as far as I see it.</p>
-<h2>8 – DON’T MIX JS AND HTML</h2>
-<p>One of the most important best practices is to always <em>separate JS code from HTML</em> and go <a href="http://en.wikipedia.org/wiki/Unobtrusive_JavaScript">unobtrusive</a>. One would often see code like this:</p>
-<pre><code>&lt;a href="#" onclick="doSomething()"&gt;Some Action&lt;/a&gt;
-&lt;input type="button" onclick="doSomething()" value="Do Something" /&gt;
-&lt;form onsubmit="doSomething();"&gt;...</code></pre>
-<p>That’s a very bad practice in that it is hard to manage and maintain. HTML and JS should not be mixed ever. You could do the same thing like this:</p>
-<pre><code>&lt;a href="#" id="link"&gt;Some Action&lt;/a&gt;
-&lt;input type="button" id="button" value="Do Something" /&gt;
-&lt;form id="frm"&gt;...
-
-&lt;script type="text/javascript"&gt;
-var link = document.getElementById('link'),
- btn = document.getElementById('button'),
- frm = document.getElementById('link');
-
-link.onclick = function(){
- // do something
-};
-
-btn.onclick = function(){
- // do something
-};
-
-frm.onsubmit = function(){
- // validate form
-};     
-&lt;/script&gt;</code></pre>
-<p>This way it becomes easy to manage, maintain or enhance both HTML and JavaScript.</p>
-<h2>9 – PUT SCRIPTS AT BOTTOM</h2>
-<p>Normally scripts are put in <code>&lt;head&gt;&lt;/head&gt;</code> tags but this should be avoided. The reason for this is that browser loads your scripts sequentially and by the time they are loading, nothing else is done and website load times slow down (or at least that’s how visitors will perceive it) and you see actual output only after those scripts have been loaded by the browser.</p>
-<p>The best practice is that scripts should be put on bottom of page just before closing body tag eg <code>&lt;/body&gt;</code>. This way browser will instantly display page and page load time will be better for users who view that page.</p>
-<p>By the way, always put CSS on top in <code>&lt;head&gt;&lt;/head&gt;</code> tags because that’s something browser reads first and renders page’s layout accordingly.</p>
-<p>Read more about this at famous <a href="http://developer.yahoo.com/performance/rules.html">Yahoo’s performance article</a>.</p>
-<p>I would also suggest you to use Yahoo’s <a href="http://developer.yahoo.com/yslow/">YSlow</a> or Google’s <a href="http://code.google.com/speed/page-speed/">PageSpeed</a> add-on (add-ons of <a href="http://getfirebug.com/">Firebug</a>) which suggest you a lot of things on how to improve the performance of the page.</p>
-<h2>10 – NEVER FORGET SEMI-COLON</h2>
-<p>Always end statements and function expressions with a semi-colon:</p>
-<pre><code>var name = 'some name'; // &lt;-------------
-
-var myFunc = function(){
-// some doe
-
-}; // &lt;------------</code></pre>
-<p>This is useful when you want to compress the code (for faster load times). If at any place, semi-colon isn’t present, you won’t be able to compress the code or wouldn’t get expected results most likely code-wise. You should always, always use semi-colons.</p>
-<h2>BONUS</h2>
-<p>The good news is that you can solve most of above problems by using <a href="http://www.jshint.com/">JSHint</a> or <a href="http://jslint.com/">JSLint</a> code quality tool. It will tell you about best-practices and any errors that might exist in your code. Having said that, it is good to improve your JS skills and avoid the need to go to such tools.</p></p>
+<p>In above class, most of the code remains same for <code>_to_object()</code> and <code>save()</code> functions as in original data mapper class but I have modified few places so that I can put encryption for needed fields.</p>
+<p>So in conclusion, we learned how we tapped onto the data mapper class and extended it for our needs of auto-encryption of told fields. If you happen to have similar requirement or you wanted to inject your own functionality to the data mapper, you can do that through the use of <code>_to_object()</code>  and <code>save()</code> functions of data mapper.</p></p>
                         <br/>
                 
                         <div class="post-info">
                                 <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
-                                <a href="https://codeinphp.github.io/category/javascript">Javascript</a>
+                                <a href="https://codeinphp.github.io/category/php">PHP</a>
                                 &nbsp;&nbsp;
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
-                                <a href="https://codeinphp.github.io/tag/javascript">javascript</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/datamapper">datamapper</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/codeigniter">codeigniter</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -357,11 +466,11 @@ var myFunc = function(){
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/extending-datamapper-for-codeigniter">Extending DataMapper for CodeIgniter</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/javascript-best-practices">JavaScript Best Practices</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php">Exploring Lambda Functions and Closures in PHP</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/learning-javascript">Learning Javascript</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/abstract-class-vs-interface">Abstract Class vs Interface</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/phpexecute-php-code-runner">PHPExecute – PHP Code Runner</a></li>
                 </ul>
             </div>
         
@@ -403,7 +512,9 @@ var myFunc = function(){
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/browser" title="'browser' returned a count of 0">browser</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/closure" title="'closure' returned a count of 0">closure</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/cms" title="'cms' returned a count of 0">cms</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/codeigniter" title="'codeigniter' returned a count of 0">codeigniter</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/console" title="'console' returned a count of 0">console</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/datamapper" title="'datamapper' returned a count of 0">datamapper</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/development" title="'development' returned a count of 0">development</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/devtools" title="'devtools' returned a count of 0">devtools</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/drive" title="'drive' returned a count of 0">drive</a>

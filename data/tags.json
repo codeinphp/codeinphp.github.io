@@ -35,5 +35,7 @@
 	"39": "abstract",
 	"40": "interface",
 	"41": "oop",
-	"42": "php53"
+	"42": "php53",
+	"43": "datamapper",
+	"44": "codeigniter"
 }

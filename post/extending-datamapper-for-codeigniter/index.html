@@ -8,7 +8,7 @@
     <meta name="description" content="PHP and more...">
     <meta name="author" content="Sarfraz Ahmed">
 
-    <title>GoodTodo PHP and SQlite App :: Code In PHP</title>
+    <title>Extending DataMapper for CodeIgniter :: Code In PHP</title>
 
     <!-- rss feed url -->
     <link rel="alternate" type="application/rss+xml" title="Code In PHP" href="https://codeinphp.github.io/rss.xml"/>
@@ -71,20 +71,338 @@
     <div class="row">
         <div class="col-md-8 main-content">
             <article>
-                <h3>GoodTodo PHP and SQlite App</h3>
+                <h3>Extending DataMapper for CodeIgniter</h3>
                 <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                 &nbsp;&nbsp;
-                <span class="glyphicon glyphicon-time"></span> April 12, 2015 01:03 PM
+                <span class="glyphicon glyphicon-time"></span> April 19, 2015 11:35 AM
                 <hr>
 
-                <p class="post-content"><p>I really like to keep track of tasks and projects (personal or otherwise) I work on. I used to keep my todos list in notepad or by using some other sticky notes application but I wanted dead simple todos app with beautiful looks and simple to use without irrelevant options or goodies. So here I introduce GoodTodo; a todo app made via PHP and SQlite. I chose SQlite because I wanted to make sure that app is portable and of course since it’s small todo app, choosing SQlite for it makes perfect sense. I have used <a href="http://flightphp.com/">flightPHP</a> framework and <a href="http://j4mie.github.io/idiormandparis/">idiorm ORM</a> for it.</p>
-<p>Here are its screenshots:</p>
-<p><img src="https://codeinphp.github.io/images/1428836471552a507761961.png" alt="enter image description here" /></p>
-<p><img src="https://codeinphp.github.io/images/1428836475552a507b38615.png" alt="enter image description here" /></p>
-<p><img src="https://codeinphp.github.io/images/1428836467552a50733de24.png" alt="enter image description here" /></p>
-<p><strong>How to use:</strong></p>
-<p>Make sure you have wamp/xampp or other stack installed. Download the app and put in www/htdocs folder and browse to that folder via browser something like <a href="http://localhost/todo">http://localhost/todo</a>. Please make sure you have sqlite extension turned on from php.ini if it isn’t already.</p>
-<p>So go ahead and <a href="https://dl.dropboxusercontent.com/u/11600057/todo.zip">download GoodTodo</a> to keep track of your todos.</p></p>
+                <p class="post-content"><p>For one of my projects I was using CodeIgniter framework with goodies like <a href="http://datamapper.wanwizard.eu/">DataMapper</a> (by wanwizard.eu), <a href="https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc">HMVC Module</a>, <a href="http://github.com/EllisLab/CodeIgniter/wiki/View-Object-PHP5">View Objects</a> and more. Everything was smooth and sound until client requested that some of database tables must be encrypted. I was already encrypting sensitive information like passwords, etc but client wanted encryption for more tables such that:</p>
+<ul>
+<li>One-way hashing, once data is encrypted, it can't be decrypted,  we chose <a href="http://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a> (Advanced Encryption Standard)</li>
+<li>For same piece of text, hashing should be able to generate different encrypted text always so no two same text should sound like similar</li>
+<li>Code should know whether provided piece of text is already encrypted or not</li>
+</ul>
+<p>I created the encryption class and did some trickery so that it always gave <em>different encryption text</em> for the <em>same string</em>. And also used some kind of prefix information that would later let the code know whether or not something is already encrypted.</p>
+<p>The real problem for me was that by the time project had turned into huge codebase, it would have taken ages to go and modify code everywhere so that new requirement of encryption is applied everywhere. I was using <a href="http://datamapper.wanwizard.eu/">DataMapper</a> library everywhere to interact with database and model classes looked like this:</p>
+<pre><code>class Api_client extends DataMapper
+{
+    # object properties
+    public $id;
+    public $appid;
+    public $apikey;
+    public $request_uri;
+
+    # relations
+    public $has_one = array('client');
+
+    # validation
+    public $validation = array(
+        'appid' =&gt; array(
+            'label' =&gt; 'App ID',
+            'rules' =&gt; array('required', 'trim')
+        ),
+        'apikey' =&gt; array(
+            'label' =&gt; 'API Key',
+            'rules' =&gt; array('required', 'trim')
+        ),
+        'request_uri' =&gt; array(
+            'label' =&gt; 'Request URI',
+            'rules' =&gt; array('required', 'trim')
+        )
+    );
+
+    # Default to ordering by id
+    public $default_order_by = array('id' =&gt; 'desc');
+
+    # Optional - useful if a record is to be retrieved by ID eg $user = new User(1);
+    public function __construct($id = null)
+    {
+        parent::__construct($id);
+    }
+
+    # Optional - post model initialisation code
+    public function post_model_init($from_cache = false)
+    {
+    }
+}</code></pre>
+<p>We can see that each model class extends the data mapper:</p>
+<pre><code>class Api_client extends DataMapper</code></pre>
+<p>This is what was a clue to me. So in order to avoid modifying lots of code in whole codebase, I knew I can only extend this data mapper and inject my functionality the way I needed.</p>
+<p>I actually needed the ability to:</p>
+<ul>
+<li>automatically encrypt given fields in some table when saving them to database</li>
+<li>automatically getting the right value when reading back from database</li>
+</ul>
+<p>By that I mean, instead of going everywhere in codebase and modifying code to encrypt certain fields like this:</p>
+<pre><code>$apiClient = new Api_client();
+$apiClient-&gt;appid = Encode($appId);     // encrypt this field value
+$apiClient-&gt;apikey = Encode($apikey);  // encrypt this field value
+$apiClient-&gt;request_uri = $request_uri;
+$apiClient-&gt;save(); // save to db</code></pre>
+<p>I simply wanted to leave current code as is without modifying it:</p>
+<pre><code>$apiClient = new Api_client();
+$apiClient-&gt;appid = $appId;
+$apiClient-&gt;apikey = $apikey;
+$apiClient-&gt;request_uri = $request_uri;
+$apiClient-&gt;save(); // save to db</code></pre>
+<p>In this case, I wanted data mapper to <strong>automatically</strong> encrypt the <code>appid</code> and <code>apikey</code> values for me. Now imagine I had this code placed in quite some files, it would have been time-consuming process to modify and add <code>Encode()</code> function calls manually everywhere.</p>
+<p>In order to do that, I simply told data mapper which fields need to be encrypted:</p>
+<pre><code>class Api_client extends DataMapper
+{
+    ////////////////////
+
+    // for encryption fields
+    private $encryptFields = array(
+       'appid',
+       'apikey',
+    );    
+}</code></pre>
+<p>Now if you look at the code of data mapper, you would see it uses <code>_to_object()</code> function to map fields and <code>save()</code> function to save the info to database. So I tapped into these in my child classes and modified them a bit so that <code>$encryptFields</code> are auto-magically encrypted on my behalf. Since we are extending data mapper (<code>class Api_client extends DataMapper</code>), I modified it like this to do the encryption for me:</p>
+<pre><code>class Api_client extends DataMapper
+{
+    # object properties
+    public $id;
+    public $appid;
+    public $apikey;
+    public $request_uri;
+
+    # relations
+    public $has_one = array('client');
+
+    # validation
+    public $validation = array(
+    'appid' =&gt; array('label' =&gt; 'App ID', 'rules' =&gt; array('required', 'trim')), 
+    'apikey' =&gt; array('label' =&gt; 'API Key', 'rules' =&gt; array('required', 'trim')), 
+    'request_uri' =&gt; array('label' =&gt; 'Request URI', 'rules' =&gt; array('required', 'trim'))
+    );
+
+    // for encryption fields
+    private $encryptFields = array('appid', 'apikey');
+
+    # Default to ordering by id
+    public $default_order_by = array('id' =&gt; 'desc');
+
+    # Optional - useful if a record is to be retrieved by ID eg $user = new User(1);
+    public function __construct($id = null)
+    {
+        parent::__construct($id);
+    }
+
+    # Optional - post model initialisation code
+    public function post_model_init($from_cache = false)
+    {
+    }
+
+    // extending date modal here //
+    public function _to_object($item, $row)
+    {
+        // Populate this object with values from first record
+        foreach ($row as $key =&gt; $value) {
+            if ($this-&gt;isEncryptedField($key)) {
+                $item-&gt;{$key} = decodeField($value);
+            } else {
+                $item-&gt;{$key} = $value;
+            }
+        }
+
+        foreach ($this-&gt;fields as $field) {
+            if (!isset($row-&gt;{$field})) {
+                $item-&gt;{$field} = null;
+            }
+        }
+
+        // Force IDs to integers
+        foreach ($this-&gt;_field_tracking['intval'] as $field) {
+            if (isset($item-&gt;{$field})) {
+                $item-&gt;{$field} = intval($item-&gt;{$field});
+            }
+        }
+
+        if (!empty($this-&gt;_field_tracking['get_rules'])) {
+            $item-&gt;_run_get_rules();
+        }
+
+        $item-&gt;_refresh_stored_values();
+
+        if ($this-&gt;_instantiations) {
+            foreach ($this-&gt;_instantiations as $related_field =&gt; $field_map) {
+                // convert fields to a 'row' object
+                $row = new stdClass();
+                foreach ($field_map as $item_field =&gt; $c_field) {
+                    $row-&gt;{$c_field} = $item-&gt;{$item_field};
+                }
+
+                // get the related item
+                $c =&amp; $item-&gt;_get_without_auto_populating($related_field);
+                // set the values
+                $c-&gt;_to_object($c, $row);
+
+                // also set up the -&gt;all array
+                $c-&gt;all    = array();
+                $c-&gt;all[0] = $c-&gt;get_clone();
+            }
+        }
+    }
+
+    public function save($object = '', $related_field = '')
+    {
+        // Temporarily store the success/failure
+        $result = array();
+
+        // Validate this objects properties
+        $this-&gt;validate($object, $related_field);
+
+        // If validation passed
+        if ($this-&gt;valid) {
+
+            // Begin auto transaction
+            $this-&gt;_auto_trans_begin();
+
+            $trans_complete_label = array();
+
+            // Get current timestamp
+            $timestamp = $this-&gt;_get_generated_timestamp();
+
+            // Check if object has a 'created' field, and it is not already set
+            if (in_array($this-&gt;created_field, $this-&gt;fields) &amp;&amp; empty($this-&gt;{$this-&gt;created_field})) {
+                $this-&gt;{$this-&gt;created_field} = $timestamp;
+            }
+
+            // SmartSave: if there are objects being saved, and they are stored
+            // as in-table foreign keys, we can save them at this step.
+            if (!empty($object)) {
+                if (!is_array($object)) {
+                    $object = array(
+                        $object
+                    );
+                }
+
+                $this-&gt;_save_itfk($object, $related_field);
+            }
+
+            // Convert this object to array
+            $data = $this-&gt;_to_array();
+            $data = $this-&gt;changeWithEncrypted($data);
+            //pretty_print($data);
+
+            if (!empty($data)) {
+                if (!$this-&gt;_force_save_as_new &amp;&amp; !empty($data['id'])) {
+                    // Prepare data to send only changed fields
+                    foreach ($data as $field =&gt; $value) {
+                        // Unset field from data if it hasn't been changed
+                        if ($this-&gt;{$field} === $this-&gt;stored-&gt;{$field}) {
+                            unset($data[$field]);
+                        }
+                    }
+
+                    // if there are changes, check if we need to update the update timestamp
+                    if (count($data) &amp;&amp; in_array($this-&gt;updated_field, $this-&gt;fields) &amp;&amp; !isset($data[$this-&gt;updated_field])) {
+                        // update it now
+                        $data[$this-&gt;updated_field] = $this-&gt;{$this-&gt;updated_field} = $timestamp;
+                    }
+
+                    // Only go ahead with save if there is still data
+                    if (!empty($data)) {
+                        // Update existing record
+                        $this-&gt;db-&gt;where('id', $this-&gt;id);
+                        $this-&gt;db-&gt;update($this-&gt;table, $data);
+
+                        $trans_complete_label[] = 'update';
+                    }
+
+                    // Reset validated
+                    $this-&gt;_validated = false;
+
+                    $result[] = true;
+                } else {
+                    // Prepare data to send only populated fields
+                    foreach ($data as $field =&gt; $value) {
+                        // Unset field from data
+                        if (!isset($value)) {
+                            unset($data[$field]);
+                        }
+                    }
+
+                    // Create new record
+                    $this-&gt;db-&gt;insert($this-&gt;table, $data);
+
+                    if (!$this-&gt;_force_save_as_new) {
+                        // Assign new ID
+                        $this-&gt;id = $this-&gt;db-&gt;insert_id();
+                    }
+
+                    $trans_complete_label[] = 'insert';
+
+                    // Reset validated
+                    $this-&gt;_validated = false;
+
+                    $result[] = true;
+                }
+            }
+
+            $this-&gt;_refresh_stored_values();
+
+            // Check if a relationship is being saved
+            if (!empty($object)) {
+                // save recursively
+                $this-&gt;_save_related_recursive($object, $related_field);
+
+                $trans_complete_label[] = 'relationships';
+            }
+
+            if (!empty($trans_complete_label)) {
+                $trans_complete_label = 'save (' . implode(', ', $trans_complete_label) . ')';
+            } else {
+                $trans_complete_label = '-nothing done-';
+            }
+
+            $this-&gt;_auto_trans_complete($trans_complete_label);
+
+        }
+
+        $this-&gt;_force_save_as_new = false;
+
+        // If no failure was recorded, return TRUE
+        return (!empty($result) &amp;&amp; !in_array(false, $result));
+    }
+
+    private function isEncryptedField($key)
+    {
+        if (false !== in_array($key, $this-&gt;encryptFields)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function changeWithEncrypted(array $array)
+    {
+        foreach ($array as $key =&gt; $value) {
+            if ($this-&gt;isEncryptedField($key)) {
+                if ($value !== '') {
+                    $array[$key] = encodeField($value);
+                } else {
+                    $array[$key] = $value;
+                }
+            }
+        }
+
+        return $array;
+    }
+
+    private function _get_generated_timestamp()
+    {
+        // Get current timestamp
+        $timestamp = ($this-&gt;local_time) ? date($this-&gt;timestamp_format) : gmdate($this-&gt;timestamp_format);
+
+        // Check if unix timestamp
+        return ($this-&gt;unix_timestamp) ? strtotime($timestamp) : $timestamp;
+    }
+
+}</code></pre>
+<p>In above class, most of the code remains same for <code>_to_object()</code> and <code>save()</code> functions as in original data mapper class but I have modified few places so that I can put encryption for needed fields.</p>
+<p>So in conclusion, we learned how we tapped onto the data mapper class and extended it for our needs of auto-encryption of told fields. If you happen to have similar requirement or you wanted to inject your own functionality to the data mapper, you can do that through the use of <code>_to_object()</code>  and <code>save()</code> functions of data mapper.</p></p>
                 <br/><br/>
 
                 <div class="post-info">
@@ -94,10 +412,8 @@
 
                     <span class="glyphicon glyphicon-bookmark"></span>
 
-                        <a href="https://codeinphp.github.io/tag/app">app</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/sqlite">sqlite</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/todo">todo</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/datamapper">datamapper</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/codeigniter">codeigniter</a>&nbsp;&nbsp;
                 </div>
 
             </article>
