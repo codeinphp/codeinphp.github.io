@@ -394,6 +394,7 @@ Array
     [3] =&gt; 8
     [4] =&gt; 10
 )</code></pre>
+<hr />
 <p><strong>In Routing</strong></p>
 <p>You might have seen closures being used in routing in framework like Laravel, Slim, Silex, etc:</p>
 <pre><code>$app = new \Slim\Slim($options);
@@ -401,7 +402,38 @@ Array
 $app-&gt;get('/', function () use ($app) {
     $app-&gt;render('home', array('content' =&gt; 'Hello, World!!!'));
 });</code></pre>
-<p>Here <code>$app</code> is imported from outside scope into the scope of closure so that it can be used to render the view <code>$app-&gt;render(...)</code></p>]]></description>
+<p>Here <code>$app</code> is imported from outside scope into the scope of closure so that it can be used to render the view <code>$app-&gt;render(...)</code></p>
+<hr />
+<p><strong>Accessing Private Members of a Class</strong></p>
+<p>We can use <a href="http://www.php.net/manual/en/closure.bind.php"><code>bind()</code></a> or <a href="http://www.php.net/manual/en/closure.bindto.php"><code>bindTo</code></a> methods of <code>Closure</code> class to access <code>private</code> data of some class, for example:</p>
+<pre><code>class MyClass {
+    private $variable = 'I am private variable!';
+}
+
+$closure = function() {
+    return $this-&gt;variable;
+};
+
+$result = Closure::bind($closure, new MyClass(), 'MyClass');
+echo $result(); // I am private variable!</code></pre>
+<p>There you see, we were able to get value of private variable <code>$variable</code>.</p>
+<p>Similarly, it is also possible to <strong>add new behaviour to a class without actuallly modifying it direclty</strong>. Pretty cool hun ?</p>
+<hr />
+<p><strong>Lazy-loading a Class</strong></p>
+<p>Another <code>^cool^</code> thing you can do with closure is to lazy-load a class. For example:</p>
+<pre><code>class MyClass {
+    public function __construct() {
+        echo 'I am initialized!';
+    }
+}
+
+$getMyClass = function() {
+    $myClass = new MyClass();
+    return $myClass;
+};</code></pre>
+<p>If you run above code, you might expect to see <code>I am initialized!</code> message because one might think we are creating an instance of <code>MyClass</code>. That's not true though, because code inside <code>$getMyClass</code> anonymous function is not run until you actually call it:</p>
+<pre><code>$myClass = $getMyClass();</code></pre>
+<p>And now you would see the message <code>I am initialized!</code>. So this is pretty neat trick to defer some piece of code and use it only when you need it.</p>]]></description>
 <link>https://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php</link>
 <pubDate>Sat, 18 Apr 2015 23:57:00 +0200</pubDate>
 </item>
