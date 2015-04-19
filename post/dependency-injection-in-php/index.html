@@ -8,7 +8,7 @@
     <meta name="description" content="PHP and more...">
     <meta name="author" content="Sarfraz Ahmed">
 
-    <title>JavaScript Best Practices :: Code In PHP</title>
+    <title>Dependency Injection in PHP :: Code In PHP</title>
 
     <!-- rss feed url -->
     <link rel="alternate" type="application/rss+xml" title="Code In PHP" href="https://codeinphp.github.io/rss.xml"/>
@@ -71,240 +71,238 @@
     <div class="row">
         <div class="col-md-8 main-content">
             <article>
-                <h3>JavaScript Best Practices</h3>
+                <h3>Dependency Injection in PHP</h3>
                 <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                 &nbsp;&nbsp;
-                <span class="glyphicon glyphicon-time"></span> April 19, 2015 10:00 AM
+                <span class="glyphicon glyphicon-time"></span> April 19, 2015 09:44 PM
                 <hr>
 
-                <p class="post-content"><p>JavaScript is not only amazing language but also very tricky language. To make correct use of it, you need to follow some best practices to avoid any problems that might come about otherwise. I share some of the best practices you really should be following when writing JavaScript code. Of course this is not an exhaustive list but at the most fundamental level, every programmer should know and adhere to it.</p>
-<h2>1 -NEVER FORGET <code>VAR</code> KEYWORD</h2>
-<p>Most of the developers know about this but yet I wanted to mention this because it may not be clear to some or newbies or people having other programming language background that come to JavaScript.</p>
-<p>Consider the following piece of code:</p>
-<pre><code>function myFunc(){
-    var firstName = 'sarfraz';
-    lastName = 'ahmed';
-}</code></pre>
-<p>It should be noted that in JS, variables have function-level scope which means a variable declared inside a function can not be accessed outside of it. So let’s test above two variables:</p>
-<pre><code>myFunc();
-console.log(lastName); // ahmed
-console.log(firstName); // undefined</code></pre>
-<p>As you will notice, we are still able to access <code>lastName</code> variable. The reason is that it does not have function-level scope because we forgot to put var keyword before it unlike <code>firstName</code> variable. Hence, <code>lastName</code> variable went into <strong>global</strong> scope and became part of <code>window</code> (while inside browser) object eg <code>window.lastName</code> will output the last name too.</p>
-<p>It is therefore always required to put <code>var</code> keyword before variables so that they do not become part of global scope. It has following benefits:</p>
+                <p class="post-content"><p>This is what wikipedia has to say about Dependency Injection:</p>
+<blockquote>
+<p>In software engineering, dependency injection is a software design
+pattern that implements inversion of control for software libraries.
+Caller delegates to an external framework the control flow of
+discovering and importing a service or software module specified or
+&quot;injected&quot; by the caller.</p>
+</blockquote>
+<p>In simple terms, Dependency Injection is a design pattern that helps <em>avoid hard-coding dependencies</em> for a some piece of code or software. </p>
+<p>The dependencies can be changed at <em>run time as well as compile time</em>. We can use Dependency Injection to write modular, testable and maintainable code:</p>
 <ul>
-<li>You save the memory and improve performance</li>
-<li>You don’t pollute the global scope</li>
-<li>You mistakenly don’t overwrite a global variable that might have the same variable name</li>
+<li><strong>Modular</strong>: The Dependency Injection helps create completely self-sufficient classes or modules</li>
+<li><strong>Testable</strong>: It helps write testable code easily eg unit tests for example</li>
+<li><strong>Maintainable</strong>: Since each class becomes self-sufficient and modular, it becomes easier to manage it</li>
 </ul>
-<p>This is a very important concept and JS developers have always been finding solutions to avoid this problem. One of the most popular solution is <a href="http://chrisiona.com/learning-modern-javascript/the-singleton-pattern/">Singleton</a> or <a href="http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth">Module Pattern</a> you should check out. By the way, if you want to see other patterns also, take a look at:</p>
-<p><a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/">Essential JavaScript Design Patterns For Beginners</a></p>
-<h2>2 – DECLARE VARIABLES ON TOP</h2>
-<p>Another thing that should be followed is that variables should be declared on top of each function because of what is known as <strong>JavaScript Hoisting</strong>. Here is an example:</p>
-<pre><code>var name = 'sarfraz';
-
-(function(){
-console.log(name); // undefined
-     var name = 'nawaz';
-     console.log(name); // nawaz
-})();</code></pre>
-<p>Notice that even though <code>name</code> variable is outside the scope of function but on the very first line it gives back <code>undefined</code> rather than actual name. The reason for this is that interpreter hoists or moves variables on top of the function, here is how interpreter sees or re-arranges it:</p>
-<pre><code>var name = 'sarfraz';
-
-(function(){
-     var name;
-     console.log(name); // undefined
-     name = 'nawaz';
-     console.log(name); // nawaz
-})();</code></pre>
-<p>As can be seen, <code>name</code> variable has been hoisted to top and declared there and also <code>var</code> keyword has been stripped from it where we assigned the value of <code>nawaz</code>.</p>
-<p>The same is issue is not only with variables but also <strong>function declarations</strong> but NOT with <strong>function expressions</strong>. You can learn more about the difference between function declaration and function expression here:</p>
-<p><a href="http://kangax.github.com/nfe/">Named Functions Demystified</a></p>
-<p>The solution to this problem is to always declare <strong>variables and function declarations</strong> on top of container function:</p>
-<pre><code>function myFunc(){
-     var foo;
-     var bar;
-     var baz;
-
-     // do something foo, bar, baz
+<hr />
+<h2>The Problem</h2>
+<p>We have dependencies almost always in our code. Consider the following procedural example which is pretty common:</p>
+<pre><code>function getUsers() {
+     global $database;
+     return $database-&gt;getAll('users');
 }</code></pre>
-<p>The preferred and recommended syntax though that you must follow is to declare all variables in one go by separating them with a comma:</p>
-<pre><code>function myFunc(){
-     var foo, bar, baz;
-
-     // do something foo, bar, baz
-}</code></pre>
-<h2>3 – INITIALIZING MULTIPLE VARIABLES</h2>
-<p>Declaring variables on top is good practice but not <em>multiple initialization</em>. Consider:</p>
-<pre><code>function myFunc(){
-    var lang = encoding = 'en';
-}</code></pre>
-<p>This is a very common mistake even amongst experienced JS developers where they think they have quickly assigned two variables same scope and same value. Though value for both <code>lang</code> and <code>encoding</code> variable is some but not the scope. Try it out:</p>
-<pre><code>myFunc();
-console.log(encoding); // en
-console.log(lang); // undefined</code></pre>
-<p>Here again, variable <code>encoding</code> has gone into global scope. Since <code>var</code> keyword is only appears before <code>lang</code> variable, that is the one which gets correct functional scope. In short, you should avoid that shorthand initialization unfortunately.</p>
-<h2>4 – STARTING CURLY BRACE ON THE SAME LINE</h2>
-<p>Consider the following code block where starting curly brace <code>{</code> is on a new line, this works fine in most situations:</p>
-<pre><code>function myFunc()
-{
-    // some code
-}</code></pre>
-<p>However, same convention will not yield expected results if you happen to write:</p>
-<pre><code>function myFunc()
-{
-     return
-     {
-         name: 'sarfraz'
-     };
-}
-
-var f = myFunc();
-console.log(f);</code></pre>
-<p>The result will be <code>undefined</code> because behind the scenes, interpreter puts a semicolon <code>;</code> after the <code>return</code> keyword making it:</p>
-<pre><code>function myFunc()
-{
-     return; // &lt;----------------
-     {
-         name: 'sarfraz'
-     };
-}</code></pre>
-<p>To remedy such hard-to-debug issues, it is good practice to always put starting curly brace on the <strong>same line</strong>, this would work fine though:</p>
-<pre><code>function myFunc() {
-     return {
-         name: 'sarfraz'
-     };
-}
-
-var f = myFunc();
-console.log(f.name); // sarfraz</code></pre>
-<p>And that’s a reason why <a href="http://www.crockford.com/">Douglas Crockford</a> in his book “<a href="http://www.amazon.com/JavaScript-Good-Parts-Douglas-Crockford/dp/0596517742">JavaScript: The Good Parts</a>“, advocates this syntax for JS:</p>
-<pre><code>function () {
-     // some code
-}
-
-if (expression) {
-     // do something
-}</code></pre>
-<p>Go ahead and check out <a href="http://javascript.crockford.com/code.html">JavaScript Coding Style</a> to learn more as well as naming conventions.</p>
-<p>Notice that it is not the <code>return</code> keyword affected by automatic semi-colon insertion but all these too:</p>
+<p>Here the function <code>getUsers</code> has dependency on the <code>$database</code> variable (tight coupling). It has some of these problems:</p>
 <ul>
-<li><strong>var</strong> statement</li>
-<li><strong>empty</strong> statement</li>
-<li><strong>expression</strong> statement</li>
-<li><strong>do-while</strong> statement</li>
-<li><strong>continue</strong> statement</li>
-<li><strong>break</strong> statement</li>
-<li><strong>throw</strong> statement</li>
+<li>
+<p>The function <code>getUsers</code> needs a <strong>working</strong> connection to <em>some database</em> . Whether there is successful connection to database or not is the fate of <code>getUsers</code> function</p>
+</li>
+<li>The <code>$database</code> comes from outer scope so chances are it might be overwritten by some other library or code in the same scope in which case function may fail</li>
 </ul>
-<p>Experienced JavaScript developers know pretty well about JavaScript’s <em>automatic semi-colon insertion problem</em> and avoid it. The benefit of above coding style however is that you avoid this problem without knowing that this problem exists just by following that coding style.</p>
-<h2>5 – USE ARRAY LITERAL INSTEAD OF NEW ARRAY()</h2>
-<p>There are two ways you can create arrays in JS:</p>
-<pre><code>var arr1 = new Array(); // array constructor
-var arr2 = []; // array literal</code></pre>
-<p>Though both serve the purpose of creating arrays but there is important difference between the two.</p>
-<p>In JS, even an array is an object. With first constructor method above, you are telling interpreter to call constructor of the <code>Array</code> and generate an object. The interpreter looks up into the execution context to find the constructor and once found, it calls it and creates the <code>Array</code> object. It seems that it has performance hit too as compared to latter array literal method. With the array literal method, interpreter just creates the array on run-time with no extra processing done.</p>
-<p>Other than that, Array constructor is mis-guiding the way it handles its parameters. Consider:</p>
-<pre><code>console.log(new Array(5)); // [,,,,]
-console.log(new Array('5')); // ["5"]</code></pre>
-<p>When one argument is passed to Array and that happens to be a number, a new array is returned with its length property equal to that number passed. The important thing to note here is that Array will be initialized from what number you specified to it, for example:</p>
-<pre><code>// Array constructor
-var arr = new Array(2);
-console.log(arr.length); // 2
-console.log(arr[0]); // undefined
+<p>Of course you could have used the <code>try-catch</code> constructs but it still doesn't solve the second problem.</p>
+<p>Let's consider another example for a class:</p>
+<pre><code>class User 
+{
+    private $database = null;
 
-// Array literal
-var arr = [2];
-console.log(arr.length); // 1
-console.log(arr[0]); // 2</code></pre>
-<p>So the conclusion is to always use array literal notation rather than Array constructor.</p>
-<h2>6 – USE PROTOTYPE TO SHARE ACROSS</h2>
-<p>The concept of prototypes or prototypal inheritance is rather confusing. I have seen people especially inexperienced JS developers adding class members to parent function which needs to be shared across child classes. Consider the following code:</p>
-<pre><code>function Person(name){
-    this.name = name;
-}</code></pre>
-<p>Now let’s assume we want to have child classes the ability to display the names some how, one of doing it is putting method directly inside <code>Person</code> class:</p>
-<pre><code>function Person(name){
-     this.name = name;
+    public function __construct() {
+        $this-&gt;database = new database('host', 'user', 'pass', 'dbname');
+    }
 
-     this.display = function(){
-         alert(this.name);
-     }
-}</code></pre>
-<p>Other way is to use <code>prototype</code>:</p>
-<pre><code>function Person(name){
-     this.name = name;
+    public function getUsers() {
+        return $this-&gt;database-&gt;getAll('users');
+    }
 }
 
-Person.prototype.display = function(){
-     alert(this.name);
+$user = new User();
+$user-&gt;getUsers();</code></pre>
+<p>This code again has these problems:</p>
+<ul>
+<li>
+<p>The class <code>User</code> has implicit dependency on the specific <code>database</code>. All dependencies should always be <strong>explicit</strong> not implicit. This defeats <a href="http://en.wikipedia.org/wiki/Dependency_inversion_principle">Dependency inversion principle</a></p>
+</li>
+<li>
+<p>If we wanted to change database credentials, we need to edit the <code>User</code> class which is not good; every class should be completely <strong>modular</strong> or black box. If we need to operate further on it, we should actually use its public properties and methods instead of editing it again and again. This defeats <a href="http://en.wikipedia.org/wiki/Open/closed_principle">Open/closed principle</a></p>
+</li>
+<li>
+<p>Let's assume right now class is using MySQL as database. What if we wanted to use some other type of database ? You will have to modify it.</p>
+</li>
+<li>
+<p>The <code>User</code> class does not necessarily need to know about database connection, it should be confined to its own functionality only. So writing database connection code in <code>User</code> class doesn't make it modular. This defeats the <a href="http://en.wikipedia.org/wiki/Single_responsibility_principle">Single responsibility principle</a>. Think of this analogy: A cat knows how to <code>meow</code> and a dog knows how to <code>woof</code>; you cannot mix them or expect dog to say <code>meow</code>. Just like real world, each object of a class should be responsible for its own specific task.</p>
+</li>
+<li>It would become harder to write unit tests for the <code>User</code> class because we are instantiating the database class inside its constructor so it would be impossible to write unit tests for the <code>User</code> class without also testing the database class.</li>
+</ul>
+<h2>Enter Dependency Injection!</h2>
+<p>Let's see how we can easily take care of above issues by using Dependency Injection. The Dependency Injection is nothing but <strong>injecting a dependency explicitly</strong>. Let's re-write above class:</p>
+<pre><code>class User 
+{
+    private $database = null;
+
+    public function __construct(Database $database) {
+        $this-&gt;database = $database;
+    }
+
+    public function getUsers() {
+        return $this-&gt;database-&gt;getAll('users');
+    }
+}
+
+$database = new Database();
+$user = new User($database);
+$user-&gt;getUsers();</code></pre>
+<p>And there you have much better code, thanks to Dependency Injection principle. Notice that instead of hard-coding database dependency:</p>
+<pre><code>$this-&gt;database = new database('host', 'user', 'pass', 'dbname');</code></pre>
+<p>We are now injecting it into the constructor, that's it:</p>
+<pre><code>public function __construct(Database $database)</code></pre>
+<p>Notice also how we are passing database instance now:</p>
+<pre><code>$database = new Database('host', 'user', 'pass', 'dbname');
+$user = new User($database);
+$user-&gt;getUsers();</code></pre>
+<p>It follows <a href="http://en.wikipedia.org/wiki/Hollywood_Principle">Hollywood Principle</a>, which states: <strong>&quot;Don’t call us, we’ll call you.&quot;</strong></p>
+<p>Let's see if this explicit dependency injection now solves problems we mentioned above.</p>
+<hr />
+<blockquote>
+<p>The class User has implicit dependency on the specific database
+. All dependencies should always be explicit not implicit.
+This defeats Dependency inversion principle</p>
+</blockquote>
+<p>We have already made database dependency explicit by requiring it into the constructor of the <code>User</code> class:</p>
+<pre><code>public function __construct(Database $database)</code></pre>
+<p>Here we are taking advantage of <strong>type hinting</strong> by specifying type of object we are expecting which is <code>Database</code> although it wasn't necessary but it is always a good idea to type hint when you can.</p>
+<blockquote>
+<p>If we wanted to change database credentials, we need to edit the User
+class which is not good; every class should be completely modular or
+black box. If we need to operate further on it, we should actually use
+its public properties and methods instead of editing it again and
+again. This defeats Open/closed principle</p>
+</blockquote>
+<p>The <code>User</code> class now does not need to worry about how database is connected. All it expects is <code>Database</code> instance. We no more need to edit <code>User</code> class for it's dependency, we have just provided it with what it needed.</p>
+<blockquote>
+<p>Let's assume right now class is using MySQL as database. What if we
+wanted to use some other type of database ? You will have to modify
+it.</p>
+</blockquote>
+<p>Again, the <code>User</code> class doesn't need to know which type of database is used. For the <code>Database</code>, we could now create different adapters for different types of database and pass to <code>User</code> class. For example, we could create an <code>interface</code> that would enforce common methods for all different types of database classes that must be implement by them. For our example, we pretend that interface would enforce to have a <code>getUser()</code> method requirement in different types of database classes.</p>
+<blockquote>
+<p>The User class does not necessarily need to know about database
+connection, it should be confined to its own functionality only. So
+writing database connection code in User class doesn't make it
+modular. This defeats the Single responsibility principle.</p>
+</blockquote>
+<p>Of course <code>User</code> class now doesn't know how database was connected. It just needs a valid connected <code>Database</code> instance.</p>
+<blockquote>
+<p>It would become harder to write unit tests for the User class because
+we are instantiating the database class inside its constructor so it
+would be impossible to write unit tests for the User class without
+also testing the database class.</p>
+</blockquote>
+<p>If you have wrote unit tests, you know now it will be a breeze to write tests for the <code>User</code> class using something like <a href="https://github.com/padraic/mockery">Mockery</a> or similar to create mock object for the <code>Database</code>.</p>
+<hr />
+<h2>Different Ways of Injecting Dependencies</h2>
+<p>Now that we have seen how useful Dependency Injection is, let's see different ways of injecting dependencies. There are three ways you can inject dependencies:</p>
+<ul>
+<li>Constructor Injection</li>
+<li>Setter Injection</li>
+<li>Interface Injection</li>
+</ul>
+<p><strong>Constructor Injection</strong></p>
+<p>We have already seen example of <strong>Constructor Injection</strong> in above example. Constructor injection is useful when:</p>
+<ul>
+<li>
+<p>A dependency is <strong>required</strong> and class can't work without it. By using constructor injection. we make sure all its required dependencies are passed.</p>
+</li>
+<li>Since constructor is called only at the time of instantiating a class, we can make sure that its dependencies cant be changed during the life time of the object.</li>
+</ul>
+<p>Constructor injection suffer from one problem though:</p>
+<ul>
+<li>Since constructor has dependencies, it becomes rather difficult to extend/override it in child classes.</li>
+</ul>
+<p><strong>Setter Injection</strong></p>
+<p>Unlike Constructor injection which makes it <strong>required</strong> to have its dependencies passed, setter injection can be used to have <strong>optional dependencies</strong>. Let's pretend that our <code>User</code> class doesn't require <code>Database</code> instance but uses optionally for certain tasks. In this case, you would use a setter method to inject the <code>Database</code> into the <code>User</code> class something like:</p>
+<pre><code>class User 
+{
+    private $database = null;
+
+    public function setDatabase(Database $database) {
+        $this-&gt;database = $database;
+    }
+
+    public function getUsers() {
+        return $this-&gt;database-&gt;getAll('users');
+    }
+}
+
+$database = new Database();
+$user = new User();
+$user-&gt;setDatabase($database);
+$user-&gt;getUsers();</code></pre>
+<p>As you can see, here we have used <code>setDatabase()</code> setter function to inject <code>Database</code> dependency into the <code>User</code> class. If we needed some other dependency, we could have created one more setter method and injected in the similar fashion.</p>
+<p>So Setter Injection is useful when:</p>
+<ul>
+<li>A class needs optional dependencies so it can set itself up with default values or add additional functionality it needs.</li>
+</ul>
+<p><strong>Interface Injection</strong></p>
+<p>In this type of injection, an interface enforces the dependencies for any classes that implements it, for example:</p>
+<pre><code>interface someInterface {
+    function getUsers(Database $database);
 }</code></pre>
-<p>With both ways, all child classes will be able to use the display method but there is important difference between the two. When you attach any methods or properties via <code>this</code> (first way above) to a class then all instances of inheriting child classes will also have these properties or methods within them or their signature. On the other hand, when you use <code>prototype</code> to add members (properties and methods) to parent class, children classes will still inherit all members but it won’t be present inside their own functionality or signature, rather they will be borrowing that functionality from their parent class thereby saving memory. For this reason, later approach seems good to follow in most situations.</p>
-<h2>7 – PUT COMMA BEFORE PROPERTIES</h2>
-<p>When working with objects or arrays, it is always a good idea to put a comma before the variable or object property eg:</p>
-<pre><code>// jQuery - create a new div with some css
-$('&lt;div&gt;').attr({
-   "id"       : "myId"
- , "class" : "myClass"
- , "class" : "myClass"
- , "color" : "green"
- , "fontWeight" : "bold"
-});</code></pre>
-<p>In this way, we never add an extra comma or forget one from the last property. The reason why this is good practice is that, in IE, with extra comma at the last property, we do not get expected results sometimes (<strong>ExtJS</strong> developers must have learned this). I do the same with multiple variable declarations or arguments of function. It also makes the code look pretty too as far as I see it.</p>
-<h2>8 – DON’T MIX JS AND HTML</h2>
-<p>One of the most important best practices is to always <em>separate JS code from HTML</em> and go <a href="http://en.wikipedia.org/wiki/Unobtrusive_JavaScript">unobtrusive</a>. One would often see code like this:</p>
-<pre><code>&lt;a href="#" onclick="doSomething()"&gt;Some Action&lt;/a&gt;
-&lt;input type="button" onclick="doSomething()" value="Do Something" /&gt;
-&lt;form onsubmit="doSomething();"&gt;...</code></pre>
-<p>That’s a very bad practice in that it is hard to manage and maintain. HTML and JS should not be mixed ever. You could do the same thing like this:</p>
-<pre><code>&lt;a href="#" id="link"&gt;Some Action&lt;/a&gt;
-&lt;input type="button" id="button" value="Do Something" /&gt;
-&lt;form id="frm"&gt;...
+<p>Now any class that needs to implement <code>someInterface</code> must provide <code>Database</code> dependency in their <code>getUsers()</code> methods.</p>
+<hr />
+<h2>The Problem Again</h2>
+<p>So for we have seen very contrived example of injecting dependency into a simple class but in real world applications, a class might have many dependencies. It isn't all that easy to manage all those dependencies easily because you need to KNOW which dependencies are required by a certain class and HOW they need to be instantiated. Let's take example of setter injection:</p>
+<pre><code>class User 
+{
+    private $database = null;
 
-&lt;script type="text/javascript"&gt;
-var link = document.getElementById('link'),
- btn = document.getElementById('button'),
- frm = document.getElementById('link');
+    public function setDatabase(Database $database) {
+        $this-&gt;database = $database;
+    }
 
-link.onclick = function(){
- // do something
-};
-
-btn.onclick = function(){
- // do something
-};
-
-frm.onsubmit = function(){
- // validate form
-};     
-&lt;/script&gt;</code></pre>
-<p>This way it becomes easy to manage, maintain or enhance both HTML and JavaScript.</p>
-<h2>9 – PUT SCRIPTS AT BOTTOM</h2>
-<p>Normally scripts are put in <code>&lt;head&gt;&lt;/head&gt;</code> tags but this should be avoided. The reason for this is that browser loads your scripts sequentially and by the time they are loading, nothing else is done and website load times slow down (or at least that’s how visitors will perceive it) and you see actual output only after those scripts have been loaded by the browser.</p>
-<p>The best practice is that scripts should be put on bottom of page just before closing body tag eg <code>&lt;/body&gt;</code>. This way browser will instantly display page and page load time will be better for users who view that page.</p>
-<p>By the way, always put CSS on top in <code>&lt;head&gt;&lt;/head&gt;</code> tags because that’s something browser reads first and renders page’s layout accordingly.</p>
-<p>Read more about this at famous <a href="http://developer.yahoo.com/performance/rules.html">Yahoo’s performance article</a>.</p>
-<p>I would also suggest you to use Yahoo’s <a href="http://developer.yahoo.com/yslow/">YSlow</a> or Google’s <a href="http://code.google.com/speed/page-speed/">PageSpeed</a> add-on (add-ons of <a href="http://getfirebug.com/">Firebug</a>) which suggest you a lot of things on how to improve the performance of the page.</p>
-<h2>10 – NEVER FORGET SEMI-COLON</h2>
-<p>Always end statements and function expressions with a semi-colon:</p>
-<pre><code>var name = 'some name'; // &lt;-------------
-
-var myFunc = function(){
-// some doe
-
-}; // &lt;------------</code></pre>
-<p>This is useful when you want to compress the code (for faster load times). If at any place, semi-colon isn’t present, you won’t be able to compress the code or wouldn’t get expected results most likely code-wise. You should always, always use semi-colons.</p>
-<h2>BONUS</h2>
-<p>The good news is that you can solve most of above problems by using <a href="http://www.jshint.com/">JSHint</a> or <a href="http://jslint.com/">JSLint</a> code quality tool. It will tell you about best-practices and any errors that might exist in your code. Having said that, it is good to improve your JS skills and avoid the need to go to such tools.</p></p>
+    public function getUsers() {
+        return $this-&gt;database-&gt;getAll('users');
+    }
+}</code></pre>
+<p>Since dependencies in this case are optional, we could have mistakenly written this code to get users:</p>
+<pre><code>$user = new User();
+$user-&gt;getUsers();</code></pre>
+<p>Since we didn't know <code>getUsers()</code> method is actually dependent on <code>Database</code> class, this would have given error. You could have found that out only by going to code of <code>User</code> class and then realizing there is <code>setDatabase()</code> method that must be called before using the <code>getUsers()</code> method. Or let's assume further that before using database, we needed to set some type of configuration for the <code>User</code> class like:</p>
+<pre><code>$user = new User();
+$user-&gt;setConfig($configArray);</code></pre>
+<p>Then again we needed to remember specific order of method calls:</p>
+<pre><code>$user = new User();
+$user-&gt;setConfig($configArray);
+$user-&gt;setDatabase($database);</code></pre>
+<p>So you must remember order of method calls, you can't use database if you don't setup configuration first, so you can't do:</p>
+<pre><code>$user = new User();
+$user-&gt;setDatabase($database);
+$user-&gt;setConfig($configArray);</code></pre>
+<p>This is example for setter injection but even with constructor injection if there are many dependencies, it becomes harder to manage all of those manually and you could easily and mistakenly create more than one instances of dependencies throughout your code which would result in high memory usage.</p>
+<p>You might wonder dependency injection sounded like good thing to have but these problems are not worth it. Well that's not true because there is solution to all of these problems discussed next :)</p>
+<h2>Solution - Dependency Injection Container</h2>
+<p>Of course it would be difficult to manage dependencies manually; this is why you need a Dependency Injection Container. A Dependency Injection Container is something that handles dependencies for your class(es) automatically. If you have worked with Laravel or Symfony, you know that components have dependencies on on other classes. How do they manage all of those dependencies ? Yes they use some sort of Dependency Injection Container.</p>
+<p>There are <a href="http://www.sitepoint.com/php-dependency-injection-container-performance-benchmarks/">quite some dependency injection containers out there for PHP</a> that can be used for this purpose or you can also write your own. Each container might have bit of different syntax but they perform the same thing under the hood.</p>
+<hr />
+<p>So in conclusion, you must always remove hard-coded dependencies from your code and inject them using Dependency Injection instead for its benefits and then have all the injected dependencies managed automatically for you by using some dependency injection container.</p></p>
                 <br/><br/>
 
                 <div class="post-info">
                         <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
-                        <a href="https://codeinphp.github.io/category/javascript">Javascript</a>
+                        <a href="https://codeinphp.github.io/category/php">PHP</a>
                         &nbsp;&nbsp;
 
                     <span class="glyphicon glyphicon-bookmark"></span>
 
-                        <a href="https://codeinphp.github.io/tag/javascript">javascript</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/dependency">dependency</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/injection">injection</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/oop">oop</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
                 </div>
 
             </article>

@@ -23,9 +23,10 @@ $(function () {
         }
     });
 
-    // lightbox for all images
+    // lightbox for all images + make them responsive
     $('img').each(function () {
         var src = this.src;
+        $(this).addClass('img-responsive');
         $(this).wrap('<a data-toggle="lightbox" href="' + src + '"></a>');
     });
 

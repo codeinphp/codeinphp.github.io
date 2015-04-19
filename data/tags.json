@@ -42,5 +42,7 @@
 	"47": "sql",
 	"48": "mysql",
 	"49": "database",
-	"50": "visual"
+	"50": "visual",
+	"51": "dependency",
+	"52": "injection"
 }
