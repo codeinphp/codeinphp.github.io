@@ -87,6 +87,8 @@ $sayHello = function () use ($message) {
 };
 
 $sayHello(); // Hello, World!</code></pre>
+<p>Thanks to closure (<code>use</code> keyword), we are now able to access <code>$message</code> variable!</p>
+<hr />
 <p>If you need to change the value of passed outside variable, you need to use reference of course:</p>
 <pre><code>$message = 'Hello, World!';
 
