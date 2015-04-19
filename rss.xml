@@ -84,7 +84,7 @@ $user-&gt;getUsers();</code></pre>
     }
 }
 
-$database = new Database();
+$database = new Database('host', 'user', 'pass', 'dbname');
 $user = new User($database);
 $user-&gt;getUsers();</code></pre>
 <p>And there you have much better code, thanks to Dependency Injection principle. Notice that instead of hard-coding database dependency:</p>
@@ -169,7 +169,7 @@ also testing the database class.</p>
     }
 }
 
-$database = new Database();
+$database = new Database('host', 'user', 'pass', 'dbname');
 $user = new User();
 $user-&gt;setDatabase($database);
 $user-&gt;getUsers();</code></pre>
@@ -179,14 +179,14 @@ $user-&gt;getUsers();</code></pre>
 <li>A class needs optional dependencies so it can set itself up with default values or add additional functionality it needs.</li>
 </ul>
 <p><strong>Interface Injection</strong></p>
-<p>In this type of injection, an interface enforces the dependencies for any classes that implements it, for example:</p>
+<p>In this type of injection, an interface enforces the dependencies for any classes that implement it, for example:</p>
 <pre><code>interface someInterface {
     function getUsers(Database $database);
 }</code></pre>
 <p>Now any class that needs to implement <code>someInterface</code> must provide <code>Database</code> dependency in their <code>getUsers()</code> methods.</p>
 <hr />
 <h2>The Problem Again</h2>
-<p>So for we have seen very contrived example of injecting dependency into a simple class but in real world applications, a class might have many dependencies. It isn't all that easy to manage all those dependencies easily because you need to KNOW which dependencies are required by a certain class and HOW they need to be instantiated. Let's take example of setter injection:</p>
+<p>So for we have seen very contrived example of injecting dependency into a simple class but in real world applications, a class might have many dependencies. It isn't all that easy to manage all those dependencies because you need to KNOW which dependencies are required by a certain class and HOW they need to be instantiated. Let's take example of setter injection:</p>
 <pre><code>class User 
 {
     private $database = null;
@@ -216,7 +216,7 @@ $user-&gt;setConfig($configArray);</code></pre>
 <p>This is example for setter injection but even with constructor injection if there are many dependencies, it becomes harder to manage all of those manually and you could easily and mistakenly create more than one instances of dependencies throughout your code which would result in high memory usage.</p>
 <p>You might wonder dependency injection sounded like good thing to have but these problems are not worth it. Well that's not true because there is solution to all of these problems discussed next :)</p>
 <h2>Solution - Dependency Injection Container</h2>
-<p>Of course it would be difficult to manage dependencies manually; this is why you need a Dependency Injection Container. A Dependency Injection Container is something that handles dependencies for your class(es) automatically. If you have worked with Laravel or Symfony, you know that components have dependencies on on other classes. How do they manage all of those dependencies ? Yes they use some sort of Dependency Injection Container.</p>
+<p>Of course it would be difficult to manage dependencies manually; this is why you need a Dependency Injection Container. A Dependency Injection Container is something that handles dependencies for your class(es) automatically. If you have worked with Laravel or Symfony, you know that their components have dependencies on on other classes. How do they manage all of those dependencies ? Yes they use some sort of Dependency Injection Container.</p>
 <p>There are <a href="http://www.sitepoint.com/php-dependency-injection-container-performance-benchmarks/">quite some dependency injection containers out there for PHP</a> that can be used for this purpose or you can also write your own. Each container might have bit of different syntax but they perform the same thing under the hood.</p>
 <hr />
 <p>So in conclusion, you must always remove hard-coded dependencies from your code and inject them using Dependency Injection instead for its benefits and then have all the injected dependencies managed automatically for you by using some dependency injection container.</p>]]></description>
