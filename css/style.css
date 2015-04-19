@@ -2,6 +2,14 @@ body {
     margin-top: 75px;
 }
 
+.sidebar.col-md-4 {
+    width: 30%;
+}
+
+.main-content.col-md-8 {
+    width: 70%;
+}
+
 .post-content, .page-content, .main-content {
     margin-bottom: 20px;
     font-size: 16px;
