@@ -71,117 +71,78 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/controllers-for-frontend-and-backend-in-codeigniter">Controllers for Frontend and Backend in CodeIgniter</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/development-environments-in-codeingiter">Development Environments in Codeingiter</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> April 21, 2015 03:10 PM
+                    <span class="glyphicon glyphicon-time"></span> April 21, 2015 05:06 PM
                 
                         <hr>
-                        <p class="post-content"><p>I find it very inconvenient when you need to create all <strong>frontend</strong> and <strong>backend</strong> controllers without having any common functionality. I don't like the face that I always have to extend <code>CI_Controller</code> for all my backend and frontend controllers. I need ability to specify which controllers are related to frontend and which ones relate to backend .</p>
-<p>So instead of doing this:</p>
-<pre><code>class someFrontendController extends CI_Controller {}
-class someBackendController extends CI_Controller {}</code></pre>
-<p>I should be able to do this:</p>
-<pre><code>class someFrontendController extends FrontendController {}
-class someBackendController extends BackendController {}</code></pre>
-<p>I also need ability to specify <strong>common</strong> controllers that can be <em>applicable to both frontend and backend</em>: </p>
-<pre><code>class someCommonController extends CommonController {}</code></pre>
-<p>I will explain <strong>benefits</strong> of having such controllers below. But for now, how do we do that ? Well CodeIgniter is very flexible and does allow you to achieve just that.</p>
-<h2>Extending CodeIgniter's <code>CI_Controller</code> Class</h2>
-<p>In order to have separate controllers for backend, frontend and common controllers, please follow these steps:</p>
-<p>1) Make sure that config <code>$config['subclass_prefix']</code> is set to <code>MY_</code> in <strong>application/config.php</strong> file. It should be so by default.</p>
-<p>2) Create a file called <strong>MY_Controller.php</strong> in <strong>application/core</strong> folder and paste this code in it:</p>
-<pre><code>&lt;?php (defined('BASEPATH')) OR exit('No direct script access allowed');
+                        <p class="post-content"><h2>What is Development Environment?</h2>
+<p>The environment may be <code>development</code>, <code>staging</code>, <code>production</code> or some other. Each environment can have different set of settings; for example different application configurations, database settings, email settings, logging, error reporting levels and more. By using different environments for your application, you can actually ease things up for yourself when deploying as you won't have to change configurations, database setting and error reporting levels after application is moved to development or production site. Once you setup different development environments, the system would automatically know your application-wide settings to use.</p>
+<p>If you have worked with Laravel, you would notice that you can setup different development environments for your application by specifying your current development environment in the <code>.env</code> file. You can actually have different development environments in CodeIgniter as well.</p>
+<p>If you open up <strong>index.php</strong> file of CodeIgniter, you would notice it sets <code>development</code> environment as default in a constant <code>ENVIRONMENT</code>:</p>
+<p>CodeIgniter 2+:</p>
+<pre><code>define('ENVIRONMENT', 'development');</code></pre>
+<p>CodeIgniter 3+:</p>
+<pre><code>define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');</code></pre>
+<p>And later in the very file, CI sets up error reporting based on that environment:</p>
+<pre><code>if (defined('ENVIRONMENT')) {
+    switch (ENVIRONMENT) {
+        case 'development':
+            error_reporting(E_ALL);
+            break;
 
-class CommonController extends CI_Controller
-{
-    public function __construct()
-    {
-        parent::__construct();
-    }
-}
+        case 'production':
+            error_reporting(0);
+            break;
 
-class FrontendController extends CommonController
-{
-    public function __construct()
-    {
-        parent::__construct();
-    }
-}
-
-class BackendController extends CommonController
-{
-    public function __construct()
-    {
-        parent::__construct();
+        default:
+            exit('The application environment is not set correctly.');
     }
 }</code></pre>
+<p>In fact, CI uses <code>ENVIRONMENT</code> constant at quite some places, quoting from its <a href="https://ellislab.com/codeigniter/user-guide/general/environments.html">documentation</a>:</p>
+<blockquote>
+<p>There are some places in the CodeIgniter system where the <code>ENVIRONMENT</code>
+constant is used.</p>
+</blockquote>
 <hr />
-<p>Now for all of your controllers that belong to frontend, you would extend <code>FrontendController</code> instead of <code>CI_Controller</code> and for all of your controllers that belong to backend, you would extend <code>BackendController</code> instead of <code>CI_Controller</code> like I mentioned above:</p>
-<pre><code>class someFrontendController extends FrontendController {}
-class someBackendController extends BackendController {}</code></pre>
-<p>And for any controllers that might share common data for frontend and backend, you would extend <code>CommonController</code>:</p>
-<pre><code>class someCommonController extends CommonController {}</code></pre>
-<h1>What's the Point ?</h1>
-<p>You might already have guessed the benefits of having separate controllers but if you haven't  yet, well here they are:</p>
+<h2>Setting Different Development Environments</h2>
+<p>Let's say we want to have ability to have different development environment for <code>local</code>, <code>development</code> and <code>production</code>. For example, we want to be able to:</p>
 <ul>
-<li>You can now easily <strong>distinguish</strong> which controllers belong to backend and which ones belong to frontend</li>
-<li>You now have ability to have <strong>common code</strong> for both sides of an application. </li>
+<li>Have error reporting turned on <code>local</code> and <code>development</code> environments but turned off on <code>production</code></li>
+<li>Have logging turned on <code>local</code> and <code>development</code> environments but turned off on <code>production</code></li>
+<li>Have different <code>config</code> settings for each of <code>local</code>, <code>development</code> and <code>production</code> environments</li>
+<li>Have different <code>database</code> settings for each of <code>local</code>, <code>development</code> and <code>production</code> environments</li>
+<li>Have different <code>email</code> settings for each of <code>local</code>, <code>development</code> and <code>production</code> environments</li>
 </ul>
-<p>By <strong>common code</strong>, I mean any functionality that you would want to be shared in all of your controllers. Let's assume that we have created login functionality and user is logged on frontend. Now normally you would write some code in all of your controllers (for authorized pages for example) that would check whether or not user is logged in; if user is not logged in, redirect him back to login page something like:</p>
-<pre><code>class MyController extends CI_Controller
-{
-    public function index() {
-        // check if user is logged in
-        $this-&gt;checkLoginStatus();
-
-        // more code of controller when user is logged in
-    }
-
-    // redirect user to login page if not logged in
-    protected function checkLoginStatus() {
-        if (! $this-&gt;session-&gt;userdata('is_logged_in')) {
-            redirect('login');
-        }
-    }
-}</code></pre>
-<p>Now for all of your pages that can be viewed only when user is logged in, you will need to insert <code>checkLoginStatus()</code> function in all of those controllers and then call it <code>index()</code> function. That's not good, it is repeating code. Remember the rules <a href="http://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don't Repeat Yourself</a> (DRY) and <a href="http://en.wikipedia.org/wiki/KISS_principle">Keep It Simple, Stupid!</a> (KISS) :)</p>
-<p>Let's KISS it; simply put <code>checkLoginStatus()</code> function code in your <code>FrontendController</code> and now all controllers that extend it will have this login check functionality:</p>
-<pre><code>class FrontendController extends CommonController
-{
-    public function __construct()
-    {
-        parent::__construct();
-
-        // check if user is logged in
-        $this-&gt;checkLoginStatus();
-    }
-
-    // redirect user to login page if not logged in
-    protected function checkLoginStatus() {
-        if (! $this-&gt;session-&gt;userdata('is_logged_in')) {
-            redirect('login');
-        }
-    }    
-}</code></pre>
-<p>And now you don't need to do anything in your normal frontend controllers. You now get login check functionality out of box. In the similar fashion, you can have some common functionality for all of your backend controllers by putting some code in <code>BackendController</code>. This was just an example for login check but of course you could have some other requirement that you wanted to inject in all of your controllers by using <code>FrontendController</code> or <code>BackendController</code>.</p>
-<p>You might ask, you could have done all of this by may be using CI Hooks or may be <a href="http://php.net/manual/en/language.oop5.traits.php">traits</a>, well that's true but I believe having separate controllers gives you more <strong>control</strong> and <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>.</p>
-<p>Similarly, you could put whatever code you want in class for <code>CommonController</code> that would be applicable to <strong>both</strong> frontend and backend. For example you could setup application's overall configuration, upload paths, logos, etc whatever you think should be available site-wide; in all controllers of backend and frontend.</p>
-<p>So anything that you put in <code>FrontendController</code> will be available in all controllers of frontend that extend it. Anything that you put in <code>BackendController</code> will be available in all controllers of backend that extend it. Anything that you put in <code>CommonController</code> will be available in all controllers of frontend + backend.</p>
+<p>According to CI <a href="https://ellislab.com/codeigniter/user-guide/libraries/config.html#environments">documentation</a>, in order to setup different environments, you need to create a folder inside <strong>application/config</strong> folder matching the name of environment. For example, to create <code>development</code> environment, we would create a folder <strong>application/config/development</strong>. </p>
+<p>So create three folders named <strong>development</strong>, <strong>local</strong> and <strong>production</strong> inside <strong>application/config</strong> folder. And copy <strong>config.php</strong>, <strong>database.php</strong> and <strong>email.php</strong> from <strong>application/config</strong> to three folders you just created. If email.php doesn't exist, you can create one.</p>
+<p>Now each of your <strong>config.php</strong>, <strong>database.php</strong> and <strong>email.php</strong> can have differnt settings. CodeIgniter will <strong>automatically</strong> choose right files to use based on your current environment. For example in <strong>application/config/local/config.php</strong> and <strong>application/config/development/config.php</strong> files, you can enable error reporting and logging using <code>$config['log_threshold']</code> setting by setting it to <code>1</code> but disable error reporting and logging in <code>production</code> environment by setting <code>$config['log_threshold']</code> to <code>0</code> in <strong>application/config/production/config.php</strong> file. Similarly, you can now easily setup different <code>$config['base_url']</code> in each of your environments' config.php file like:
+<br><br>
+application/config/local/config.php:</p>
+<pre><code>$config['base_url'] = 'http://localhost/mysite';</code></pre>
+<p>application/config/development/config.php:</p>
+<pre><code>$config['base_url'] = 'http://mysite.com/development';</code></pre>
+<p>application/config/production/config.php:</p>
+<pre><code>$config['base_url'] = 'http://mysite.com';</code></pre>
 <hr />
-<p>And finally there is one more problem I don't like personally. Even though we can now easily find out which controllers belong to frontend or backend, we still have to put all of them in <strong>application/controllers</strong> folder. This doesn't easily tell by looking at file names which controllers belong where unless you open it up and see what it <code>extends</code>. Of course we could use prefix for controller file names like <code>front-foo-controller.php</code> or <code>backend-bar-controller.php</code> but still you have to put them in same folder. It would have been cool if you could have folder structure like this:</p>
-<pre>
-+ frontend
-   - controller-one.php
-   - controller-two.php
-   - controller-three.php
-+ backend
-   - controller-one.php
-   - controller-two.php
-   - controller-three.php
-</pre>
-<p>Oh yes you can do that as well with the help of <a href="https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc">HMVC module for CodeIgniter</a> :)</p>
-<p>Have fun!</p></p>
+<p>Now when you upload your application, all you have to do is specify which environment you want to use by editing <strong>index.php</strong> file:</p>
+<pre><code>define('ENVIRONMENT', 'production'); </code></pre>
+<p>If you upload your application to production site, set it to <code>production</code> or if you upload it to development,set it to <code>development</code>.</p>
+<p>I am sure you don't want to specify your environment for <code>ENVIRONMENT</code> each time you upload/deploy your application, here is how you can do so:</p>
+<pre><code>$local_servers = array('localhost');
+$isLocal = in_array($_SERVER['SERVER_NAME'], $local_servers);
+
+if ($isLocal) {
+    $env = 'local';
+} else {
+    // check development word in url
+    preg_match('#/development#', $_SERVER['REQUEST_URI'], $isDevelopment);
+
+    $env = $isDevelopment ? 'development' : 'production';
+}</code></pre>
+<p>And then use <code>$env</code> variable:</p>
+<pre><code>define('ENVIRONMENT', $env);</code></pre></p>
                         <br/>
                 
                         <div class="post-info">
@@ -192,7 +153,6 @@ class someBackendController extends BackendController {}</code></pre>
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
                                 <a href="https://codeinphp.github.io/tag/codeigniter">codeigniter</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/controller">controller</a>&nbsp;&nbsp;
                                 <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
                         </div>
                 
@@ -246,11 +206,11 @@ class someBackendController extends BackendController {}</code></pre>
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/development-environments-in-codeingiter">Development Environments in Codeingiter</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/controllers-for-frontend-and-backend-in-codeigniter">Controllers for Frontend and Backend in CodeIgniter</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/codeigniter-tip-time-your-pages">CodeIgniter Tip: Time Your Pages</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/dependency-injection-in-php">Dependency Injection in PHP</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/visual-query-a-basic-mysql-query-builder-app">Visual Query - A Basic MySQL Query Builder App</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/extending-datamapper-for-codeigniter">Extending DataMapper for CodeIgniter</a></li>
                 </ul>
             </div>
         
@@ -293,7 +253,7 @@ class someBackendController extends BackendController {}</code></pre>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/browser" title="'browser' returned a count of 0">browser</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/closure" title="'closure' returned a count of 0">closure</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/cms" title="'cms' returned a count of 0">cms</a>
-<a style="font-size: 15px" class="tag_cloud" href="https://codeinphp.github.io/tag/codeigniter" title="'codeigniter' returned a count of 2">codeigniter</a>
+<a style="font-size: 16px" class="tag_cloud" href="https://codeinphp.github.io/tag/codeigniter" title="'codeigniter' returned a count of 3">codeigniter</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/console" title="'console' returned a count of 0">console</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/controller" title="'controller' returned a count of 0">controller</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/database" title="'database' returned a count of 0">database</a>
@@ -311,7 +271,7 @@ class someBackendController extends BackendController {}</code></pre>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/lambda" title="'lambda' returned a count of 0">lambda</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/mysql" title="'mysql' returned a count of 0">mysql</a>
 <a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="'oop' returned a count of 1">oop</a>
-<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="'php' returned a count of 10">php</a>
+<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="'php' returned a count of 11">php</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/phpexecute" title="'phpexecute' returned a count of 0">phpexecute</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/runner" title="'runner' returned a count of 0">runner</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sql" title="'sql' returned a count of 0">sql</a>

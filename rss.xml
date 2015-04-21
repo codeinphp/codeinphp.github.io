@@ -6,6 +6,77 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Development Environments in Codeingiter</title>
+<description><![CDATA[<h2>What is Development Environment?</h2>
+<p>The environment may be <code>development</code>, <code>staging</code>, <code>production</code> or some other. Each environment can have different set of settings; for example different application configurations, database settings, email settings, logging, error reporting levels and more. By using different environments for your application, you can actually ease things up for yourself when deploying as you won't have to change configurations, database setting and error reporting levels after application is moved to development or production site. Once you setup different development environments, the system would automatically know your application-wide settings to use.</p>
+<p>If you have worked with Laravel, you would notice that you can setup different development environments for your application by specifying your current development environment in the <code>.env</code> file. You can actually have different development environments in CodeIgniter as well.</p>
+<p>If you open up <strong>index.php</strong> file of CodeIgniter, you would notice it sets <code>development</code> environment as default in a constant <code>ENVIRONMENT</code>:</p>
+<p>CodeIgniter 2+:</p>
+<pre><code>define('ENVIRONMENT', 'development');</code></pre>
+<p>CodeIgniter 3+:</p>
+<pre><code>define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');</code></pre>
+<p>And later in the very file, CI sets up error reporting based on that environment:</p>
+<pre><code>if (defined('ENVIRONMENT')) {
+    switch (ENVIRONMENT) {
+        case 'development':
+            error_reporting(E_ALL);
+            break;
+
+        case 'production':
+            error_reporting(0);
+            break;
+
+        default:
+            exit('The application environment is not set correctly.');
+    }
+}</code></pre>
+<p>In fact, CI uses <code>ENVIRONMENT</code> constant at quite some places, quoting from its <a href="https://ellislab.com/codeigniter/user-guide/general/environments.html">documentation</a>:</p>
+<blockquote>
+<p>There are some places in the CodeIgniter system where the <code>ENVIRONMENT</code>
+constant is used.</p>
+</blockquote>
+<hr />
+<h2>Setting Different Development Environments</h2>
+<p>Let's say we want to have ability to have different development environment for <code>local</code>, <code>development</code> and <code>production</code>. For example, we want to be able to:</p>
+<ul>
+<li>Have error reporting turned on <code>local</code> and <code>development</code> environments but turned off on <code>production</code></li>
+<li>Have logging turned on <code>local</code> and <code>development</code> environments but turned off on <code>production</code></li>
+<li>Have different <code>config</code> settings for each of <code>local</code>, <code>development</code> and <code>production</code> environments</li>
+<li>Have different <code>database</code> settings for each of <code>local</code>, <code>development</code> and <code>production</code> environments</li>
+<li>Have different <code>email</code> settings for each of <code>local</code>, <code>development</code> and <code>production</code> environments</li>
+</ul>
+<p>According to CI <a href="https://ellislab.com/codeigniter/user-guide/libraries/config.html#environments">documentation</a>, in order to setup different environments, you need to create a folder inside <strong>application/config</strong> folder matching the name of environment. For example, to create <code>development</code> environment, we would create a folder <strong>application/config/development</strong>. </p>
+<p>So create three folders named <strong>development</strong>, <strong>local</strong> and <strong>production</strong> inside <strong>application/config</strong> folder. And copy <strong>config.php</strong>, <strong>database.php</strong> and <strong>email.php</strong> from <strong>application/config</strong> to three folders you just created. If email.php doesn't exist, you can create one.</p>
+<p>Now each of your <strong>config.php</strong>, <strong>database.php</strong> and <strong>email.php</strong> can have differnt settings. CodeIgniter will <strong>automatically</strong> choose right files to use based on your current environment. For example in <strong>application/config/local/config.php</strong> and <strong>application/config/development/config.php</strong> files, you can enable error reporting and logging using <code>$config['log_threshold']</code> setting by setting it to <code>1</code> but disable error reporting and logging in <code>production</code> environment by setting <code>$config['log_threshold']</code> to <code>0</code> in <strong>application/config/production/config.php</strong> file. Similarly, you can now easily setup different <code>$config['base_url']</code> in each of your environments' config.php file like:
+<br><br>
+application/config/local/config.php:</p>
+<pre><code>$config['base_url'] = 'http://localhost/mysite';</code></pre>
+<p>application/config/development/config.php:</p>
+<pre><code>$config['base_url'] = 'http://mysite.com/development';</code></pre>
+<p>application/config/production/config.php:</p>
+<pre><code>$config['base_url'] = 'http://mysite.com';</code></pre>
+<hr />
+<p>Now when you upload your application, all you have to do is specify which environment you want to use by editing <strong>index.php</strong> file:</p>
+<pre><code>define('ENVIRONMENT', 'production'); </code></pre>
+<p>If you upload your application to production site, set it to <code>production</code> or if you upload it to development,set it to <code>development</code>.</p>
+<p>I am sure you don't want to specify your environment for <code>ENVIRONMENT</code> each time you upload/deploy your application, here is how you can do so:</p>
+<pre><code>$local_servers = array('localhost');
+$isLocal = in_array($_SERVER['SERVER_NAME'], $local_servers);
+
+if ($isLocal) {
+    $env = 'local';
+} else {
+    // check development word in url
+    preg_match('#/development#', $_SERVER['REQUEST_URI'], $isDevelopment);
+
+    $env = $isDevelopment ? 'development' : 'production';
+}</code></pre>
+<p>And then use <code>$env</code> variable:</p>
+<pre><code>define('ENVIRONMENT', $env);</code></pre>]]></description>
+<link>https://codeinphp.github.io/post/development-environments-in-codeingiter</link>
+<pubDate>Tue, 21 Apr 2015 17:06:00 +0200</pubDate>
+</item>
+<item>
 <title>Controllers for Frontend and Backend in CodeIgniter</title>
 <description><![CDATA[<p>I find it very inconvenient when you need to create all <strong>frontend</strong> and <strong>backend</strong> controllers without having any common functionality. I don't like the face that I always have to extend <code>CI_Controller</code> for all my backend and frontend controllers. I need ability to specify which controllers are related to frontend and which ones relate to backend .</p>
 <p>So instead of doing this:</p>
