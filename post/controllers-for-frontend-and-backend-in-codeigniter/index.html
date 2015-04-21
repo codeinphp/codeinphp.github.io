@@ -145,7 +145,7 @@ class someBackendController extends BackendController {}</code></pre>
         }
     }
 }</code></pre>
-<p>Now for all of your pages that can be viewed only when user is logged in, you will need to insert <code>checkLoginStatus()</code> function in all of those controllers and then call it <code>index()</code> function. That's not good, it is repeating code. Remember the rules <strong><a href="http://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don't Repeat Yourself</a></strong> (DRY) and <strong><a href="http://en.wikipedia.org/wiki/KISS_principle">Keep It Simple, Stupid!</a></strong> (KISS) :)</p>
+<p>Now for all of your pages that can be viewed only when user is logged in, you will need to insert <code>checkLoginStatus()</code> function in all of those controllers and then call it <code>index()</code> function. That's not good, it is repeating code. Remember the rules <a href="http://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don't Repeat Yourself</a> (DRY) and <a href="http://en.wikipedia.org/wiki/KISS_principle">Keep It Simple, Stupid!</a> (KISS) :)</p>
 <p>Let's KISS it; simply put <code>checkLoginStatus()</code> function code in your <code>FrontendController</code> and now all controllers that extend it will have this login check functionality:</p>
 <pre><code>class FrontendController extends CommonController
 {
@@ -165,7 +165,7 @@ class someBackendController extends BackendController {}</code></pre>
     }    
 }</code></pre>
 <p>And now you don't need to do anything in your normal frontend controllers. You now get login check functionality out of box. In the similar fashion, you can have some common functionality for all of your backend controllers by putting some code in <code>BackendController</code>. This was just an example for login check but of course you could have some other requirement that you wanted to inject in all of your controllers by using <code>FrontendController</code> or <code>BackendController</code>.</p>
-<p>You might ask, you could have done all of this by may be using hooks, well that's true but I believe having separate controllers gives you more <strong>control</strong> and <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>.</p>
+<p>You might ask, you could have done all of this by may be using CI Hooks or may be <a href="http://php.net/manual/en/language.oop5.traits.php">traits</a>, well that's true but I believe having separate controllers gives you more <strong>control</strong> and <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>.</p>
 <p>Similarly, you could put whatever code you want in class for <code>CommonController</code> that would be applicable to <strong>both</strong> frontend and backend. For example you could setup application's overall configuration, upload paths, logos, etc whatever you think should be available site-wide; in all controllers of backend and frontend.</p>
 <p>So anything that you put in <code>FrontendController</code> will be available in all controllers of frontend that extend it. Anything that you put in <code>BackendController</code> will be available in all controllers of backend that extend it. Anything that you put in <code>CommonController</code> will be available in all controllers of frontend + backend.</p>
 <hr />
