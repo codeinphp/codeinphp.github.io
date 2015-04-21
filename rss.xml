@@ -7,7 +7,7 @@
 <language>en-us</language>
 <item>
 <title>Controllers for Frontend and Backend in CodeIgniter</title>
-<description><![CDATA[<p>I find it very inconvenient when you need to create all <strong>frontend</strong> and <strong>backend</strong> controllers without having any common functionality. I don't like the face that I always have to extend <code>CI_Controller</code> for all my backend and frontend controllers. I need ability to specify which controllers related to frontend and which ones relate to backend .</p>
+<description><![CDATA[<p>I find it very inconvenient when you need to create all <strong>frontend</strong> and <strong>backend</strong> controllers without having any common functionality. I don't like the face that I always have to extend <code>CI_Controller</code> for all my backend and frontend controllers. I need ability to specify which controllers are related to frontend and which ones relate to backend .</p>
 <p>So instead of doing this:</p>
 <pre><code>class someFrontendController extends CI_Controller {}
 class someBackendController extends CI_Controller {}</code></pre>
