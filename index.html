@@ -71,78 +71,99 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/development-environments-in-codeigniter">Development Environments in CodeIgniter</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/database-migrations-in-codeigniter">Database Migrations in CodeIgniter</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> April 21, 2015 05:06 PM
+                    <span class="glyphicon glyphicon-time"></span> April 21, 2015 08:50 PM
                 
                         <hr>
-                        <p class="post-content"><h2>What is Development Environment?</h2>
-<p>The environment may be <code>development</code>, <code>staging</code>, <code>production</code> or some other. Each environment can have different set of settings; for example different application configurations, database settings, email settings, logging, error reporting levels and more. By using different environments for your application, you can actually ease things up for yourself when deploying as you won't have to change configurations, database setting and error reporting levels after application is moved to development or production site. Once you setup different development environments, the system would automatically know your application-wide settings to use.</p>
-<p>If you have worked with Laravel, you would notice that you can setup different development environments for your application by specifying your current development environment in the <code>.env</code> file. You can actually have different development environments in CodeIgniter as well.</p>
-<p>If you open up <strong>index.php</strong> file of CodeIgniter, you would notice it sets <code>development</code> environment as default in a constant <code>ENVIRONMENT</code>:</p>
-<p>CodeIgniter 2+:</p>
-<pre><code>define('ENVIRONMENT', 'development');</code></pre>
-<p>CodeIgniter 3+:</p>
-<pre><code>define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');</code></pre>
-<p>And later in the very file, CI sets up error reporting based on that environment:</p>
-<pre><code>if (defined('ENVIRONMENT')) {
-    switch (ENVIRONMENT) {
-        case 'development':
-            error_reporting(E_ALL);
-            break;
+                        <p class="post-content"><h2>What is Migration ?</h2>
+<p>Quoting from CI <a href="https://ellislab.com/codeigniter/user-guide/libraries/migration.html">documentation</a>:</p>
+<blockquote>
+<p>Migrations are a convenient way for you to alter your database in a
+structured and organized manner. You could edit fragments of SQL by
+hand but you would then be responsible for telling other developers
+that they need to go and run them. You’d also have to keep track of
+which changes need to be run against the production machines next time
+you deploy.</p>
+</blockquote>
+<p>Migrations come in extremely handy when you are working with a team of developers. Normally whenever you created a new database table or modified existing one by adding/removing certain fields or even added some data to database, you would tell your fellow developers to run those SQL queries in their machines so that database remains in sync. </p>
+<p>This isn't ideal, we needed some way so that:</p>
+<ul>
+<li>
+<p>Framework (CodeIgniter or whatever) <strong>automatically detects and runs</strong> those SQL queries on our behalf without handing over SQL query files to other developers each time we make some change to database</p>
+</li>
+<li>And keeps <strong>versions of our database changes</strong> similar to versioning of files when we use <strong>git</strong>. This means we can go back and forth easily to specific version of database changes. Something went wrong on production site and you need to revert to specific database change, no problem simply tell CodeIgniter which change to revert to and you are done.</li>
+</ul>
+<p><strong>That's what migrations do.</strong> </p>
+<p>You now see how important and useful migrations are. One of the first frameworks that really shined up with this idea was Laravel and then I saw similar concept in Android applications. CodeIgniter also allows us to setup migrations which is really cool.  </p>
+<hr />
+<h2>Setting Up Migrations in CodeIgniter</h2>
+<p>In order to enable migrations: </p>
+<ul>
+<li>Open <strong>application/config/migration.php</strong> file and set the value for <code>$config['migration_enabled']</code> from <code>false</code> to <code>true</code>.</li>
+<li>Create a folder called <strong>migrations</strong> in <strong>application/config/</strong> folder and that's it.</li>
+</ul>
+<p>In <strong>migrations</strong> folder, we can create our database changes. Let's say we want to create a new <code>users</code> table. To do so, create a file called <strong>001_add_users.php</strong> in <strong>migrations</strong> folder and paste this code in it:</p>
+<pre><code>class Migration_Add_user extends CI_Migration
+{
+    public function up()
+    {
+        $this-&gt;dbforge-&gt;add_field(
+           array(
+              'id' =&gt; array(
+                 'type' =&gt; 'INT',
+                 'constraint' =&gt; 5,
+                 'unsigned' =&gt; true,
+                 'auto_increment' =&gt; true
+              ),
+              'name' =&gt; array(
+                 'type' =&gt; 'VARCHAR',
+                 'constraint' =&gt; '100',
+              ),
+              'email' =&gt; array(
+                 'type' =&gt; 'TEXT',
+                 'null' =&gt; true,
+              ),
+           )
+        );
 
-        case 'production':
-            error_reporting(0);
-            break;
+        $this-&gt;dbforge-&gt;add_key('id', TRUE);
+        $this-&gt;dbforge-&gt;create_table('users');
+    }
 
-        default:
-            exit('The application environment is not set correctly.');
+    public function down()
+    {
+        $this-&gt;dbforge-&gt;drop_table('users');
     }
 }</code></pre>
-<p>In fact, CI uses <code>ENVIRONMENT</code> constant at quite some places, quoting from its <a href="https://ellislab.com/codeigniter/user-guide/general/environments.html">documentation</a>:</p>
-<blockquote>
-<p>There are some places in the CodeIgniter system where the <code>ENVIRONMENT</code>
-constant is used.</p>
-</blockquote>
-<hr />
-<h2>Setting Different Development Environments</h2>
-<p>Let's say we want to have ability to have different development environment for <code>local</code>, <code>development</code> and <code>production</code>. For example, we want to be able to:</p>
+<p>There are few things to notice:</p>
 <ul>
-<li>Have error reporting turned on <code>local</code> and <code>development</code> environments but turned off on <code>production</code></li>
-<li>Have logging turned on <code>local</code> and <code>development</code> environments but turned off on <code>production</code></li>
-<li>Have different <code>config</code> settings for each of <code>local</code>, <code>development</code> and <code>production</code> environments</li>
-<li>Have different <code>database</code> settings for each of <code>local</code>, <code>development</code> and <code>production</code> environments</li>
-<li>Have different <code>email</code> settings for each of <code>local</code>, <code>development</code> and <code>production</code> environments</li>
+<li>We see that this migration class extends <code>CI_Migration</code> class. </li>
+<li>It has only two methods <code>up()</code> and <code>down()</code></li>
+<li>It uses <code>dbforge</code> object to build up queries in OOP way</li>
 </ul>
-<p>According to CI <a href="https://ellislab.com/codeigniter/user-guide/libraries/config.html#environments">documentation</a>, in order to setup different environments, you need to create a folder inside <strong>application/config</strong> folder matching the name of environment. For example, to create <code>development</code> environment, we would create a folder <strong>application/config/development</strong>. </p>
-<p>So create three folders named <strong>development</strong>, <strong>local</strong> and <strong>production</strong> inside <strong>application/config</strong> folder. And copy <strong>config.php</strong>, <strong>database.php</strong> and <strong>email.php</strong> from <strong>application/config</strong> to three folders you just created. If email.php doesn't exist, you can create one.</p>
-<p>Now each of your <strong>config.php</strong>, <strong>database.php</strong> and <strong>email.php</strong> can have differnt settings. CodeIgniter will <strong>automatically</strong> choose right files to use based on your current environment. For example in <strong>application/config/local/config.php</strong> and <strong>application/config/development/config.php</strong> files, you can enable error reporting and logging using <code>$config['log_threshold']</code> setting by setting it to <code>1</code> but disable error reporting and logging in <code>production</code> environment by setting <code>$config['log_threshold']</code> to <code>0</code> in <strong>application/config/production/config.php</strong> file. Similarly, you can now easily setup different <code>$config['base_url']</code> in each of your environments' config.php file like:
-<br><br>
-application/config/local/config.php:</p>
-<pre><code>$config['base_url'] = 'http://localhost/mysite';</code></pre>
-<p>application/config/development/config.php:</p>
-<pre><code>$config['base_url'] = 'http://mysite.com/development';</code></pre>
-<p>application/config/production/config.php:</p>
-<pre><code>$config['base_url'] = 'http://mysite.com';</code></pre>
-<hr />
-<p>Now when you upload your application, all you have to do is specify which environment you want to use by editing <strong>index.php</strong> file:</p>
-<pre><code>define('ENVIRONMENT', 'production'); </code></pre>
-<p>If you upload your application to production site, set it to <code>production</code> or if you upload it to development,set it to <code>development</code>.</p>
-<p>I am sure you don't want to specify your environment for <code>ENVIRONMENT</code> each time you upload/deploy your application, here is how you can do so:</p>
-<pre><code>$local_servers = array('localhost');
-$isLocal = in_array($_SERVER['SERVER_NAME'], $local_servers);
+<p>So that's how a typical migration class should look like. But we are only interested in <code>up()</code> and <code>down()</code> methods. The <code>up()</code> method is called by system whenever you need to update the database and <code>down()</code> method is used to revert that change that was done by the <code>up()</code> method. For example, if in <code>up()</code> method you create a new table then in <code>down()</code> method you should specify code to remove that table. Similarly if in <code>up()</code> method you add a new field to some table then in <code>down()</code> method you should specify code that deletes that field. So both of these methods are opposite to each other. In each migration you should always specify the code for both.</p>
+<p>Now that we have created our migration, we need to run it. Let's create a controller called <code>Migrate</code> that will run our migrations:</p>
+<pre><code>class migrate extends CI_Controller {
+    public function index()
+    {
+        // load migration library
+        $this-&gt;load-&gt;library('migration');
 
-if ($isLocal) {
-    $env = 'local';
-} else {
-    // check development word in url
-    preg_match('#/development#', $_SERVER['REQUEST_URI'], $isDevelopment);
-
-    $env = $isDevelopment ? 'development' : 'production';
+        if ( ! $this-&gt;migration-&gt;current())
+        {
+            echo 'Error' . $this-&gt;migration-&gt;error_string();
+        } else {
+            echo 'Migrations ran successfully!'
+        }   
+    }    
 }</code></pre>
-<p>And then use <code>$env</code> variable:</p>
-<pre><code>define('ENVIRONMENT', $env);</code></pre></p>
+<p>Now if you visit your application url at <code>http://yoursite.com/migrate</code> and all goes well, you should success message and the new table <code>users</code> should be created in the database. If you run migration for the first time, you would also notice that a table called <code>migrations</code> should also be created in your database by CodeIgniter. This table can keep track of your database migration changes.</p>
+<p>Now refresh page or re-visit <code>http://yoursite.com/migrate</code> and you would notice nothing happens, this time CodeIgniter won't do anything with your migration since it has already been run. To prove it further, delete <code>users</code> table manually from your database and then re-visit <code>http://yoursite.com/migrate</code> page and you will see CodeIgniter didn't create <code>users</code> table again. That's because CodeIgniter knows that it has already run that particular migration. Now if you add some other migrations in <strong>migrations</strong>  folder and then visit migrate URL again, this time CodeIgniter will run your <strong>new</strong> migrations. How does CodeIgniter know which migrations to run ? It keeps track of them <code>migrations</code> table that it creates as well as <code>config['migration_version']</code> setting in application/config/migration.php file. That's how CodeIgniter versions your database changes.</p>
+<p>You see how simple and powerful migrations are. Now that you have made changes to database, you don't need to worry how other team members will embrace those changes, all you need to ask them is to visit the migration url and database on their machines will also get those changes!</p>
+<p>In the above example, we used <code>$this-&gt;migration-&gt;current()</code> method to go to current migration version that is set in <code>config['migration_version']</code>. There are <a href="https://ellislab.com/codeigniter/user-guide/libraries/migration.html">couple of more methods</a> that allow you to migrate based on most recent version of migration based on file system and one that allows you to go to specific migration version. To lean more about <code>dbforge</code> methods, <a href="http://www.codeigniter.com/user_guide/database/forge.html?highlight=dbforge">check out its documentation</a>.</p>
+<p>So if you have never used database migrations before, you should definitely use them because they are awesome!</p></p>
                         <br/>
                 
                         <div class="post-info">
@@ -153,6 +174,8 @@ if ($isLocal) {
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
                                 <a href="https://codeinphp.github.io/tag/codeigniter">codeigniter</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/database">database</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/migration">migration</a>&nbsp;&nbsp;
                                 <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
                         </div>
                 
@@ -206,11 +229,11 @@ if ($isLocal) {
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/database-migrations-in-codeigniter">Database Migrations in CodeIgniter</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/development-environments-in-codeigniter">Development Environments in CodeIgniter</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/controllers-for-frontend-and-backend-in-codeigniter">Controllers for Frontend and Backend in CodeIgniter</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/codeigniter-tip-time-your-pages">CodeIgniter Tip: Time Your Pages</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/dependency-injection-in-php">Dependency Injection in PHP</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/visual-query-a-basic-mysql-query-builder-app">Visual Query - A Basic MySQL Query Builder App</a></li>
                 </ul>
             </div>
         
@@ -253,10 +276,10 @@ if ($isLocal) {
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/browser" title="'browser' returned a count of 0">browser</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/closure" title="'closure' returned a count of 0">closure</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/cms" title="'cms' returned a count of 0">cms</a>
-<a style="font-size: 16px" class="tag_cloud" href="https://codeinphp.github.io/tag/codeigniter" title="'codeigniter' returned a count of 3">codeigniter</a>
+<a style="font-size: 18px" class="tag_cloud" href="https://codeinphp.github.io/tag/codeigniter" title="'codeigniter' returned a count of 4">codeigniter</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/console" title="'console' returned a count of 0">console</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/controller" title="'controller' returned a count of 0">controller</a>
-<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/database" title="'database' returned a count of 0">database</a>
+<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/database" title="'database' returned a count of 1">database</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/datamapper" title="'datamapper' returned a count of 0">datamapper</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/dependency" title="'dependency' returned a count of 0">dependency</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/development" title="'development' returned a count of 0">development</a>
@@ -269,9 +292,10 @@ if ($isLocal) {
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/interface" title="'interface' returned a count of 0">interface</a>
 <a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/javascript" title="'javascript' returned a count of 1">javascript</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/lambda" title="'lambda' returned a count of 0">lambda</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/migration" title="'migration' returned a count of 0">migration</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/mysql" title="'mysql' returned a count of 0">mysql</a>
 <a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="'oop' returned a count of 1">oop</a>
-<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="'php' returned a count of 11">php</a>
+<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="'php' returned a count of 12">php</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/phpexecute" title="'phpexecute' returned a count of 0">phpexecute</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/runner" title="'runner' returned a count of 0">runner</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sql" title="'sql' returned a count of 0">sql</a>

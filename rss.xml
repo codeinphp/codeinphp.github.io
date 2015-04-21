@@ -6,6 +6,98 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Database Migrations in CodeIgniter</title>
+<description><![CDATA[<h2>What is Migration ?</h2>
+<p>Quoting from CI <a href="https://ellislab.com/codeigniter/user-guide/libraries/migration.html">documentation</a>:</p>
+<blockquote>
+<p>Migrations are a convenient way for you to alter your database in a
+structured and organized manner. You could edit fragments of SQL by
+hand but you would then be responsible for telling other developers
+that they need to go and run them. You’d also have to keep track of
+which changes need to be run against the production machines next time
+you deploy.</p>
+</blockquote>
+<p>Migrations come in extremely handy when you are working with a team of developers. Normally whenever you created a new database table or modified existing one by adding/removing certain fields or even added some data to database, you would tell your fellow developers to run those SQL queries in their machines so that database remains in sync. </p>
+<p>This isn't ideal, we needed some way so that:</p>
+<ul>
+<li>
+<p>Framework (CodeIgniter or whatever) <strong>automatically detects and runs</strong> those SQL queries on our behalf without handing over SQL query files to other developers each time we make some change to database</p>
+</li>
+<li>And keeps <strong>versions of our database changes</strong> similar to versioning of files when we use <strong>git</strong>. This means we can go back and forth easily to specific version of database changes. Something went wrong on production site and you need to revert to specific database change, no problem simply tell CodeIgniter which change to revert to and you are done.</li>
+</ul>
+<p><strong>That's what migrations do.</strong> </p>
+<p>You now see how important and useful migrations are. One of the first frameworks that really shined up with this idea was Laravel and then I saw similar concept in Android applications. CodeIgniter also allows us to setup migrations which is really cool.  </p>
+<hr />
+<h2>Setting Up Migrations in CodeIgniter</h2>
+<p>In order to enable migrations: </p>
+<ul>
+<li>Open <strong>application/config/migration.php</strong> file and set the value for <code>$config['migration_enabled']</code> from <code>false</code> to <code>true</code>.</li>
+<li>Create a folder called <strong>migrations</strong> in <strong>application/config/</strong> folder and that's it.</li>
+</ul>
+<p>In <strong>migrations</strong> folder, we can create our database changes. Let's say we want to create a new <code>users</code> table. To do so, create a file called <strong>001_add_users.php</strong> in <strong>migrations</strong> folder and paste this code in it:</p>
+<pre><code>class Migration_Add_user extends CI_Migration
+{
+    public function up()
+    {
+        $this-&gt;dbforge-&gt;add_field(
+           array(
+              'id' =&gt; array(
+                 'type' =&gt; 'INT',
+                 'constraint' =&gt; 5,
+                 'unsigned' =&gt; true,
+                 'auto_increment' =&gt; true
+              ),
+              'name' =&gt; array(
+                 'type' =&gt; 'VARCHAR',
+                 'constraint' =&gt; '100',
+              ),
+              'email' =&gt; array(
+                 'type' =&gt; 'TEXT',
+                 'null' =&gt; true,
+              ),
+           )
+        );
+
+        $this-&gt;dbforge-&gt;add_key('id', TRUE);
+        $this-&gt;dbforge-&gt;create_table('users');
+    }
+
+    public function down()
+    {
+        $this-&gt;dbforge-&gt;drop_table('users');
+    }
+}</code></pre>
+<p>There are few things to notice:</p>
+<ul>
+<li>We see that this migration class extends <code>CI_Migration</code> class. </li>
+<li>It has only two methods <code>up()</code> and <code>down()</code></li>
+<li>It uses <code>dbforge</code> object to build up queries in OOP way</li>
+</ul>
+<p>So that's how a typical migration class should look like. But we are only interested in <code>up()</code> and <code>down()</code> methods. The <code>up()</code> method is called by system whenever you need to update the database and <code>down()</code> method is used to revert that change that was done by the <code>up()</code> method. For example, if in <code>up()</code> method you create a new table then in <code>down()</code> method you should specify code to remove that table. Similarly if in <code>up()</code> method you add a new field to some table then in <code>down()</code> method you should specify code that deletes that field. So both of these methods are opposite to each other. In each migration you should always specify the code for both.</p>
+<p>Now that we have created our migration, we need to run it. Let's create a controller called <code>Migrate</code> that will run our migrations:</p>
+<pre><code>class migrate extends CI_Controller {
+    public function index()
+    {
+        // load migration library
+        $this-&gt;load-&gt;library('migration');
+
+        if ( ! $this-&gt;migration-&gt;current())
+        {
+            echo 'Error' . $this-&gt;migration-&gt;error_string();
+        } else {
+            echo 'Migrations ran successfully!'
+        }   
+    }    
+}</code></pre>
+<p>Now if you visit your application url at <code>http://yoursite.com/migrate</code> and all goes well, you should success message and the new table <code>users</code> should be created in the database. If you run migration for the first time, you would also notice that a table called <code>migrations</code> should also be created in your database by CodeIgniter. This table can keep track of your database migration changes.</p>
+<p>Now refresh page or re-visit <code>http://yoursite.com/migrate</code> and you would notice nothing happens, this time CodeIgniter won't do anything with your migration since it has already been run. To prove it further, delete <code>users</code> table manually from your database and then re-visit <code>http://yoursite.com/migrate</code> page and you will see CodeIgniter didn't create <code>users</code> table again. That's because CodeIgniter knows that it has already run that particular migration. Now if you add some other migrations in <strong>migrations</strong>  folder and then visit migrate URL again, this time CodeIgniter will run your <strong>new</strong> migrations. How does CodeIgniter know which migrations to run ? It keeps track of them <code>migrations</code> table that it creates as well as <code>config['migration_version']</code> setting in application/config/migration.php file. That's how CodeIgniter versions your database changes.</p>
+<p>You see how simple and powerful migrations are. Now that you have made changes to database, you don't need to worry how other team members will embrace those changes, all you need to ask them is to visit the migration url and database on their machines will also get those changes!</p>
+<p>In the above example, we used <code>$this-&gt;migration-&gt;current()</code> method to go to current migration version that is set in <code>config['migration_version']</code>. There are <a href="https://ellislab.com/codeigniter/user-guide/libraries/migration.html">couple of more methods</a> that allow you to migrate based on most recent version of migration based on file system and one that allows you to go to specific migration version. To lean more about <code>dbforge</code> methods, <a href="http://www.codeigniter.com/user_guide/database/forge.html?highlight=dbforge">check out its documentation</a>.</p>
+<p>So if you have never used database migrations before, you should definitely use them because they are awesome!</p>]]></description>
+<link>https://codeinphp.github.io/post/database-migrations-in-codeigniter</link>
+<pubDate>Tue, 21 Apr 2015 20:50:00 +0200</pubDate>
+</item>
+<item>
 <title>Development Environments in CodeIgniter</title>
 <description><![CDATA[<h2>What is Development Environment?</h2>
 <p>The environment may be <code>development</code>, <code>staging</code>, <code>production</code> or some other. Each environment can have different set of settings; for example different application configurations, database settings, email settings, logging, error reporting levels and more. By using different environments for your application, you can actually ease things up for yourself when deploying as you won't have to change configurations, database setting and error reporting levels after application is moved to development or production site. Once you setup different development environments, the system would automatically know your application-wide settings to use.</p>
