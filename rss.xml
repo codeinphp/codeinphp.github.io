@@ -6,7 +6,7 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
-<title>Development Environments in Codeingiter</title>
+<title>Development Environments in CodeIgniter</title>
 <description><![CDATA[<h2>What is Development Environment?</h2>
 <p>The environment may be <code>development</code>, <code>staging</code>, <code>production</code> or some other. Each environment can have different set of settings; for example different application configurations, database settings, email settings, logging, error reporting levels and more. By using different environments for your application, you can actually ease things up for yourself when deploying as you won't have to change configurations, database setting and error reporting levels after application is moved to development or production site. Once you setup different development environments, the system would automatically know your application-wide settings to use.</p>
 <p>If you have worked with Laravel, you would notice that you can setup different development environments for your application by specifying your current development environment in the <code>.env</code> file. You can actually have different development environments in CodeIgniter as well.</p>
@@ -73,7 +73,7 @@ if ($isLocal) {
 }</code></pre>
 <p>And then use <code>$env</code> variable:</p>
 <pre><code>define('ENVIRONMENT', $env);</code></pre>]]></description>
-<link>https://codeinphp.github.io/post/development-environments-in-codeingiter</link>
+<link>https://codeinphp.github.io/post/development-environments-in-codeigniter</link>
 <pubDate>Tue, 21 Apr 2015 17:06:00 +0200</pubDate>
 </item>
 <item>

@@ -8,7 +8,7 @@
     <meta name="description" content="PHP and more...">
     <meta name="author" content="Sarfraz Ahmed">
 
-    <title>Code In PHP</title>
+    <title>Development Environments in CodeIgniter :: Code In PHP</title>
 
     <!-- rss feed url -->
     <link rel="alternate" type="application/rss+xml" title="Code In PHP" href="https://codeinphp.github.io/rss.xml"/>
@@ -70,12 +70,127 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 main-content">
-            <h1>Tag Posts</h1>
-            <hr/>
-            <br/>
+            <article>
+                <h3>Development Environments in CodeIgniter</h3>
+                <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
+                &nbsp;&nbsp;
+                <span class="glyphicon glyphicon-time"></span> April 21, 2015 05:06 PM
+                <hr>
 
-                <h3><a href="https://codeinphp.github.io/post/phpexecute-php-code-runner">PHPExecute – PHP Code Runner</a></h3>
-                <span class="glyphicon glyphicon-time"></span> April 12, 2015 08:57 PM
+                <p class="post-content"><h2>What is Development Environment?</h2>
+<p>The environment may be <code>development</code>, <code>staging</code>, <code>production</code> or some other. Each environment can have different set of settings; for example different application configurations, database settings, email settings, logging, error reporting levels and more. By using different environments for your application, you can actually ease things up for yourself when deploying as you won't have to change configurations, database setting and error reporting levels after application is moved to development or production site. Once you setup different development environments, the system would automatically know your application-wide settings to use.</p>
+<p>If you have worked with Laravel, you would notice that you can setup different development environments for your application by specifying your current development environment in the <code>.env</code> file. You can actually have different development environments in CodeIgniter as well.</p>
+<p>If you open up <strong>index.php</strong> file of CodeIgniter, you would notice it sets <code>development</code> environment as default in a constant <code>ENVIRONMENT</code>:</p>
+<p>CodeIgniter 2+:</p>
+<pre><code>define('ENVIRONMENT', 'development');</code></pre>
+<p>CodeIgniter 3+:</p>
+<pre><code>define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');</code></pre>
+<p>And later in the very file, CI sets up error reporting based on that environment:</p>
+<pre><code>if (defined('ENVIRONMENT')) {
+    switch (ENVIRONMENT) {
+        case 'development':
+            error_reporting(E_ALL);
+            break;
+
+        case 'production':
+            error_reporting(0);
+            break;
+
+        default:
+            exit('The application environment is not set correctly.');
+    }
+}</code></pre>
+<p>In fact, CI uses <code>ENVIRONMENT</code> constant at quite some places, quoting from its <a href="https://ellislab.com/codeigniter/user-guide/general/environments.html">documentation</a>:</p>
+<blockquote>
+<p>There are some places in the CodeIgniter system where the <code>ENVIRONMENT</code>
+constant is used.</p>
+</blockquote>
+<hr />
+<h2>Setting Different Development Environments</h2>
+<p>Let's say we want to have ability to have different development environment for <code>local</code>, <code>development</code> and <code>production</code>. For example, we want to be able to:</p>
+<ul>
+<li>Have error reporting turned on <code>local</code> and <code>development</code> environments but turned off on <code>production</code></li>
+<li>Have logging turned on <code>local</code> and <code>development</code> environments but turned off on <code>production</code></li>
+<li>Have different <code>config</code> settings for each of <code>local</code>, <code>development</code> and <code>production</code> environments</li>
+<li>Have different <code>database</code> settings for each of <code>local</code>, <code>development</code> and <code>production</code> environments</li>
+<li>Have different <code>email</code> settings for each of <code>local</code>, <code>development</code> and <code>production</code> environments</li>
+</ul>
+<p>According to CI <a href="https://ellislab.com/codeigniter/user-guide/libraries/config.html#environments">documentation</a>, in order to setup different environments, you need to create a folder inside <strong>application/config</strong> folder matching the name of environment. For example, to create <code>development</code> environment, we would create a folder <strong>application/config/development</strong>. </p>
+<p>So create three folders named <strong>development</strong>, <strong>local</strong> and <strong>production</strong> inside <strong>application/config</strong> folder. And copy <strong>config.php</strong>, <strong>database.php</strong> and <strong>email.php</strong> from <strong>application/config</strong> to three folders you just created. If email.php doesn't exist, you can create one.</p>
+<p>Now each of your <strong>config.php</strong>, <strong>database.php</strong> and <strong>email.php</strong> can have differnt settings. CodeIgniter will <strong>automatically</strong> choose right files to use based on your current environment. For example in <strong>application/config/local/config.php</strong> and <strong>application/config/development/config.php</strong> files, you can enable error reporting and logging using <code>$config['log_threshold']</code> setting by setting it to <code>1</code> but disable error reporting and logging in <code>production</code> environment by setting <code>$config['log_threshold']</code> to <code>0</code> in <strong>application/config/production/config.php</strong> file. Similarly, you can now easily setup different <code>$config['base_url']</code> in each of your environments' config.php file like:
+<br><br>
+application/config/local/config.php:</p>
+<pre><code>$config['base_url'] = 'http://localhost/mysite';</code></pre>
+<p>application/config/development/config.php:</p>
+<pre><code>$config['base_url'] = 'http://mysite.com/development';</code></pre>
+<p>application/config/production/config.php:</p>
+<pre><code>$config['base_url'] = 'http://mysite.com';</code></pre>
+<hr />
+<p>Now when you upload your application, all you have to do is specify which environment you want to use by editing <strong>index.php</strong> file:</p>
+<pre><code>define('ENVIRONMENT', 'production'); </code></pre>
+<p>If you upload your application to production site, set it to <code>production</code> or if you upload it to development,set it to <code>development</code>.</p>
+<p>I am sure you don't want to specify your environment for <code>ENVIRONMENT</code> each time you upload/deploy your application, here is how you can do so:</p>
+<pre><code>$local_servers = array('localhost');
+$isLocal = in_array($_SERVER['SERVER_NAME'], $local_servers);
+
+if ($isLocal) {
+    $env = 'local';
+} else {
+    // check development word in url
+    preg_match('#/development#', $_SERVER['REQUEST_URI'], $isDevelopment);
+
+    $env = $isDevelopment ? 'development' : 'production';
+}</code></pre>
+<p>And then use <code>$env</code> variable:</p>
+<pre><code>define('ENVIRONMENT', $env);</code></pre></p>
+                <br/><br/>
+
+                <div class="post-info">
+                        <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
+                        <a href="https://codeinphp.github.io/category/php">PHP</a>
+                        &nbsp;&nbsp;
+
+                    <span class="glyphicon glyphicon-bookmark"></span>
+
+                        <a href="https://codeinphp.github.io/tag/codeigniter">codeigniter</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
+                </div>
+
+            </article>
+            <hr/>
+
+            <div class="text-center clearfix">
+                <div class="col-sm-4 col-md-4">
+                    <a class="prevpost btn btn-primary"><i class="fa fa-chevron-circle-left"></i> Prev Post</a>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <a class="btn btn-primary" href="https://codeinphp.github.io/posts.html"><i class="fa fa-navicon"></i> View All
+                        Post</a>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <a class="nextpost btn btn-primary"><i class="fa fa-chevron-circle-right"></i> Next Post</a>
+                </div>
+            </div>
+
+            <hr/>
+            <span class='st_facebook_large' displayText='Facebook'></span>
+            <span class='st_twitter_large' displayText='Tweet'></span>
+            <span class='st_pocket_large' displayText='Pocket'></span>
+            <span class='st_flipboard_large' displayText='Flipboard'></span>
+            <span class='st_googleplus_large' displayText='Google +'></span>
+            <span class='st_linkedin_large' displayText='LinkedIn'></span>
+            <span class='st_email_large' displayText='Email'></span>
+            <br/><br/>
+
+            <!-- Comment form -->
+            <div class="well">
+                <div id="disqus_thread"></div>
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">Comments
+                    powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">Comments powered by
+                    <span class="logo-disqus">Disqus</span></a>
+            </div>
+
         </div>
 
         <div class="sidebar col-md-4">
@@ -193,6 +308,7 @@
                     </div>
                 </div>
             </div>
+
     </div>
 </div>
 
@@ -230,3 +346,80 @@
 
 </body>
 </html>
+<!-- for pagination -->
+<script>
+    $(function () {
+
+        ///////////////////////////////////////////////////
+        // class/id/selector of prev link
+        var $prevPostSelector = $('.prevpost');
+        var $nextPostSelector = $('.nextpost');
+        ///////////////////////////////////////////////////
+
+        var pageArray = document.location.href.split('/');
+        var currentPageSlug = pageArray[pageArray.length - 1];
+
+        if (!currentPageSlug) {
+            currentPageSlug = pageArray[pageArray.length - 2];
+        }
+
+        $.ajax({
+            url: __blogURL + "/data/blog.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                if (data.posts !== undefined && data.posts !== null) {
+                    $.each(data.posts, function (i, post) {
+                        if (post.slug === currentPageSlug || post.slug + '/' === currentPageSlug) {
+
+                            var prevPost = data.posts[i - 1];
+                            var nextPost = data.posts[i + 1];
+
+                            if (prevPost === undefined || prevPost === null) {
+                                // hide previous link if it is first post
+                                $prevPostSelector.hide();
+                            }
+                            else {
+                                $prevPostSelector.attr('href', __blogURL + '/post/' + prevPost.slug);
+                            }
+
+                            if (nextPost === undefined || nextPost === null) {
+                                // hide previous link if it is last post
+                                $nextPostSelector.hide();
+                            }
+                            else {
+                                $nextPostSelector.attr('href', __blogURL + '/post/' + nextPost.slug);
+                            }
+
+                            return false; // break out of each
+                        }
+                    });
+                }
+            },
+            error: function (e) {
+                $prevPostSelector.hide();
+                $nextPostSelector.hide();
+            }
+        });
+
+        // for Disqus
+        var disqus_shortname = 'codeinphp';
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+
+    });
+</script>
+
+<!-- for sharethis -->
+<script type="text/javascript">var switchTo5x = true;</script>
+<script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({
+    publisher: "18a13a28-cab8-4bb2-9a13-25708fa3cd9b",
+    doNotHash: false,
+    doNotCopy: false,
+    hashAddressBar: false
+});
+</script>
