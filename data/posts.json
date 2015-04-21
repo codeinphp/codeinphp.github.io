@@ -264,5 +264,21 @@
 		"author": "Sarfraz Ahmed",
 		"prevStatus": "publised",
 		"summary": "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD HTML 4.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/REC-html40\/loose.dtd\">\n<html><body><p><strong>Hello, World !<\/strong><\/p>\n<p>This is my first post on this blog hosted at awesome <a href=\"https:\/\/pages.github.com\/\">github pages<\/a>. Previously I used to blog on wordpress <a href=\"http:\/\/sarfraznawaz.wordpress.com\">here<\/a> but I switched to github pages because I really wanted to h...<\/p><\/body><\/html>\n"
+	},
+	{
+		"author": "Sarfraz Ahmed",
+		"title": "CodeIgniter Tip: Time Your Pages",
+		"tags": [
+			"codeigniter",
+			"php"
+		],
+		"category": "PHP",
+		"body": "For one of pages in the CodeIgniter application, I needed to find out how much time it takes to load. Pretty obviously first thing that came to mind was to use its built-in [Benchmarking Class][1]:\r\n\r\n    $this->benchmark->mark('code_start');\r\n    \r\n    \/\/ Some code happens here\r\n    \r\n    $this->benchmark->mark('code_end');\r\n    \r\n    echo $this->benchmark->elapsed_time('code_start', 'code_end');\r\n\r\nThat's fine as long as you need to benchmark specific points\/parts in your code. \r\n\r\nBut if you need to find out overall time page took to load, you can actually use below variable in your views:\r\n\r\n    {elapsed_time}\r\n\r\nOr simply:\r\n\r\n    <?php echo $elapsed_time;?>\r\n\r\nThat variable is automatically created by CodeIgniter.\r\n\r\n\r\n \r\n\r\n\r\n  [1]: https:\/\/ellislab.com\/codeigniter\/user-guide\/libraries\/benchmark.html",
+		"addpost": "addpost",
+		"dated": "April 21, 2015 01:39 PM",
+		"slug": "codeigniter-tip-time-your-pages",
+		"categoryslug": "php",
+		"status": "publised",
+		"summary": "\n<p>For one of pages in the CodeIgniter application, I needed to find out how much time it takes to load. Pretty obviously first thing that came to mind was to use its built-in <a href=\"https:\/\/ellislab.com\/codeigniter\/user-guide\/libraries\/benchmark.html\">Benchmarking Class<\/a>:<\/p>\n<pre><code>$this-...<\/code><\/pre>\n"
 	}
 ]

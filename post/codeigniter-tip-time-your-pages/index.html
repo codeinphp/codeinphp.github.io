@@ -8,7 +8,7 @@
     <meta name="description" content="PHP and more...">
     <meta name="author" content="Sarfraz Ahmed">
 
-    <title>Welcome ! :: Code In PHP</title>
+    <title>CodeIgniter Tip: Time Your Pages :: Code In PHP</title>
 
     <!-- rss feed url -->
     <link rel="alternate" type="application/rss+xml" title="Code In PHP" href="https://codeinphp.github.io/rss.xml"/>
@@ -71,27 +71,37 @@
     <div class="row">
         <div class="col-md-8 main-content">
             <article>
-                <h3>Welcome !</h3>
+                <h3>CodeIgniter Tip: Time Your Pages</h3>
                 <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                 &nbsp;&nbsp;
-                <span class="glyphicon glyphicon-time"></span> April 05, 2015 03:46 PM
+                <span class="glyphicon glyphicon-time"></span> April 21, 2015 01:39 PM
                 <hr>
 
-                <p class="post-content"><p><strong>Hello, World !</strong></p>
-<p>This is my first post on this blog hosted at awesome <a href="https://pages.github.com/">github pages</a>. Previously I used to blog on wordpress <a href="http://sarfraznawaz.wordpress.com">here</a> but I switched to github pages because I really wanted to have static blog with free hosting and ability to write up quick posts using <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax. In the <a href="https://codeinphp.github.io/post/bloggercms-an-static-blog-generator-cms.html">next post</a>, I will write about <strong><a href="https://bloggercms.github.io">BloggerCMS</a></strong>, a CMS I have made that helps create static blogs. This blog has also been generated via BloggerCMS :)</p>
-<p>On this blog, I intend to write my ideas mainly about PHP as well as other related web development technologies. </p>
-<p><em>Stay tuned :)</em></p></p>
+                <p class="post-content"><p>For one of pages in the CodeIgniter application, I needed to find out how much time it takes to load. Pretty obviously first thing that came to mind was to use its built-in <a href="https://ellislab.com/codeigniter/user-guide/libraries/benchmark.html">Benchmarking Class</a>:</p>
+<pre><code>$this-&gt;benchmark-&gt;mark('code_start');
+
+// Some code happens here
+
+$this-&gt;benchmark-&gt;mark('code_end');
+
+echo $this-&gt;benchmark-&gt;elapsed_time('code_start', 'code_end');</code></pre>
+<p>That's fine as long as you need to benchmark specific points/parts in your code. </p>
+<p>But if you need to find out overall time page took to load, you can actually use below variable in your views:</p>
+<pre><code>{elapsed_time}</code></pre>
+<p>Or simply:</p>
+<pre><code>&lt;?php echo $elapsed_time;?&gt;</code></pre>
+<p>That variable is automatically created by CodeIgniter.</p></p>
                 <br/><br/>
 
                 <div class="post-info">
                         <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
-                        <a href="https://codeinphp.github.io/category/blog">Blog</a>
+                        <a href="https://codeinphp.github.io/category/php">PHP</a>
                         &nbsp;&nbsp;
 
                     <span class="glyphicon glyphicon-bookmark"></span>
 
-                        <a href="https://codeinphp.github.io/tag/blog">blog</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/welcome">welcome</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/codeigniter">codeigniter</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
                 </div>
 
             </article>

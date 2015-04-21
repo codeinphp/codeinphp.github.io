@@ -6,6 +6,25 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>CodeIgniter Tip: Time Your Pages</title>
+<description><![CDATA[<p>For one of pages in the CodeIgniter application, I needed to find out how much time it takes to load. Pretty obviously first thing that came to mind was to use its built-in <a href="https://ellislab.com/codeigniter/user-guide/libraries/benchmark.html">Benchmarking Class</a>:</p>
+<pre><code>$this-&gt;benchmark-&gt;mark('code_start');
+
+// Some code happens here
+
+$this-&gt;benchmark-&gt;mark('code_end');
+
+echo $this-&gt;benchmark-&gt;elapsed_time('code_start', 'code_end');</code></pre>
+<p>That's fine as long as you need to benchmark specific points/parts in your code. </p>
+<p>But if you need to find out overall time page took to load, you can actually use below variable in your views:</p>
+<pre><code>{elapsed_time}</code></pre>
+<p>Or simply:</p>
+<pre><code>&lt;?php echo $elapsed_time;?&gt;</code></pre>
+<p>That variable is automatically created by CodeIgniter.</p>]]></description>
+<link>https://codeinphp.github.io/post/codeigniter-tip-time-your-pages</link>
+<pubDate>Tue, 21 Apr 2015 13:39:00 +0200</pubDate>
+</item>
+<item>
 <title>Dependency Injection in PHP</title>
 <description><![CDATA[<p>This is what Wikipedia has to say about Dependency Injection:</p>
 <blockquote>
