@@ -142,6 +142,7 @@ you deploy.</p>
 <li>We see that this migration class extends <code>CI_Migration</code> class. </li>
 <li>It has only two methods <code>up()</code> and <code>down()</code></li>
 <li>It uses <code>dbforge</code> object to build up queries in OOP way</li>
+<li>The migration files should be prefixed with three digits like <code>001_first_migration.php</code>, <code>002_second_migration.php</code> and so on</li>
 </ul>
 <p>So that's how a typical migration class should look like. But we are only interested in <code>up()</code> and <code>down()</code> methods. The <code>up()</code> method is called by system whenever you need to update the database and <code>down()</code> method is used to revert that change that was done by the <code>up()</code> method. For example, if in <code>up()</code> method you create a new table then in <code>down()</code> method you should specify code to remove that table. Similarly if in <code>up()</code> method you add a new field to some table then in <code>down()</code> method you should specify code that deletes that field. So both of these methods are opposite to each other. In each migration you should always specify the code for both.</p>
 <p>Now that we have created our migration, we need to run it. Let's create a controller called <code>Migrate</code> that will run our migrations:</p>
