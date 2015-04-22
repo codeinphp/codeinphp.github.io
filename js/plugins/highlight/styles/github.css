@@ -1,55 +1,97 @@
 /*
-Date: 24 Fev 2015
-Author: Pedro Oliveira <kanytu@gmail . com>
+  codepen.io Embed Theme
+  Author: Justin Perry <http://github.com/ourmaninamsterdam>
+  Original theme - https://github.com/chriskempson/tomorrow-theme
 */
 
-.hljs
-{
-    color: #A9B7C6;
-    background: #282b2e;
+.hljs {
     display: block;
     overflow-x: auto;
     padding: 0.5em;
-    webkit-text-size-adjust: none;
-}
-.hljs-number
-{
-    color: #6897BB;
+    background: #222;
+    color: #fff;
+    font-family: Menlo, Monaco, 'Andale Mono', 'Lucida Console', 'Courier New', monospace;
+    -webkit-text-size-adjust: none;
 }
 
-.hljs-keyword, .hljs-deletion
-{
-    color: #CC7832;
+.hljs-comment,
+.hljs-title {
+    color: #777;
 }
-.hljs-javadoc
-{
-    color: #629755;
+
+.hljs-variable,
+.hljs-attribute,
+.hljs-tag,
+.hljs-regexp,
+.hljs-name,
+.ruby .constant,
+.xml .tag .title,
+.xml .pi,
+.xml .doctype,
+.html .doctype {
+    color: #ab875d;
 }
-.hljs-comment
-{
-    color: #808080;
+
+.css .value {
+    color: #cd6a51;
 }
-.hljs-annotation
-{
-    color: #BBB529;
+
+.css .value .function,
+.css .value .string {
+    color: #a67f59;
 }
-.hljs-string, .hljs-addition
-{
-    color: #6A8759;
+
+.css .value .number {
+    color: #9b869c;
 }
-.hljs-function .hljs-title, .hljs-change
-{
-    color: #FFC66D;
+
+.css .id,
+.css .class,
+.css-pseudo,
+.css .selector,
+.css .tag {
+    color: #dfc48c;
 }
-.hljs-tag .hljs-title, .hljs-doctype
-{
-    color: #E8BF6A;
+
+.hljs-number,
+.hljs-preprocessor,
+.hljs-built_in,
+.hljs-literal,
+.hljs-params,
+.hljs-constant {
+    color: #ab875d;
 }
-.hljs-tag .hljs-attribute
-{
-    color: #BABABA;
+
+.ruby .class .title,
+.css .rules .attribute {
+    color: #9b869b;
 }
-.hljs-tag .hljs-value
-{
-    color: #A5C261;
+
+.hljs-string,
+.hljs-value,
+.hljs-inheritance,
+.hljs-header,
+.ruby .symbol,
+.xml .cdata {
+    color: #8f9c6c;
+}
+
+.css .hexcolor {
+    color: #cd6a51;
+}
+
+.function,
+.python .decorator,
+.python .title,
+.ruby .function .title,
+.ruby .title .keyword,
+.perl .sub,
+.javascript .title,
+.coffeescript .title {
+    color: #fff;
+}
+
+.hljs-keyword,
+.javascript .function {
+    color: #8f9c6c;
 }
