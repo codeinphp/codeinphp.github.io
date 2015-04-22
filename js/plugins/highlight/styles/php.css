@@ -64,7 +64,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-tag .hljs-title,
 .hljs-rule .hljs-property,
 .django .hljs-tag .hljs-keyword {
-  color: #2F7700;
+  color: #0000BB;
   font-weight: normal;
 }
 
@@ -72,7 +72,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-variable,
 .lisp .hljs-body,
 .hljs-name {
-  color: #0000BB;
+  color: #2F7700;
 }
 
 .hljs-regexp {
