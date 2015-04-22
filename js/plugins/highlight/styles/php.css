@@ -6,7 +6,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
   display: block;
   overflow-x: auto;
   padding: 0.5em;
-  color: #333;
+  color: #0000BB;
   background: #f8f8f8;
   -webkit-text-size-adjust: none;
 }
@@ -72,7 +72,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-variable,
 .lisp .hljs-body,
 .hljs-name {
-  color: #0000BB;
+  color: #333;
 }
 
 .hljs-regexp {
@@ -90,7 +90,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 }
 
 .hljs-built_in {
-  color: #333;
+  color: #0000BB;
 }
 
 .hljs-preprocessor,
