@@ -1218,7 +1218,7 @@ h6 .small,
 .h6 .small {
     font-weight: normal;
     line-height: 1;
-    color: #793862
+    color: #8892BF
 }
 h1,
 .h1,
@@ -1338,7 +1338,7 @@ mark,
     text-transform: capitalize
 }
 .text-muted {
-    color: #793862
+    color: #8892BF
 }
 .text-primary {
     color: #4F5B93
@@ -1462,7 +1462,7 @@ dd {
 abbr[title],
 abbr[data-original-title] {
     cursor: help;
-    border-bottom: 1px dotted #793862
+    border-bottom: 1px dotted #8892BF
 }
 .initialism {
     font-size: 90%;
@@ -1485,7 +1485,7 @@ blockquote .small {
     display: block;
     font-size: 80%;
     line-height: 1.42857143;
-    color: #793862
+    color: #8892BF
 }
 blockquote footer:before,
 blockquote small:before,
@@ -2339,7 +2339,7 @@ table {
 caption {
     padding-top: 8px;
     padding-bottom: 8px;
-    color: #793862;
+    color: #8892BF;
     text-align: left
 }
 th {
@@ -2657,14 +2657,14 @@ output {
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6)
 }
 .form-control::-moz-placeholder {
-    color: #793862;
+    color: #8892BF;
     opacity: 1
 }
 .form-control:-ms-input-placeholder {
-    color: #793862
+    color: #8892BF
 }
 .form-control::-webkit-input-placeholder {
-    color: #793862
+    color: #8892BF
 }
 .form-control[disabled],
 .form-control[readonly],
@@ -3132,8 +3132,8 @@ fieldset[disabled] .btn {
 }
 .btn-default {
     color: #ffffff;
-    background-color: #793862;
-    border-color: #793862
+    background-color: #8892BF;
+    border-color: #8892BF
 }
 .btn-default:hover,
 .btn-default:focus,
@@ -3142,7 +3142,7 @@ fieldset[disabled] .btn {
 .btn-default.active,
 .open>.dropdown-toggle.btn-default {
     color: #ffffff;
-    background-color: #793862;
+    background-color: #8892BF;
     border-color: #92897e
 }
 .btn-default:active,
@@ -3168,11 +3168,11 @@ fieldset[disabled] .btn-default:active,
 .btn-default.disabled.active,
 .btn-default[disabled].active,
 fieldset[disabled] .btn-default.active {
-    background-color: #793862;
-    border-color: #793862
+    background-color: #8892BF;
+    border-color: #8892BF
 }
 .btn-default .badge {
-    color: #793862;
+    color: #8892BF;
     background-color: #ffffff
 }
 .btn-primary {
@@ -3430,7 +3430,7 @@ fieldset[disabled] .btn-link {
 fieldset[disabled] .btn-link:hover,
 .btn-link[disabled]:focus,
 fieldset[disabled] .btn-link:focus {
-    color: #793862;
+    color: #8892BF;
     text-decoration: none
 }
 .btn-lg,
@@ -3576,7 +3576,7 @@ tbody.collapse.in {
 .dropdown-menu>.disabled>a,
 .dropdown-menu>.disabled>a:hover,
 .dropdown-menu>.disabled>a:focus {
-    color: #793862
+    color: #8892BF
 }
 .dropdown-menu>.disabled>a:hover,
 .dropdown-menu>.disabled>a:focus {
@@ -3605,7 +3605,7 @@ tbody.collapse.in {
     padding: 3px 20px;
     font-size: 12px;
     line-height: 1.42857143;
-    color: #793862;
+    color: #8892BF;
     white-space: nowrap
 }
 .dropdown-backdrop {
@@ -3984,11 +3984,11 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
     background-color: #eeeeee
 }
 .nav>li.disabled>a {
-    color: #793862
+    color: #8892BF
 }
 .nav>li.disabled>a:hover,
 .nav>li.disabled>a:focus {
-    color: #793862;
+    color: #8892BF;
     text-decoration: none;
     background-color: transparent;
     cursor: not-allowed
@@ -4699,7 +4699,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
     color: #cccccc
 }
 .breadcrumb>.active {
-    color: #793862
+    color: #8892BF
 }
 .pagination {
     display: inline-block;
@@ -4748,7 +4748,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination>.active>a:focus,
 .pagination>.active>span:focus {
     z-index: 2;
-    color: #793862;
+    color: #8892BF;
     background-color: #f5f5f5;
     border-color: #dddddd;
     cursor: default
@@ -4759,7 +4759,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination>.disabled>a,
 .pagination>.disabled>a:hover,
 .pagination>.disabled>a:focus {
-    color: #793862;
+    color: #8892BF;
     background-color: #ffffff;
     border-color: #dddddd;
     cursor: not-allowed
@@ -4828,7 +4828,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pager .disabled>a:hover,
 .pager .disabled>a:focus,
 .pager .disabled>span {
-    color: #793862;
+    color: #8892BF;
     background-color: #ffffff;
     cursor: not-allowed
 }
@@ -4858,11 +4858,11 @@ a.label:focus {
     top: -1px
 }
 .label-default {
-    background-color: #793862
+    background-color: #8892BF
 }
 .label-default[href]:hover,
 .label-default[href]:focus {
-    background-color: #793862
+    background-color: #8892BF
 }
 .label-primary {
     background-color: #4F5B93
@@ -4910,7 +4910,7 @@ a.label:focus {
     vertical-align: baseline;
     white-space: nowrap;
     text-align: center;
-    background-color: #793862;
+    background-color: #8892BF;
     border-radius: 10px
 }
 .badge:empty {
@@ -5261,7 +5261,7 @@ a.list-group-item:focus {
 .list-group-item.disabled:hover,
 .list-group-item.disabled:focus {
     background-color: #eeeeee;
-    color: #793862;
+    color: #8892BF;
     cursor: not-allowed
 }
 .list-group-item.disabled .list-group-item-heading,
@@ -5272,7 +5272,7 @@ a.list-group-item:focus {
 .list-group-item.disabled .list-group-item-text,
 .list-group-item.disabled:hover .list-group-item-text,
 .list-group-item.disabled:focus .list-group-item-text {
-    color: #793862
+    color: #8892BF
 }
 .list-group-item.active,
 .list-group-item.active:hover,
