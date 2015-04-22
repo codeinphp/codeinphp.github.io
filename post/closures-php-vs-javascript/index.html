@@ -8,7 +8,7 @@
     <meta name="description" content="PHP and more...">
     <meta name="author" content="Sarfraz Ahmed">
 
-    <title>Code In PHP</title>
+    <title>Closures - PHP vs Javascript :: Code In PHP</title>
 
     <!-- rss feed url -->
     <link rel="alternate" type="application/rss+xml" title="Code In PHP" href="https://codeinphp.github.io/rss.xml"/>
@@ -70,12 +70,156 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 main-content">
-            <h1>Category Posts</h1>
-            <hr/>
-            <br/>
+            <article>
+                <h3>Closures - PHP vs Javascript</h3>
+                <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
+                &nbsp;&nbsp;
+                <span class="glyphicon glyphicon-time"></span> April 22, 2015 02:17 PM
+                <hr>
 
-                <h3><a href="https://codeinphp.github.io/post/visual-query-a-basic-mysql-query-builder-app">Visual Query - A Basic MySQL Query Builder App</a></h3>
-                <span class="glyphicon glyphicon-time"></span> April 19, 2015 12:31 PM
+                <p class="post-content"><p>In my previous post <a href="http://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php/">Exploring Lambda Functions and Closures in PHP</a>, I gave you example of function that can calculate factorial of given number:</p>
+<pre><code>$factorial = function( $n ) use ( &amp;$factorial ) {
+    if( $n == 1 ) return 1;
+    return $factorial( $n - 1 ) * $n;
+};
+
+echo $factorial( 5 ); // 120</code></pre>
+<p>In that post I simply said it is important to pass <code>$factorial</code> by <strong>reference</strong> otherwise it won't work. Let's explore why it is so in this post.</p>
+<p>Closures are pretty common in Javascript so let's create a simple closure in it and see how it behaves:</p>
+<pre><code>var addOne = function(num) {
+    return function() { 
+        console.log(num++); 
+    };
+};
+
+var f = addOne(1);
+
+f(); // 1
+f(); // 2
+f(); // 3</code></pre>
+<p>As can be seen, each time we call the function, it increments the number. Let's now convert the same in PHP:</p>
+<pre><code>$addOne = function($num) {
+    return function() { 
+        echo $num++; 
+    };
+};
+
+$f = $addOne(1);
+
+$f();
+$f();
+$f();</code></pre>
+<p>This would result in error:</p>
+<p><code>Notice: Undefined variable: num</code></p>
+<p>Why is it so ? Because variable is scope is different in PHP and Javascript. In PHP, all variables go in local scope by default unless you explicitly declare them in global scope. However in Javascript all variables go in global scope unless you explicitly declare them in local scope using <code>var</code> keyword. Since we are talking about functions and closures here, we can say that in PHP <em>a variable declared in a function can only be available to that function</em> where it is declared. On the other hand, in Javascript <em>a variable can not only be available to function where it is declared but also to inner functions of that parent function</em>.  Let's see an example:</p>
+<pre><code>function test() {
+  $variable = 'value';
+
+  return function() {
+    echo $variable;
+  };
+}
+
+$f = test();
+$f(); // Notice: Undefined variable: variable</code></pre>
+<p>So PHP gave error as inner function didn't had access to outer variable <code>$variable</code>. We could have made this variable available to inner function either by creating closure using <code>use</code> keyword or declaring that variable in global scope. Le't see same example in Javascript:</p>
+<pre><code>function test() {
+  var variable = 'value';
+
+  return function() {
+    console.log(variable);
+  };
+}
+
+var f = test();
+f(); // value</code></pre>
+<p>In Javascript though, the inner function was able to get variable from outer scope eg parent function in this example.</p>
+<p>This is reason why Javascript inner function shown above didn't give error whereas PHP's did. Therefore to have access to outer variable in PHP, we need to create a closure by using the <code>use</code> keyword. Of course in Javascript, you don't need something like <code>use</code> keyword because as I mentioned in Javascript a variable of a parent function is available to all its inner functions as well. So we need to use the <code>use</code> keyword in PHP due to difference of variable scoping in PHP and Javascript.</p>
+<p>So let's fix that error we received earlier in PHP:</p>
+<pre><code>$addOne = function($num) {
+    return function() use ($num) { 
+        echo $num++; 
+    };
+};
+
+$f = $addOne(1);
+
+$f(); // 1
+$f(); // 1
+$f(); // 1</code></pre>
+<p>Now we have created the closure and error is gone and <code>$num</code> variable is now available to inner function but there is a problem, each time we call the function it says <code>1</code> unlike Javascript example we saw earlier which said <code>1</code>, <code>2</code> and <code>3</code>. That's because unlike Javascript, PHP creates a new local variable inside inner function eg passes it by <code>value</code> not by <code>reference</code>. Conceptually, PHP sees this code like this:</p>
+<pre><code>$addOne = function($num) {
+    return function() use ($num) { 
+        $num = 1;  // so PHP kind of creates a new variable and assigns to 1 each time you call this
+        echo $num++; 
+    };
+};</code></pre>
+<p>So to get similar output as in Javascript, we need to pass the variable using <code>reference</code> which can be done by using the <code>&amp;</code> symbol:</p>
+<pre><code>$addOne = function($num) {
+    return function() use (&amp;$num) { // passed by reference 
+        echo $num++; 
+    };
+};
+
+$f = $addOne(1);
+
+$f();
+$f();
+$f();</code></pre>
+<p>and now we get the output <code>1</code>, <code>2</code>, and <code>3</code>.</p>
+<hr />
+<p>And that's also reason why you needed to pass variable by <code>reference</code> for the factorial example I had given in my <a href="http://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php/">previous post</a>. Hope this post clears the confusion of closures and scoping especially for someone who comes from Javascript to PHP.</p></p>
+                <br/><br/>
+
+                <div class="post-info">
+                        <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
+                        <a href="https://codeinphp.github.io/category/php">PHP</a>
+                        &nbsp;&nbsp;
+
+                    <span class="glyphicon glyphicon-bookmark"></span>
+
+                        <a href="https://codeinphp.github.io/tag/closure">closure</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/javascript">javascript</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/lambda">lambda</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/scope">scope</a>&nbsp;&nbsp;
+                </div>
+
+            </article>
+            <hr/>
+
+            <div class="text-center clearfix">
+                <div class="col-sm-4 col-md-4">
+                    <a class="prevpost btn btn-primary"><i class="fa fa-chevron-circle-left"></i> Prev Post</a>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <a class="btn btn-primary" href="https://codeinphp.github.io/posts.html"><i class="fa fa-navicon"></i> View All
+                        Post</a>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <a class="nextpost btn btn-primary"><i class="fa fa-chevron-circle-right"></i> Next Post</a>
+                </div>
+            </div>
+
+            <hr/>
+            <span class='st_facebook_large' displayText='Facebook'></span>
+            <span class='st_twitter_large' displayText='Tweet'></span>
+            <span class='st_pocket_large' displayText='Pocket'></span>
+            <span class='st_flipboard_large' displayText='Flipboard'></span>
+            <span class='st_googleplus_large' displayText='Google +'></span>
+            <span class='st_linkedin_large' displayText='LinkedIn'></span>
+            <span class='st_email_large' displayText='Email'></span>
+            <br/><br/>
+
+            <!-- Comment form -->
+            <div class="well">
+                <div id="disqus_thread"></div>
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">Comments
+                    powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">Comments powered by
+                    <span class="logo-disqus">Disqus</span></a>
+            </div>
+
         </div>
 
         <div class="sidebar col-md-4">
@@ -195,6 +339,7 @@
                     </div>
                 </div>
             </div>
+
     </div>
 </div>
 
@@ -233,3 +378,80 @@
 
 </body>
 </html>
+<!-- for pagination -->
+<script>
+    $(function () {
+
+        ///////////////////////////////////////////////////
+        // class/id/selector of prev link
+        var $prevPostSelector = $('.prevpost');
+        var $nextPostSelector = $('.nextpost');
+        ///////////////////////////////////////////////////
+
+        var pageArray = document.location.href.split('/');
+        var currentPageSlug = pageArray[pageArray.length - 1];
+
+        if (!currentPageSlug) {
+            currentPageSlug = pageArray[pageArray.length - 2];
+        }
+
+        $.ajax({
+            url: __blogURL + "/data/blog.json",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                if (data.posts !== undefined && data.posts !== null) {
+                    $.each(data.posts, function (i, post) {
+                        if (post.slug === currentPageSlug || post.slug + '/' === currentPageSlug) {
+
+                            var prevPost = data.posts[i - 1];
+                            var nextPost = data.posts[i + 1];
+
+                            if (prevPost === undefined || prevPost === null) {
+                                // hide previous link if it is first post
+                                $prevPostSelector.hide();
+                            }
+                            else {
+                                $prevPostSelector.attr('href', __blogURL + '/post/' + prevPost.slug);
+                            }
+
+                            if (nextPost === undefined || nextPost === null) {
+                                // hide previous link if it is last post
+                                $nextPostSelector.hide();
+                            }
+                            else {
+                                $nextPostSelector.attr('href', __blogURL + '/post/' + nextPost.slug);
+                            }
+
+                            return false; // break out of each
+                        }
+                    });
+                }
+            },
+            error: function (e) {
+                $prevPostSelector.hide();
+                $nextPostSelector.hide();
+            }
+        });
+
+        // for Disqus
+        var disqus_shortname = 'codeinphp';
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+
+    });
+</script>
+
+<!-- for sharethis -->
+<script type="text/javascript">var switchTo5x = true;</script>
+<script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({
+    publisher: "18a13a28-cab8-4bb2-9a13-25708fa3cd9b",
+    doNotHash: false,
+    doNotCopy: false,
+    hashAddressBar: false
+});
+</script>

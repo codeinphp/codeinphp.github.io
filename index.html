@@ -71,100 +71,104 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/database-migrations-in-codeigniter">Database Migrations in CodeIgniter</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/closures-php-vs-javascript">Closures - PHP vs Javascript</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> April 21, 2015 08:50 PM
+                    <span class="glyphicon glyphicon-time"></span> April 22, 2015 02:17 PM
                 
                         <hr>
-                        <p class="post-content"><h2>What is Migration ?</h2>
-<p>Quoting from CI <a href="https://ellislab.com/codeigniter/user-guide/libraries/migration.html">documentation</a>:</p>
-<blockquote>
-<p>Migrations are a convenient way for you to alter your database in a
-structured and organized manner. You could edit fragments of SQL by
-hand but you would then be responsible for telling other developers
-that they need to go and run them. You’d also have to keep track of
-which changes need to be run against the production machines next time
-you deploy.</p>
-</blockquote>
-<p>Migrations come in extremely handy when you are working with a team of developers. Normally whenever you created a new database table or modified existing one by adding/removing certain fields or even added some data to database, you would tell your fellow developers to run those SQL queries in their machines so that database remains in sync. </p>
-<p>This isn't ideal, we needed some way so that:</p>
-<ul>
-<li>
-<p>Framework (CodeIgniter or whatever) <strong>automatically detects and runs</strong> those SQL queries on our behalf without handing over SQL query files to other developers each time we make some change to database</p>
-</li>
-<li>And keeps <strong>versions of our database changes</strong> similar to versioning of files when we use <strong>git</strong>. This means we can go back and forth easily to specific version of database changes. Something went wrong on production site and you need to revert to specific database change, no problem simply tell CodeIgniter which change to revert to and you are done.</li>
-</ul>
-<p><strong>That's what migrations do.</strong> </p>
-<p>You now see how important and useful migrations are. One of the first frameworks that really shined up with this idea was Laravel and then I saw similar concept in Android applications. CodeIgniter also allows us to setup migrations which is really cool.  </p>
+                        <p class="post-content"><p>In my previous post <a href="http://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php/">Exploring Lambda Functions and Closures in PHP</a>, I gave you example of function that can calculate factorial of given number:</p>
+<pre><code>$factorial = function( $n ) use ( &amp;$factorial ) {
+    if( $n == 1 ) return 1;
+    return $factorial( $n - 1 ) * $n;
+};
+
+echo $factorial( 5 ); // 120</code></pre>
+<p>In that post I simply said it is important to pass <code>$factorial</code> by <strong>reference</strong> otherwise it won't work. Let's explore why it is so in this post.</p>
+<p>Closures are pretty common in Javascript so let's create a simple closure in it and see how it behaves:</p>
+<pre><code>var addOne = function(num) {
+    return function() { 
+        console.log(num++); 
+    };
+};
+
+var f = addOne(1);
+
+f(); // 1
+f(); // 2
+f(); // 3</code></pre>
+<p>As can be seen, each time we call the function, it increments the number. Let's now convert the same in PHP:</p>
+<pre><code>$addOne = function($num) {
+    return function() { 
+        echo $num++; 
+    };
+};
+
+$f = $addOne(1);
+
+$f();
+$f();
+$f();</code></pre>
+<p>This would result in error:</p>
+<p><code>Notice: Undefined variable: num</code></p>
+<p>Why is it so ? Because variable is scope is different in PHP and Javascript. In PHP, all variables go in local scope by default unless you explicitly declare them in global scope. However in Javascript all variables go in global scope unless you explicitly declare them in local scope using <code>var</code> keyword. Since we are talking about functions and closures here, we can say that in PHP <em>a variable declared in a function can only be available to that function</em> where it is declared. On the other hand, in Javascript <em>a variable can not only be available to function where it is declared but also to inner functions of that parent function</em>.  Let's see an example:</p>
+<pre><code>function test() {
+  $variable = 'value';
+
+  return function() {
+    echo $variable;
+  };
+}
+
+$f = test();
+$f(); // Notice: Undefined variable: variable</code></pre>
+<p>So PHP gave error as inner function didn't had access to outer variable <code>$variable</code>. We could have made this variable available to inner function either by creating closure using <code>use</code> keyword or declaring that variable in global scope. Le't see same example in Javascript:</p>
+<pre><code>function test() {
+  var variable = 'value';
+
+  return function() {
+    console.log(variable);
+  };
+}
+
+var f = test();
+f(); // value</code></pre>
+<p>In Javascript though, the inner function was able to get variable from outer scope eg parent function in this example.</p>
+<p>This is reason why Javascript inner function shown above didn't give error whereas PHP's did. Therefore to have access to outer variable in PHP, we need to create a closure by using the <code>use</code> keyword. Of course in Javascript, you don't need something like <code>use</code> keyword because as I mentioned in Javascript a variable of a parent function is available to all its inner functions as well. So we need to use the <code>use</code> keyword in PHP due to difference of variable scoping in PHP and Javascript.</p>
+<p>So let's fix that error we received earlier in PHP:</p>
+<pre><code>$addOne = function($num) {
+    return function() use ($num) { 
+        echo $num++; 
+    };
+};
+
+$f = $addOne(1);
+
+$f(); // 1
+$f(); // 1
+$f(); // 1</code></pre>
+<p>Now we have created the closure and error is gone and <code>$num</code> variable is now available to inner function but there is a problem, each time we call the function it says <code>1</code> unlike Javascript example we saw earlier which said <code>1</code>, <code>2</code> and <code>3</code>. That's because unlike Javascript, PHP creates a new local variable inside inner function eg passes it by <code>value</code> not by <code>reference</code>. Conceptually, PHP sees this code like this:</p>
+<pre><code>$addOne = function($num) {
+    return function() use ($num) { 
+        $num = 1;  // so PHP kind of creates a new variable and assigns to 1 each time you call this
+        echo $num++; 
+    };
+};</code></pre>
+<p>So to get similar output as in Javascript, we need to pass the variable using <code>reference</code> which can be done by using the <code>&amp;</code> symbol:</p>
+<pre><code>$addOne = function($num) {
+    return function() use (&amp;$num) { // passed by reference 
+        echo $num++; 
+    };
+};
+
+$f = $addOne(1);
+
+$f();
+$f();
+$f();</code></pre>
+<p>and now we get the output <code>1</code>, <code>2</code>, and <code>3</code>.</p>
 <hr />
-<h2>Setting Up Migrations in CodeIgniter</h2>
-<p>In order to enable migrations: </p>
-<ul>
-<li>Open <strong>application/config/migration.php</strong> file and set the value for <code>$config['migration_enabled']</code> from <code>false</code> to <code>true</code>.</li>
-<li>Create a folder called <strong>migrations</strong> in <strong>application/config/</strong> folder and that's it.</li>
-</ul>
-<p>In <strong>migrations</strong> folder, we can create our database changes. Let's say we want to create a new <code>users</code> table. To do so, create a file called <strong>001_add_users.php</strong> in <strong>migrations</strong> folder and paste this code in it:</p>
-<pre><code>class Migration_Add_user extends CI_Migration
-{
-    public function up()
-    {
-        $this-&gt;dbforge-&gt;add_field(
-           array(
-              'id' =&gt; array(
-                 'type' =&gt; 'INT',
-                 'constraint' =&gt; 5,
-                 'unsigned' =&gt; true,
-                 'auto_increment' =&gt; true
-              ),
-              'name' =&gt; array(
-                 'type' =&gt; 'VARCHAR',
-                 'constraint' =&gt; '100',
-              ),
-              'email' =&gt; array(
-                 'type' =&gt; 'TEXT',
-                 'null' =&gt; true,
-              ),
-           )
-        );
-
-        $this-&gt;dbforge-&gt;add_key('id', TRUE);
-        $this-&gt;dbforge-&gt;create_table('users');
-    }
-
-    public function down()
-    {
-        $this-&gt;dbforge-&gt;drop_table('users');
-    }
-}</code></pre>
-<p>There are few things to notice:</p>
-<ul>
-<li>We see that this migration class extends <code>CI_Migration</code> class. </li>
-<li>It has only two methods <code>up()</code> and <code>down()</code></li>
-<li>It uses <code>dbforge</code> object to build up queries in OOP way</li>
-<li>The migration files should be prefixed with three digits like <code>001_first_migration.php</code>, <code>002_second_migration.php</code> and so on</li>
-</ul>
-<p>So that's how a typical migration class should look like. But we are only interested in <code>up()</code> and <code>down()</code> methods. The <code>up()</code> method is called by system whenever you need to update the database and <code>down()</code> method is used to revert that change that was done by the <code>up()</code> method. For example, if in <code>up()</code> method you create a new table then in <code>down()</code> method you should specify code to remove that table. Similarly if in <code>up()</code> method you add a new field to some table then in <code>down()</code> method you should specify code that deletes that field. So both of these methods are opposite to each other. In each migration you should always specify the code for both.</p>
-<p>Now that we have created our migration, we need to run it. Let's create a controller called <code>Migrate</code> that will run our migrations:</p>
-<pre><code>class migrate extends CI_Controller {
-    public function index()
-    {
-        // load migration library
-        $this-&gt;load-&gt;library('migration');
-
-        if ( ! $this-&gt;migration-&gt;current())
-        {
-            echo 'Error' . $this-&gt;migration-&gt;error_string();
-        } else {
-            echo 'Migrations ran successfully!'
-        }   
-    }    
-}</code></pre>
-<p>Now if you visit your application url at <code>http://yoursite.com/migrate</code> and all goes well, you should success message and the new table <code>users</code> should be created in the database. If you run migration for the first time, you would also notice that a table called <code>migrations</code> should also be created in your database by CodeIgniter. This table can keep track of your database migration changes.</p>
-<p>Now refresh page or re-visit <code>http://yoursite.com/migrate</code> and you would notice nothing happens, this time CodeIgniter won't do anything with your migration since it has already been run. To prove it further, delete <code>users</code> table manually from your database and then re-visit <code>http://yoursite.com/migrate</code> page and you will see CodeIgniter didn't create <code>users</code> table again. That's because CodeIgniter knows that it has already run that particular migration. Now if you add some other migrations in <strong>migrations</strong>  folder and then visit migrate URL again, this time CodeIgniter will run your <strong>new</strong> migrations. How does CodeIgniter know which migrations to run ? It keeps track of them <code>migrations</code> table that it creates as well as <code>config['migration_version']</code> setting in application/config/migration.php file. That's how CodeIgniter versions your database changes.</p>
-<p>You see how simple and powerful migrations are. Now that you have made changes to database, you don't need to worry how other team members will embrace those changes, all you need to ask them is to visit the migration url and database on their machines will also get those changes!</p>
-<p>In the above example, we used <code>$this-&gt;migration-&gt;current()</code> method to go to current migration version that is set in <code>config['migration_version']</code>. There are <a href="https://ellislab.com/codeigniter/user-guide/libraries/migration.html">couple of more methods</a> that allow you to migrate based on most recent version of migration based on file system and one that allows you to go to specific migration version. To lean more about <code>dbforge</code> methods, <a href="http://www.codeigniter.com/user_guide/database/forge.html?highlight=dbforge">check out its documentation</a>.</p>
-<p>So if you have never used database migrations before, you should definitely use them because they are awesome!</p></p>
+<p>And that's also reason why you needed to pass variable by <code>reference</code> for the factorial example I had given in my <a href="http://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php/">previous post</a>. Hope this post clears the confusion of closures and scoping especially for someone who comes from Javascript to PHP.</p></p>
                         <br/>
                 
                         <div class="post-info">
@@ -174,10 +178,11 @@ you deploy.</p>
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
-                                <a href="https://codeinphp.github.io/tag/codeigniter">codeigniter</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/database">database</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/migration">migration</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/closure">closure</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/javascript">javascript</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/lambda">lambda</a>&nbsp;&nbsp;
                                 <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/scope">scope</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -230,11 +235,11 @@ you deploy.</p>
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/closures-php-vs-javascript">Closures - PHP vs Javascript</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/database-migrations-in-codeigniter">Database Migrations in CodeIgniter</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/development-environments-in-codeigniter">Development Environments in CodeIgniter</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/controllers-for-frontend-and-backend-in-codeigniter">Controllers for Frontend and Backend in CodeIgniter</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/codeigniter-tip-time-your-pages">CodeIgniter Tip: Time Your Pages</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/dependency-injection-in-php">Dependency Injection in PHP</a></li>
                 </ul>
             </div>
         
@@ -275,9 +280,9 @@ you deploy.</p>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/blog" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">blog</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/bloggercms" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">bloggercms</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/browser" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">browser</a>
-<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/closure" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">closure</a>
+<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/closure" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">closure</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/cms" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">cms</a>
-<a style="font-size: 18px" class="tag_cloud" href="https://codeinphp.github.io/tag/codeigniter" title="5 total posts" data-original-title="6 total posts" data-toggle="tooltip">codeigniter</a>
+<a style="font-size: 17px" class="tag_cloud" href="https://codeinphp.github.io/tag/codeigniter" title="5 total posts" data-original-title="6 total posts" data-toggle="tooltip">codeigniter</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/console" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">console</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/controller" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">controller</a>
 <a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/database" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">database</a>
@@ -291,14 +296,15 @@ you deploy.</p>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/googledrive" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">googledrive</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/injection" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">injection</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/interface" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">interface</a>
-<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/javascript" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">javascript</a>
-<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/lambda" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">lambda</a>
+<a style="font-size: 14px" class="tag_cloud" href="https://codeinphp.github.io/tag/javascript" title="3 total posts" data-original-title="4 total posts" data-toggle="tooltip">javascript</a>
+<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/lambda" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">lambda</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/migration" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">migration</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/mysql" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">mysql</a>
 <a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">oop</a>
-<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="13 total posts" data-original-title="14 total posts" data-toggle="tooltip">php</a>
+<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="14 total posts" data-original-title="15 total posts" data-toggle="tooltip">php</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/phpexecute" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">phpexecute</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/runner" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">runner</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/scope" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">scope</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sql" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">sql</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sqlite" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">sqlite</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/static" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">static</a>
