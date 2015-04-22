@@ -99,7 +99,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-doctype,
 .hljs-shebang,
 .hljs-cdata {
-  color: #0000BB;
+  color: #333;
 }
 
 .hljs-deletion {
