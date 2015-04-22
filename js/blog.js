@@ -23,6 +23,9 @@ $(function () {
         }
     });
 
+    // enable tooltips
+    $('[data-toggle=tooltip]').tooltip();
+
     // lightbox for all images + make them responsive
     $('img').each(function () {
         var src = this.src;
@@ -34,6 +37,5 @@ $(function () {
         event.preventDefault();
         $(this).ekkoLightbox();
     });
-
 
 });
