@@ -72,7 +72,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-variable,
 .lisp .hljs-body,
 .hljs-name {
-  color: #2F7700;
+  color: #0000BB;
 }
 
 .hljs-regexp {
@@ -90,7 +90,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 }
 
 .hljs-built_in {
-  color: #0000BB;
+  color: #2F7700;
 }
 
 .hljs-preprocessor,
