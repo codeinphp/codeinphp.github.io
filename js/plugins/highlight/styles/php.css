@@ -6,7 +6,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
   display: block;
   overflow-x: auto;
   padding: 0.5em;
-  color: #0000BB;
+  color: #333;
   background: #f8f8f8;
   -webkit-text-size-adjust: none;
 }
@@ -45,7 +45,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-title,
 .hljs-id,
 .scss .hljs-preprocessor {
-  color: #333;
+  color: #0000BB;
 }
 
 .hljs-list .hljs-keyword,
