@@ -59,7 +59,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-type,
 .vhdl .hljs-literal,
 .tex .hljs-command {
-  color: #0000BB;
+  color: #009926;
   font-weight: bold;
 }
 
@@ -75,7 +75,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-variable,
 .lisp .hljs-body,
 .hljs-name {
-  color: #009926;
+  color: #0000BB;
 }
 
 .hljs-regexp {
