@@ -72,7 +72,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-variable,
 .lisp .hljs-body,
 .hljs-name {
-  color: #0000BB;
+  color: #333;
 }
 
 .hljs-regexp {
@@ -99,7 +99,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-doctype,
 .hljs-shebang,
 .hljs-cdata {
-  color: #333;
+  color: #0000BB;
 }
 
 .hljs-deletion {
