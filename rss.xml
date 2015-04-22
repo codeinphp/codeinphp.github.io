@@ -397,6 +397,288 @@ echo $this-&gt;benchmark-&gt;elapsed_time('code_start', 'code_end');</code></pre
 </item>
 <item>
 <title>Dependency Injection in PHP</title>
+<description><![CDATA[This is what Wikipedia has to say about Dependency Injection:
+
+> In software engineering, dependency injection is a software design
+> pattern that implements inversion of control for software libraries.
+> Caller delegates to an external framework the control flow of
+> discovering and importing a service or software module specified or
+> "injected" by the caller.
+
+In simple terms, Dependency Injection is a design pattern that helps *avoid hard-coded dependencies* for some piece of code or software. 
+
+The dependencies can be changed at *run time as well as compile time*. We can use Dependency Injection to write modular, testable and maintainable code:
+
+- **Modular**: The Dependency Injection helps create completely self-sufficient classes or modules
+- **Testable**: It helps write testable code easily eg unit tests for example
+- **Maintainable**: Since each class becomes modular, it becomes easier to manage it
+
+---
+
+The Problem
+--------
+
+We have dependencies almost always in our code. Consider the following procedural example which is pretty common:
+
+    function getUsers() {
+         global $database;
+         return $database->getAll('users');
+    }
+
+Here the function `getUsers` has dependency on the `$database` variable (tight coupling). It has some of these problems:
+
+- The function `getUsers` needs a **working** connection to *some database* . Whether there is successful connection to database or not is the fate of `getUsers` function
+
+- The `$database` comes from outer scope so chances are it might be overwritten by some other library or code in the same scope in which case function may fail
+
+Of course you could have used the `try-catch` constructs but it still doesn't solve the second problem.
+
+Let's consider another example for a class:
+
+    class User 
+    {
+        private $database = null;
+    
+        public function __construct() {
+            $this->database = new database('host', 'user', 'pass', 'dbname');
+        }
+    
+        public function getUsers() {
+            return $this->database->getAll('users');
+        }
+    }
+
+    $user = new User();
+    $user->getUsers();
+
+This code again has these problems:
+
+- The class `User` has implicit dependency on the specific `database`. All dependencies should always be **explicit** not implicit. This defeats [Dependency inversion principle][1]
+
+- If we wanted to change database credentials, we need to edit the `User` class which is not good; every class should be completely **modular** or black box. If we need to operate further on it, we should actually use its public properties and methods instead of editing it again and again. This defeats [Open/closed principle][2]
+
+- Let's assume right now class is using MySQL as database. What if we wanted to use some other type of database ? You will have to modify it.
+
+- The `User` class does not necessarily need to know about database connection, it should be confined to its own functionality only. So writing database connection code in `User` class doesn't make it modular. This defeats the [Single responsibility principle][3]. Think of this analogy: A cat knows how to `meow` and a dog knows how to `woof`; you cannot mix them or expect dog to say `meow`. Just like real world, each object of a class should be responsible for its own specific task.
+
+- It would become harder to write unit tests for the `User` class because we are instantiating the database class inside its constructor so it would be impossible to write unit tests for the `User` class without also testing the database class.
+
+Enter Dependency Injection!
+---------------------------
+
+Let's see how we can easily take care of above issues by using Dependency Injection. The Dependency Injection is nothing but **injecting a dependency explicitly**. Let's re-write above class:
+
+    class User 
+    {
+        private $database = null;
+    
+        public function __construct(Database $database) {
+            $this->database = $database;
+        }
+    
+        public function getUsers() {
+            return $this->database->getAll('users');
+        }
+    }
+
+    $database = new Database('host', 'user', 'pass', 'dbname');
+    $user = new User($database);
+    $user->getUsers();
+
+And there you have much better code, thanks to Dependency Injection principle. Notice that instead of hard-coding database dependency:
+
+    $this->database = new database('host', 'user', 'pass', 'dbname');
+
+We are now injecting it into the constructor, that's it:
+
+    public function __construct(Database $database)
+
+Notice also how we are passing database instance now:
+
+    $database = new Database('host', 'user', 'pass', 'dbname');
+    $user = new User($database);
+    $user->getUsers();
+
+It follows [Hollywood Principle][4], which states: **"Don’t call us, we’ll call you."**
+
+Let's see if this explicit dependency injection now solves problems we mentioned above.
+
+---
+
+> The class User has implicit dependency on the specific database
+> . All dependencies should always be explicit not implicit.
+> This defeats Dependency inversion principle
+
+We have already made database dependency explicit by requiring it into the constructor of the `User` class:
+
+    public function __construct(Database $database)
+
+Here we are taking advantage of **type hinting** by specifying type of object we are expecting which is `Database` although it wasn't necessary but it is always a good idea to type hint when you can.
+
+> If we wanted to change database credentials, we need to edit the User
+> class which is not good; every class should be completely modular or
+> black box. If we need to operate further on it, we should actually use
+> its public properties and methods instead of editing it again and
+> again. This defeats Open/closed principle
+
+The `User` class now does not need to worry about how database is connected. All it expects is `Database` instance. We no more need to edit `User` class for it's dependency, we have just provided it with what it needed.
+
+> Let's assume right now class is using MySQL as database. What if we
+> wanted to use some other type of database ? You will have to modify
+> it.
+
+Again, the `User` class doesn't need to know which type of database is used. For the `Database`, we could now create different adapters for different types of database and pass to `User` class. For example, we could create an `interface` that would enforce common methods for all different types of database classes that must be implement by them. For our example, we pretend that interface would enforce to have a `getUser()` method requirement in different types of database classes.
+
+> The User class does not necessarily need to know about database
+> connection, it should be confined to its own functionality only. So
+> writing database connection code in User class doesn't make it
+> modular. This defeats the Single responsibility principle.
+
+Of course `User` class now doesn't know how database was connected. It just needs a valid connected `Database` instance.
+
+> It would become harder to write unit tests for the User class because
+> we are instantiating the database class inside its constructor so it
+> would be impossible to write unit tests for the User class without
+> also testing the database class.
+
+If you have wrote unit tests, you know now it will be a breeze to write tests for the `User` class using something like [Mockery][5] or similar to create mock object for the `Database`.
+
+---
+
+Different Ways of Injecting Dependencies
+----------------------------------------
+
+Now that we have seen how useful Dependency Injection is, let's see different ways of injecting dependencies. There are three ways you can inject dependencies:
+
+- Constructor Injection
+- Setter Injection
+- Interface Injection
+
+**Constructor Injection**
+
+We have already seen example of **Constructor Injection** in above example. Constructor injection is useful when:
+
+- A dependency is **required** and class can't work without it. By using constructor injection. we make sure all its required dependencies are passed.
+
+- Since constructor is called only at the time of instantiating a class, we can make sure that its dependencies cant be changed during the life time of the object.
+
+Constructor injection suffer from one problem though:
+
+- Since constructor has dependencies, it becomes rather difficult to extend/override it in child classes.
+
+
+**Setter Injection**
+
+Unlike Constructor injection which makes it **required** to have its dependencies passed, setter injection can be used to have **optional dependencies**. Let's pretend that our `User` class doesn't require `Database` instance but uses optionally for certain tasks. In this case, you would use a setter method to inject the `Database` into the `User` class something like:
+
+    class User 
+    {
+        private $database = null;
+    
+        public function setDatabase(Database $database) {
+            $this->database = $database;
+        }
+    
+        public function getUsers() {
+            return $this->database->getAll('users');
+        }
+    }
+    
+    $database = new Database('host', 'user', 'pass', 'dbname');
+    $user = new User();
+    $user->setDatabase($database);
+    $user->getUsers();
+
+As you can see, here we have used `setDatabase()` setter function to inject `Database` dependency into the `User` class. If we needed some other dependency, we could have created one more setter method and injected in the similar fashion.
+
+So Setter Injection is useful when:
+
+- A class needs optional dependencies so it can set itself up with default values or add additional functionality it needs.
+
+> Notice that you could also inject dependency via **public property**
+> for a class. So instead of using setter function
+> `$user->setDatabase($database);`, you could also do `$user->database =
+> new Database(...);`
+
+**Interface Injection**
+
+In this type of injection, an interface enforces the dependencies for any classes that implement it, for example:
+
+    interface someInterface {
+        function getUsers(Database $database);
+    }
+
+Now any class that needs to implement `someInterface` must provide `Database` dependency in their `getUsers()` methods.
+
+---
+
+The Problem Again
+--------------
+
+So for we have seen very contrived example of injecting dependency into a simple class but in real world applications, a class might have many dependencies. It isn't all that easy to manage all those dependencies because you need to KNOW which dependencies are required by a certain class and HOW they need to be instantiated. Let's take example of setter injection:
+
+    class User 
+    {
+        private $database = null;
+    
+        public function setDatabase(Database $database) {
+            $this->database = $database;
+        }
+    
+        public function getUsers() {
+            return $this->database->getAll('users');
+        }
+    }
+    
+Since dependencies in this case are optional, we could have mistakenly written this code to get users:
+
+    $user = new User();
+    $user->getUsers();
+
+Since we didn't know `getUsers()` method is actually dependent on `Database` class, this would have given error. You could have found that out only by going to code of `User` class and then realizing there is `setDatabase()` method that must be called before using the `getUsers()` method. Or let's assume further that before using database, we needed to set some type of configuration for the `User` class like:
+
+    $user = new User();
+    $user->setConfig($configArray);
+
+Then again we needed to remember specific order of method calls:
+
+    $user = new User();
+    $user->setConfig($configArray);
+    $user->setDatabase($database);
+
+So you must remember order of method calls, you can't use database if you don't setup configuration first, so you can't do:
+
+    $user = new User();
+    $user->setDatabase($database);
+    $user->setConfig($configArray);
+
+This is example for setter injection but even with constructor injection if there are many dependencies, it becomes harder to manage all of those manually and you could easily and mistakenly create more than one instances of dependencies throughout your code which would result in high memory usage.
+
+You might wonder dependency injection sounded like good thing to have but these problems are not worth it. Well that's not true because there is solution to all of these problems discussed next :)
+
+Solution - Dependency Injection Container
+-------------------
+
+Of course it would be difficult to manage dependencies manually; this is why you need a Dependency Injection Container. A Dependency Injection Container is something that handles dependencies for your class(es) automatically. If you have worked with Laravel or Symfony, you know that their components have dependencies on on other classes. How do they manage all of those dependencies ? Yes they use some sort of Dependency Injection Container.
+
+There are [quite some dependency injection containers out there for PHP][6] that can be used for this purpose or you can also write your own. Each container might have bit of different syntax but they perform the same thing under the hood.
+
+---
+
+So in conclusion, you must always remove hard-coded dependencies from your code and inject them using Dependency Injection instead for its benefits and then have all the injected dependencies managed automatically for you by using some dependency injection container.
+
+
+  [1]: http://en.wikipedia.org/wiki/Dependency_inversion_principle
+  [2]: http://en.wikipedia.org/wiki/Open/closed_principle
+  [3]: http://en.wikipedia.org/wiki/Single_responsibility_principle
+  [4]: http://en.wikipedia.org/wiki/Hollywood_Principle
+  [5]: https://github.com/padraic/mockery
+  [6]: http://www.sitepoint.com/php-dependency-injection-container-performance-benchmarks/]]></description>
+<link>https://codeinphp.github.io/post/dependency-injection-in-php</link>
+<pubDate>Sun, 19 Apr 2015 21:44:00 +0200</pubDate>
+</item>
+<item>
+<title></title>
 <description><![CDATA[<p>This is what Wikipedia has to say about Dependency Injection:</p>
 <blockquote>
 <p>In software engineering, dependency injection is a software design
@@ -615,8 +897,8 @@ $user-&gt;setConfig($configArray);</code></pre>
 <p>There are <a href="http://www.sitepoint.com/php-dependency-injection-container-performance-benchmarks/">quite some dependency injection containers out there for PHP</a> that can be used for this purpose or you can also write your own. Each container might have bit of different syntax but they perform the same thing under the hood.</p>
 <hr />
 <p>So in conclusion, you must always remove hard-coded dependencies from your code and inject them using Dependency Injection instead for its benefits and then have all the injected dependencies managed automatically for you by using some dependency injection container.</p>]]></description>
-<link>https://codeinphp.github.io/post/dependency-injection-in-php</link>
-<pubDate>Sun, 19 Apr 2015 21:44:00 +0200</pubDate>
+<link>https://codeinphp.github.io/post/</link>
+<pubDate>Thu, 01 Jan 1970 01:00:00 +0100</pubDate>
 </item>
 <item>
 <title>Visual Query - A Basic MySQL Query Builder App</title>
