@@ -3142,7 +3142,7 @@ fieldset[disabled] .btn {
 .btn-default.active,
 .open>.dropdown-toggle.btn-default {
     color: #ffffff;
-    background-color: #978e83;
+    background-color: #793862;
     border-color: #92897e
 }
 .btn-default:active,
@@ -4862,7 +4862,7 @@ a.label:focus {
 }
 .label-default[href]:hover,
 .label-default[href]:focus {
-    background-color: #978e83
+    background-color: #793862
 }
 .label-primary {
     background-color: #4F5B93
