@@ -45,7 +45,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-title,
 .hljs-id,
 .scss .hljs-preprocessor {
-  color: #0000BB;
+  color: #333;
 }
 
 .hljs-list .hljs-keyword,
@@ -57,7 +57,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-type,
 .vhdl .hljs-literal,
 .tex .hljs-command {
-  color: #333;
+  color: #0000BB;
 }
 
 .hljs-tag,
