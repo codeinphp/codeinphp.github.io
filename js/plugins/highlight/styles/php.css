@@ -32,7 +32,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-number,
 .hljs-hexcolor,
 .ruby .hljs-constant {
-  color: #009926;
+  color: #0000BB;
 }
 
 .hljs-string,
@@ -46,7 +46,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-title,
 .hljs-id,
 .scss .hljs-preprocessor {
-  color: #0000BB;
+  color: #009926;
   font-weight: bold;
 }
 
