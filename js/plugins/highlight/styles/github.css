@@ -1,138 +1,55 @@
-/*!
- * Agate by Taufik Nurrohman <https://github.com/tovic>
- * ----------------------------------------------------
- *
- * #ade5fc
- * #a2fca2
- * #c6b4f0
- * #d36363
- * #fcc28c
- * #fc9b9b
- * #ffa
- * #fff
- * #333
- * #62c8f3
- * #888
- *
- */
+/*
+Date: 24 Fev 2015
+Author: Pedro Oliveira <kanytu@gmail . com>
+*/
 
-.hljs {
+.hljs
+{
+    color: #A9B7C6;
+    background: #282b2e;
     display: block;
     overflow-x: auto;
-    padding: .5em;
-    background: #333;
-    color: white;
-    -webkit-text-size-adjust: none;
+    padding: 0.5em;
+    webkit-text-size-adjust: none;
+}
+.hljs-number
+{
+    color: #6897BB;
 }
 
-.asciidoc .hljs-title,
-.hljs-label,
-.hljs-tag .hljs-title,
-.hljs-prompt,
-.http .hljs-request {
-    font-weight: bold;
+.hljs-keyword, .hljs-deletion
+{
+    color: #CC7832;
 }
-
-.hljs-change,
-.hljs-code {
-    font-style: italic;
+.hljs-javadoc
+{
+    color: #629755;
 }
-
-.hljs-tag,
-.ini .hljs-title {
-    color: #62c8f3;
+.hljs-comment
+{
+    color: #808080;
 }
-
-.hljs-id,
-.hljs-cbracket,
-.hljs-tag .hljs-value {
-    color: #ade5fc;
+.hljs-annotation
+{
+    color: #BBB529;
 }
-
-.hljs-string,
-.hljs-bullet {
-    color: #a2fca2;
+.hljs-string, .hljs-addition
+{
+    color: #6A8759;
 }
-
-.hljs-type,
-.hljs-variable,
-.hljs-name,
-.actionscript .hljs-title,
-.aspectj .hljs-annotation,
-.aspectj .hljs-title,
-.hljs-attribute,
-.hljs-change,
-.hljs-blockquote,
-.hljs-built_in {
-    color: #ffa;
+.hljs-function .hljs-title, .hljs-change
+{
+    color: #FFC66D;
 }
-
-.hljs-number,
-.hljs-hexcolor,
-.hljs-link_label,
-.hljs-link_reference {
-    color: #d36363;
+.hljs-tag .hljs-title, .hljs-doctype
+{
+    color: #E8BF6A;
 }
-
-.hljs-keyword,
-.hljs-literal,
-.hljs-constant,
-.css .hljs-tag,
-.hljs-typename,
-.hljs-winutils {
-    color: #fcc28c;
+.hljs-tag .hljs-attribute
+{
+    color: #BABABA;
 }
-
-.hljs-comment,
-.hljs-cdata,
-.hljs-preprocessor,
-.hljs-annotation,
-.hljs-decorator,
-.hljs-doctype,
-.hljs-deletion,
-.hljs-shebang,
-.apache .hljs-sqbracket,
-.tex .hljs-formula,
-.hljs-header,
-.hljs-horizontal_rule,
-.hljs-code,
-.hljs-javadoc {
-    color: #888;
-}
-
-.hljs-regexp,
-.hljs-attr_selector {
-    color: #c6b4f0;
-}
-
-.hljs-important,
-.hljs-doctype,
-.hljs-pi,
-.hljs-chunk,
-.actionscript .hljs-type,
-.hljs-shebang,
-.hljs-pragma,
-.http .hljs-attribute {
-    color: #fc9b9b;
-}
-
-.hljs-deletion {
-    background-color: #fc9b9b;
-    color: #333;
-}
-
-.hljs-addition {
-    background-color: #a2fca2;
-    color: #333;
-}
-
-.hljs a,
-.hljs-tag .hljs-attribute {
-    color: inherit;
-}
-
-.hljs a:focus,
-.hljs a:hover {
-    color: inherit;
-    text-decoration: underline;
+.hljs-tag .hljs-value
+{
+    color: #A5C261;
 }
