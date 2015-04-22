@@ -6,7 +6,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
   display: block;
   overflow-x: auto;
   padding: 0.5em;
-  color: #0000BB;
+  color: #009926;
   background: #f8f8f8;
   -webkit-text-size-adjust: none;
 }
@@ -59,7 +59,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-type,
 .vhdl .hljs-literal,
 .tex .hljs-command {
-  color: #009926;
+  color: #0000BB;
   font-weight: bold;
 }
 
