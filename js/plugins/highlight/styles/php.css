@@ -25,13 +25,13 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 .hljs-subst,
 .hljs-request,
 .hljs-status {
-  color: #2F7700;
+  color: #009926;
 }
 
 .hljs-number,
 .hljs-hexcolor,
 .ruby .hljs-constant {
-  color: #2F7700;
+  color: #009926;
 }
 
 .hljs-string,
@@ -76,7 +76,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 }
 
 .hljs-regexp {
-  color: #2F7700;
+  color: #009926;
 }
 
 .hljs-symbol,
@@ -90,7 +90,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 }
 
 .hljs-built_in {
-  color: #0000BB;
+  color: #333;
 }
 
 .hljs-preprocessor,
@@ -115,5 +115,5 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 }
 
 .hljs-chunk {
-  color: #2F7700;
+  color: #0000BB;
 }
