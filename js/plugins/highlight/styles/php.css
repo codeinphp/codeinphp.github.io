@@ -9,6 +9,12 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
     font-style: normal;
 }
 
+pre {
+    box-shadow: 0 0 10px 0 rgba(197, 197, 197, 0.75);
+    -moz-box-shadow: 0 0 10px 0 rgba(197, 197, 197, 0.75);
+    -webkit-box-shadow: 0 0 10px 0 rgba(197, 197, 197, 0.75);
+}
+
 .hljs {
     display: block;
     font-family: 'PragmataPro';
