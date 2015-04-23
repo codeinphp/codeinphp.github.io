@@ -1,13 +1,11 @@
 /*
-
-github.com style (c) Vasily Polovnyov <vast@whiteants.net>
-
+php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 */
 
 @font-face {
     font-family: 'PragmataPro';
     src: url('../PragmataPro/PragmataPro.eot?#iefix') format('embedded-opentype'), url('../PragmataPro/PragmataPro.woff') format('woff'), url('../PragmataPro/PragmataPro.ttf') format('truetype'), url('../PragmataPro/PragmataPro.svg#PragmataPro') format('svg');
-    font-weight: normal;
+    font-weight: bold;
     font-style: normal;
 }
 
@@ -20,19 +18,18 @@ pre {
 
 .hljs {
     display: block;
+    font-family: 'PragmataPro';
     overflow-x: auto;
     padding: 0.5em;
-    font-family: 'PragmataPro';
-    color: #333;
-    font-weight: bold;
-    background: #f8f8f8;
+    color: #0000BB;
+    background: url(./codebg.png) repeat scroll left top #f8f8f8;
     -webkit-text-size-adjust: none;
 }
 
 .hljs-comment,
 .diff .hljs-header,
 .hljs-javadoc {
-    color: #998;
+    color: #FF8000;
     font-style: italic;
 }
 
@@ -43,13 +40,13 @@ pre {
 .hljs-subst,
 .hljs-request,
 .hljs-status {
-    color: #333;
+    color: #009926;
 }
 
 .hljs-number,
 .hljs-hexcolor,
 .ruby .hljs-constant {
-    color: #008080;
+    color: #009926;
 }
 
 .hljs-string,
@@ -57,38 +54,40 @@ pre {
 .hljs-phpdoc,
 .hljs-dartdoc,
 .tex .hljs-formula {
-    color: #d14;
+    color: #DD0000;
 }
 
 .hljs-title,
 .hljs-id,
 .scss .hljs-preprocessor {
-    color: #900;
+    color: #0000BB;
 }
 
 .hljs-list .hljs-keyword,
 .hljs-subst {
+    font-weight: normal;
 }
 
 .hljs-class .hljs-title,
 .hljs-type,
 .vhdl .hljs-literal,
 .tex .hljs-command {
-    color: #458;
+    color: #0000BB;
 }
 
 .hljs-tag,
 .hljs-tag .hljs-title,
 .hljs-rule .hljs-property,
 .django .hljs-tag .hljs-keyword {
-    color: #000080;
+    color: #0000BB;
+    font-weight: normal;
 }
 
 .hljs-attribute,
 .hljs-variable,
 .lisp .hljs-body,
 .hljs-name {
-    color: #008080;
+    color: #333;
 }
 
 .hljs-regexp {
@@ -102,11 +101,11 @@ pre {
 .scheme .hljs-keyword,
 .tex .hljs-special,
 .hljs-prompt {
-    color: #990073;
+    color: #0000BB;
 }
 
 .hljs-built_in {
-    color: #0086b3;
+    color: #0000BB;
 }
 
 .hljs-preprocessor,
@@ -115,7 +114,7 @@ pre {
 .hljs-doctype,
 .hljs-shebang,
 .hljs-cdata {
-    color: #999;
+    color: #0000BB;
 }
 
 .hljs-deletion {
@@ -131,5 +130,5 @@ pre {
 }
 
 .hljs-chunk {
-    color: #aaa;
+    color: #0000BB;
 }
