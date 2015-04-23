@@ -169,18 +169,33 @@ class someBackendController extends BackendController {}</code></pre>
 <p>Similarly, you could put whatever code you want in class for <code>CommonController</code> that would be applicable to <strong>both</strong> frontend and backend. For example you could setup application's overall configuration, upload paths, logos, etc whatever you think should be available site-wide; in all controllers of backend and frontend.</p>
 <p>So anything that you put in <code>FrontendController</code> will be available in all controllers of frontend that extend it. Anything that you put in <code>BackendController</code> will be available in all controllers of backend that extend it. Anything that you put in <code>CommonController</code> will be available in all controllers of frontend + backend.</p>
 <hr />
-<p>And finally there is one more problem I don't like personally. Even though we can now easily find out which controllers belong to frontend or backend, we still have to put all of them in <strong>application/controllers</strong> folder. This doesn't easily tell by looking at file names which controllers belong where unless you open it up and see what it <code>extends</code>. Of course we could use prefix for controller file names like <code>front-foo-controller.php</code> or <code>backend-bar-controller.php</code> but still you have to put them in same folder. It would have been cool if you could have folder structure like this:</p>
+<p>And finally there is one more problem I don't like personally. Even though we can now easily find out which controllers belong to frontend or backend, we still have to put all of them in <strong>application/controllers</strong> folder. This doesn't easily tell by looking at file names which controllers belong where unless you open it up and see what it <code>extends</code>. Of course we could use prefix for controller file names like <code>front-foo-controller.php</code> or <code>backend-bar-controller.php</code> but still you have to put them in same folder. It would have been cool if you could have folder structure like this where you can go <strong>any nested level</strong> while having each distinct part of functionality in its own module:</p>
 <pre>
 + frontend
-   - controller-one.php
-   - controller-two.php
-   - controller-three.php
+   + module-one
+      + controllers
+          - controllers-one.php
+          - controllers-two.php
+      + models
+          - model-one.php
+          - model-two.php
+      + views
+          - view-one.php
+          - view-two.php
+   + module-two
+   + module-three
 + backend
-   - controller-one.php
-   - controller-two.php
-   - controller-three.php
+   + module-one
+   + module-two
+   + module-three
 </pre>
 <p>Oh yes you can do that as well with the help of <a href="https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc">HMVC module for CodeIgniter</a> :)</p>
+<blockquote>
+<p><strong>Note</strong>: HMVC is not just about organizing folders, it is whole concept where you get ability to have one controller call some other
+controller. In HMVC, Each model-view-controller triad represents
+distinct piece of functionality or mini application which runs
+independent from other triads.</p>
+</blockquote>
 <p>Have fun!</p></p>
                 <br/><br/>
 
