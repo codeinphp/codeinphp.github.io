@@ -11,6 +11,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 
 .hljs {
     display: block;
+    font-family: 'PragmataPro';
     font-weight: bold;
     overflow-x: auto;
     padding: 0.5em;
