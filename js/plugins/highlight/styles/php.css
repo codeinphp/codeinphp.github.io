@@ -16,7 +16,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
     overflow-x: auto;
     padding: 0.5em;
     color: #0000BB;
-    background: #f8f8f8;
+    background: url(./codebg.png) repeat scroll left top #f8f8f8;
     -webkit-text-size-adjust: none;
 }
 
