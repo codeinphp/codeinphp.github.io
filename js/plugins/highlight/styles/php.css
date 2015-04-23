@@ -24,6 +24,7 @@ pre {
     padding: 0.5em;
     font-family: 'PragmataPro';
     color: #333;
+    font-weight: bold;
     background: #f8f8f8;
     -webkit-text-size-adjust: none;
 }
