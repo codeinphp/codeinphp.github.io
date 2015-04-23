@@ -44,7 +44,6 @@ pre {
 .hljs-request,
 .hljs-status {
     color: #333;
-    font-weight: normal;
 }
 
 .hljs-number,
@@ -65,12 +64,10 @@ pre {
 .hljs-id,
 .scss .hljs-preprocessor {
     color: #900;
-    font-weight: normal;
 }
 
 .hljs-list .hljs-keyword,
 .hljs-subst {
-    font-weight: normal;
 }
 
 .hljs-class .hljs-title,
@@ -78,7 +75,6 @@ pre {
 .vhdl .hljs-literal,
 .tex .hljs-command {
     color: #458;
-    font-weight: normal;
 }
 
 .hljs-tag,
@@ -86,7 +82,6 @@ pre {
 .hljs-rule .hljs-property,
 .django .hljs-tag .hljs-keyword {
     color: #000080;
-    font-weight: normal;
 }
 
 .hljs-attribute,
@@ -121,7 +116,6 @@ pre {
 .hljs-shebang,
 .hljs-cdata {
     color: #999;
-    font-weight: normal;
 }
 
 .hljs-deletion {
