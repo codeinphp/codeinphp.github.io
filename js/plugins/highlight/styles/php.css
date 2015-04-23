@@ -43,7 +43,7 @@ pre {
 .hljs-request,
 .hljs-status {
     color: #333;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 .hljs-number,
@@ -64,7 +64,7 @@ pre {
 .hljs-id,
 .scss .hljs-preprocessor {
     color: #900;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 .hljs-list .hljs-keyword,
@@ -77,7 +77,7 @@ pre {
 .vhdl .hljs-literal,
 .tex .hljs-command {
     color: #458;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 .hljs-tag,
@@ -120,7 +120,7 @@ pre {
 .hljs-shebang,
 .hljs-cdata {
     color: #999;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 .hljs-deletion {
