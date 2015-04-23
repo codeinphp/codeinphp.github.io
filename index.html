@@ -71,104 +71,104 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/closures-php-vs-javascript">Closures - PHP vs Javascript</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/late-static-binding-in-php">Late Static Binding in PHP</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> April 22, 2015 02:17 PM
+                    <span class="glyphicon glyphicon-time"></span> April 23, 2015 03:54 PM
                 
                         <hr>
-                        <p class="post-content"><p>In my previous post <a href="http://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php/">Exploring Lambda Functions and Closures in PHP</a>, I gave you example of function that can calculate factorial of given number:</p>
-<pre><code>$factorial = function( $n ) use ( &amp;$factorial ) {
-    if( $n == 1 ) return 1;
-    return $factorial( $n - 1 ) * $n;
-};
+                        <p class="post-content"><p>Let's jump into an example up front to understand the concept. Let's create two classes parent and child which would tell us the name of the object using <code>getName()</code> method:</p>
+<pre><code>class Animal {
+    protected $name = 'Animal';
 
-echo $factorial( 5 ); // 120</code></pre>
-<p>In that post I simply said it is important to pass <code>$factorial</code> by <strong>reference</strong> otherwise it won't work. Let's explore why it is so in this post.</p>
-<p>Closures are pretty common in Javascript so let's create a simple closure in it and see how it behaves:</p>
-<pre><code>var addOne = function(num) {
-    return function() { 
-        console.log(num++); 
-    };
-};
+    public function getName() {
+        return $this-&gt;name;
+    }
+}</code></pre>
+<p>Let's extend the <code>Animal</code> class so we can use its <code>getName()</code> method without repeating it in child class. We will only need the <code>$name</code> variable in child class to get it's name:</p>
+<pre><code>class Cat extends Animal {
+    protected $name = 'Cat';
+}</code></pre>
+<p>Now we expect to get names of each object, let's do so:</p>
+<pre><code>$animal = new Animal;
+$cat = new Cat;
 
-var f = addOne(1);
+echo $animal-&gt;getName(); // Animal
+echo $cat-&gt;getName(); // Cat</code></pre>
+<p>And we successfully get <code>Animal</code> and <code>Cat</code> echoed out. But now let's modify code a bit so that we can use those classes without creating their instances with the help of <code>static</code> keyword (eg global state):</p>
+<pre><code>class Animal {
+    protected static $name = 'Animal';
 
-f(); // 1
-f(); // 2
-f(); // 3</code></pre>
-<p>As can be seen, each time we call the function, it increments the number. Let's now convert the same in PHP:</p>
-<pre><code>$addOne = function($num) {
-    return function() { 
-        echo $num++; 
-    };
-};
-
-$f = $addOne(1);
-
-$f();
-$f();
-$f();</code></pre>
-<p>This would result in error:</p>
-<p><code>Notice: Undefined variable: num</code></p>
-<p>Why is it so ? Because variable scope is different in PHP and Javascript. In PHP, all variables go in local scope by default unless you explicitly declare them in global scope. However in Javascript all variables go in global scope unless you explicitly declare them in local scope using <code>var</code> keyword. Since we are talking about functions and closures here, we can say that in PHP <em>a variable declared in a function can only be available to that function</em> where it is declared. On the other hand, in Javascript <em>a variable can not only be available to function where it is declared but also to inner functions of that parent function</em>.  Let's see an example:</p>
-<pre><code>function test() {
-  $variable = 'value';
-
-  return function() {
-    echo $variable;
-  };
+    public static function getName() {
+        return self::$name;
+    }
 }
 
-$f = test();
-$f(); // Notice: Undefined variable: variable</code></pre>
-<p>So PHP gave error as inner function didn't had access to outer variable <code>$variable</code>. We could have made this variable available to inner function either by creating closure using <code>use</code> keyword or declaring that variable in global scope. Le't see same example in Javascript:</p>
-<pre><code>function test() {
-  var variable = 'value';
-
-  return function() {
-    console.log(variable);
-  };
+class Cat extends Animal {
+    protected static $name = 'Cat';
 }
 
-var f = test();
-f(); // value</code></pre>
-<p>In Javascript though, the inner function was able to get variable from outer scope eg parent function in this example.</p>
-<p>This is reason why Javascript inner function shown above didn't give error whereas PHP's did. Therefore to have access to outer variable in PHP, we need to create a closure by using the <code>use</code> keyword. Of course in Javascript, you don't need something like <code>use</code> keyword because as I mentioned in Javascript a variable of a parent function is available to all its inner functions as well. So we need to use the <code>use</code> keyword in PHP due to difference of variable scoping in PHP and Javascript.</p>
-<p>So let's fix that error we received earlier in PHP:</p>
-<pre><code>$addOne = function($num) {
-    return function() use ($num) { 
-        echo $num++; 
-    };
-};
+echo Animal::getName(); // Animal
+echo Cat::getName(); // Animal</code></pre>
+<p>Noticed the problem ? We wanted to see <code>Animal</code> and <code>Cat</code> to be echoed out like previous example but in both cases it said <code>Animal</code> not <code>Cat</code>.</p>
+<p>The reason why in previous example things worked the way expected is because we explicitly created new instances of both classes using <code>new</code> keyword and PHP knew which class and method to use. This is not the case in second static example. In the second example, we are using the <code>self</code> keyword which <em>always resolves to current class</em> where it is called. This is reason why the name for the <code>Cat</code> class wasn't echoed out.</p>
+<p>So how do we get the name of cat ? Here are few ways.</p>
+<p><strong>By Repeating Same Code In Child Class</strong></p>
+<pre><code>class Animal {
+    protected static $name = 'Animal';
 
-$f = $addOne(1);
+    public static function getName() {
+        return self::$name;
+    }
+}
 
-$f(); // 1
-$f(); // 1
-$f(); // 1</code></pre>
-<p>Now we have created the closure and error is gone and <code>$num</code> variable is now available to inner function but there is a problem, each time we call the function it says <code>1</code> unlike Javascript example we saw earlier which said <code>1</code>, <code>2</code> and <code>3</code>. That's because unlike Javascript, PHP creates a new local variable inside inner function eg passes it by <code>value</code> not by <code>reference</code>. Conceptually, PHP sees this code like this:</p>
-<pre><code>$addOne = function($num) {
-    return function() use ($num) { 
-        $num = 1;  // so PHP kind of creates a new variable and assigns to 1 each time you call this
-        echo $num++; 
-    };
-};</code></pre>
-<p>So to get similar output as in Javascript, we need to pass the variable using <code>reference</code> which can be done by using the <code>&amp;</code> symbol:</p>
-<pre><code>$addOne = function($num) {
-    return function() use (&amp;$num) { // passed by reference 
-        echo $num++; 
-    };
-};
+class Cat extends Animal {
+    protected static $name = 'Cat';
 
-$f = $addOne(1);
+    public static function getName() {
+        return self::$name;
+    }    
+}
 
-$f();
-$f();
-$f();</code></pre>
-<p>and now we get the output <code>1</code>, <code>2</code>, and <code>3</code>.</p>
+echo Animal::getName(); // Animal
+echo Cat::getName(); // Cat</code></pre>
+<p>This works but it defeats the purpose of inheritance. What is the point of extending <code>Animal</code> class when we need to repeat same code in child class ? This isn't ideal.</p>
+<p><strong>By Using <code>get_called_class()</code></strong></p>
+<pre><code>class Animal {
+    protected static $name = 'Animal';
+
+    public static function getName() {
+        $class = get_called_class();
+        return $class::$name;
+    }
+}
+
+class Cat extends Animal {
+    protected static $name = 'Cat';
+}
+
+echo Animal::getName(); // Animal
+echo Cat::getName(); // Cat</code></pre>
+<p>This is better and works for out purpose.</p>
+<p><strong>By Using <code>static</code> keyword</strong></p>
+<p>PHP 5.3 introduced the <code>static</code> keyword to help deal with this issue. Before that, <code>get_called_class()</code> method was what was used. Let's get the expected result using <code>static</code> keyword:</p>
+<pre><code>class Animal {
+    protected static $name = 'Animal';
+
+    public static function getName() {
+        return static::$name;
+    }
+}
+
+class Cat extends Animal {
+    protected static $name = 'Cat';
+}
+
+echo Animal::getName(); // Animal
+echo Cat::getName(); // Cat</code></pre>
+<p>And this works fine too. These days using <code>static</code> keyword seems to be common practice instead of <code>get_called_class()</code> to deal with this issue though <code>get_called_class()</code> has many other uses too.</p>
 <hr />
-<p>And that's also reason why you needed to pass variable by <code>reference</code> for the factorial example I had given in my <a href="http://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php/">previous post</a>. Hope this post clears the confusion of closures and scoping especially for someone who comes from Javascript to PHP.</p></p>
+<p>So in simple words, <strong>late static binding</strong> is something that helps us correctly resolve to <strong>static</strong> classes at run time. So when we use <code>self</code> keyword, PHP checks it at compile time which class to <strong>bind</strong> the method call to but when we use <code>static</code> keyword, PHP would check it <strong>late</strong> eg it would determine and bind method call to class at runtime which class to use. Doing it at runtime is what helps PHP determine which class was meant.</p></p>
                         <br/>
                 
                         <div class="post-info">
@@ -178,11 +178,9 @@ $f();</code></pre>
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
-                                <a href="https://codeinphp.github.io/tag/closure">closure</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/javascript">javascript</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/lambda">lambda</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/bind">bind</a>&nbsp;&nbsp;
                                 <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/scope">scope</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/static">static</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -235,11 +233,11 @@ $f();</code></pre>
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/late-static-binding-in-php">Late Static Binding in PHP</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/closures-php-vs-javascript">Closures - PHP vs Javascript</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/database-migrations-in-codeigniter">Database Migrations in CodeIgniter</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/development-environments-in-codeigniter">Development Environments in CodeIgniter</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/controllers-for-frontend-and-backend-in-codeigniter">Controllers for Frontend and Backend in CodeIgniter</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/codeigniter-tip-time-your-pages">CodeIgniter Tip: Time Your Pages</a></li>
                 </ul>
             </div>
         
@@ -277,6 +275,7 @@ $f();</code></pre>
                         <ul class="list-inline">
                             <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/abstract" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">abstract</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/app" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">app</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/bind" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">bind</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/blog" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">blog</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/bloggercms" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">bloggercms</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/browser" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">browser</a>
@@ -301,13 +300,13 @@ $f();</code></pre>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/migration" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">migration</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/mysql" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">mysql</a>
 <a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">oop</a>
-<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="14 total posts" data-original-title="15 total posts" data-toggle="tooltip">php</a>
+<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="15 total posts" data-original-title="16 total posts" data-toggle="tooltip">php</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/phpexecute" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">phpexecute</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/runner" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">runner</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/scope" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">scope</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sql" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">sql</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sqlite" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">sqlite</a>
-<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/static" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">static</a>
+<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/static" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">static</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/tester" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">tester</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/todo" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">todo</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/visual" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">visual</a>

@@ -6,6 +6,103 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Late Static Binding in PHP</title>
+<description><![CDATA[<p>Let's jump into an example up front to understand the concept. Let's create two classes parent and child which would tell us the name of the object using <code>getName()</code> method:</p>
+<pre><code>class Animal {
+    protected $name = 'Animal';
+
+    public function getName() {
+        return $this-&gt;name;
+    }
+}</code></pre>
+<p>Let's extend the <code>Animal</code> class so we can use its <code>getName()</code> method without repeating it in child class. We will only need the <code>$name</code> variable in child class to get it's name:</p>
+<pre><code>class Cat extends Animal {
+    protected $name = 'Cat';
+}</code></pre>
+<p>Now we expect to get names of each object, let's do so:</p>
+<pre><code>$animal = new Animal;
+$cat = new Cat;
+
+echo $animal-&gt;getName(); // Animal
+echo $cat-&gt;getName(); // Cat</code></pre>
+<p>And we successfully get <code>Animal</code> and <code>Cat</code> echoed out. But now let's modify code a bit so that we can use those classes without creating their instances with the help of <code>static</code> keyword (eg global state):</p>
+<pre><code>class Animal {
+    protected static $name = 'Animal';
+
+    public static function getName() {
+        return self::$name;
+    }
+}
+
+class Cat extends Animal {
+    protected static $name = 'Cat';
+}
+
+echo Animal::getName(); // Animal
+echo Cat::getName(); // Animal</code></pre>
+<p>Noticed the problem ? We wanted to see <code>Animal</code> and <code>Cat</code> to be echoed out like previous example but in both cases it said <code>Animal</code> not <code>Cat</code>.</p>
+<p>The reason why in previous example things worked the way expected is because we explicitly created new instances of both classes using <code>new</code> keyword and PHP knew which class and method to use. This is not the case in second static example. In the second example, we are using the <code>self</code> keyword which <em>always resolves to current class</em> where it is called. This is reason why the name for the <code>Cat</code> class wasn't echoed out.</p>
+<p>So how do we get the name of cat ? Here are few ways.</p>
+<p><strong>By Repeating Same Code In Child Class</strong></p>
+<pre><code>class Animal {
+    protected static $name = 'Animal';
+
+    public static function getName() {
+        return self::$name;
+    }
+}
+
+class Cat extends Animal {
+    protected static $name = 'Cat';
+
+    public static function getName() {
+        return self::$name;
+    }    
+}
+
+echo Animal::getName(); // Animal
+echo Cat::getName(); // Cat</code></pre>
+<p>This works but it defeats the purpose of inheritance. What is the point of extending <code>Animal</code> class when we need to repeat same code in child class ? This isn't ideal.</p>
+<p><strong>By Using <code>get_called_class()</code></strong></p>
+<pre><code>class Animal {
+    protected static $name = 'Animal';
+
+    public static function getName() {
+        $class = get_called_class();
+        return $class::$name;
+    }
+}
+
+class Cat extends Animal {
+    protected static $name = 'Cat';
+}
+
+echo Animal::getName(); // Animal
+echo Cat::getName(); // Cat</code></pre>
+<p>This is better and works for out purpose.</p>
+<p><strong>By Using <code>static</code> keyword</strong></p>
+<p>PHP 5.3 introduced the <code>static</code> keyword to help deal with this issue. Before that, <code>get_called_class()</code> method was what was used. Let's get the expected result using <code>static</code> keyword:</p>
+<pre><code>class Animal {
+    protected static $name = 'Animal';
+
+    public static function getName() {
+        return static::$name;
+    }
+}
+
+class Cat extends Animal {
+    protected static $name = 'Cat';
+}
+
+echo Animal::getName(); // Animal
+echo Cat::getName(); // Cat</code></pre>
+<p>And this works fine too. These days using <code>static</code> keyword seems to be common practice instead of <code>get_called_class()</code> to deal with this issue though <code>get_called_class()</code> has many other uses too.</p>
+<hr />
+<p>So in simple words, <strong>late static binding</strong> is something that helps us correctly resolve to <strong>static</strong> classes at run time. So when we use <code>self</code> keyword, PHP checks it at compile time which class to <strong>bind</strong> the method call to but when we use <code>static</code> keyword, PHP would check it <strong>late</strong> eg it would determine and bind method call to class at runtime which class to use. Doing it at runtime is what helps PHP determine which class was meant.</p>]]></description>
+<link>https://codeinphp.github.io/post/late-static-binding-in-php</link>
+<pubDate>Thu, 23 Apr 2015 15:54:00 +0200</pubDate>
+</item>
+<item>
 <title>Closures - PHP vs Javascript</title>
 <description><![CDATA[<p>In my previous post <a href="http://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php/">Exploring Lambda Functions and Closures in PHP</a>, I gave you example of function that can calculate factorial of given number:</p>
 <pre><code>$factorial = function( $n ) use ( &amp;$factorial ) {

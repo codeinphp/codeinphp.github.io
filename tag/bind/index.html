@@ -8,7 +8,7 @@
     <meta name="description" content="PHP and more...">
     <meta name="author" content="Sarfraz Ahmed">
 
-    <title>Controllers for Frontend and Backend in CodeIgniter :: Code In PHP</title>
+    <title>Code In PHP</title>
 
     <!-- rss feed url -->
     <link rel="alternate" type="application/rss+xml" title="Code In PHP" href="https://codeinphp.github.io/rss.xml"/>
@@ -70,182 +70,12 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 main-content">
-            <article>
-                <h3>Controllers for Frontend and Backend in CodeIgniter</h3>
-                <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
-                &nbsp;&nbsp;
-                <span class="glyphicon glyphicon-time"></span> April 21, 2015 03:10 PM
-                <hr>
-
-                <p class="post-content"><p>I find it very inconvenient when you need to create all <strong>frontend</strong> and <strong>backend</strong> controllers without having any common functionality. I don't like the face that I always have to extend <code>CI_Controller</code> for all my backend and frontend controllers. I need ability to specify which controllers are related to frontend and which ones relate to backend .</p>
-<p>So instead of doing this:</p>
-<pre><code>class someFrontendController extends CI_Controller {}
-class someBackendController extends CI_Controller {}</code></pre>
-<p>I should be able to do this:</p>
-<pre><code>class someFrontendController extends FrontendController {}
-class someBackendController extends BackendController {}</code></pre>
-<p>I also need ability to specify <strong>common</strong> controllers that can be <em>applicable to both frontend and backend</em>: </p>
-<pre><code>class someCommonController extends CommonController {}</code></pre>
-<p>I will explain <strong>benefits</strong> of having such controllers below. But for now, how do we do that ? Well CodeIgniter is very flexible and does allow you to achieve just that.</p>
-<h2>Extending CodeIgniter's <code>CI_Controller</code> Class</h2>
-<p>In order to have separate controllers for backend, frontend and common controllers, please follow these steps:</p>
-<p>1) Make sure that config <code>$config['subclass_prefix']</code> is set to <code>MY_</code> in <strong>application/config.php</strong> file. It should be so by default.</p>
-<p>2) Create a file called <strong>MY_Controller.php</strong> in <strong>application/core</strong> folder and paste this code in it:</p>
-<pre><code>&lt;?php (defined('BASEPATH')) OR exit('No direct script access allowed');
-
-class CommonController extends CI_Controller
-{
-    public function __construct()
-    {
-        parent::__construct();
-    }
-}
-
-class FrontendController extends CommonController
-{
-    public function __construct()
-    {
-        parent::__construct();
-    }
-}
-
-class BackendController extends CommonController
-{
-    public function __construct()
-    {
-        parent::__construct();
-    }
-}</code></pre>
-<hr />
-<p>Now for all of your controllers that belong to frontend, you would extend <code>FrontendController</code> instead of <code>CI_Controller</code> and for all of your controllers that belong to backend, you would extend <code>BackendController</code> instead of <code>CI_Controller</code> like I mentioned above:</p>
-<pre><code>class someFrontendController extends FrontendController {}
-class someBackendController extends BackendController {}</code></pre>
-<p>And for any controllers that might share common data for frontend and backend, you would extend <code>CommonController</code>:</p>
-<pre><code>class someCommonController extends CommonController {}</code></pre>
-<h1>What's the Point ?</h1>
-<p>You might already have guessed the benefits of having separate controllers but if you haven't  yet, well here they are:</p>
-<ul>
-<li>You can now easily <strong>distinguish</strong> which controllers belong to backend and which ones belong to frontend</li>
-<li>You now have ability to have <strong>common code</strong> for both sides of an application. </li>
-</ul>
-<p>By <strong>common code</strong>, I mean any functionality that you would want to be shared in all of your controllers. Let's assume that we have created login functionality and user is logged on frontend. Now normally you would write some code in all of your controllers (for authorized pages for example) that would check whether or not user is logged in; if user is not logged in, redirect him back to login page something like:</p>
-<pre><code>class MyController extends CI_Controller
-{
-    public function index() {
-        // check if user is logged in
-        $this-&gt;checkLoginStatus();
-
-        // more code of controller when user is logged in
-    }
-
-    // redirect user to login page if not logged in
-    protected function checkLoginStatus() {
-        if (! $this-&gt;session-&gt;userdata('is_logged_in')) {
-            redirect('login');
-        }
-    }
-}</code></pre>
-<p>Now for all of your pages that can be viewed only when user is logged in, you will need to insert <code>checkLoginStatus()</code> function in all of those controllers and then call it <code>index()</code> function. That's not good, it is repeating code. Remember the rules <a href="http://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don't Repeat Yourself</a> (DRY) and <a href="http://en.wikipedia.org/wiki/KISS_principle">Keep It Simple, Stupid!</a> (KISS) :)</p>
-<p>Let's KISS it; simply put <code>checkLoginStatus()</code> function code in your <code>FrontendController</code> and now all controllers that extend it will have this login check functionality:</p>
-<pre><code>class FrontendController extends CommonController
-{
-    public function __construct()
-    {
-        parent::__construct();
-
-        // check if user is logged in
-        $this-&gt;checkLoginStatus();
-    }
-
-    // redirect user to login page if not logged in
-    protected function checkLoginStatus() {
-        if (! $this-&gt;session-&gt;userdata('is_logged_in')) {
-            redirect('login');
-        }
-    }    
-}</code></pre>
-<p>And now you don't need to do anything in your normal frontend controllers. You now get login check functionality out of box. In the similar fashion, you can have some common functionality for all of your backend controllers by putting some code in <code>BackendController</code>. This was just an example for login check but of course you could have some other requirement that you wanted to inject in all of your controllers by using <code>FrontendController</code> or <code>BackendController</code>.</p>
-<p>You might ask, you could have done all of this by may be using CI Hooks or may be <a href="http://php.net/manual/en/language.oop5.traits.php">traits</a>, well that's true but I believe having separate controllers gives you more <strong>control</strong> and <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>.</p>
-<p>Similarly, you could put whatever code you want in class for <code>CommonController</code> that would be applicable to <strong>both</strong> frontend and backend. For example you could setup application's overall configuration, upload paths, logos, etc whatever you think should be available site-wide; in all controllers of backend and frontend.</p>
-<p>So anything that you put in <code>FrontendController</code> will be available in all controllers of frontend that extend it. Anything that you put in <code>BackendController</code> will be available in all controllers of backend that extend it. Anything that you put in <code>CommonController</code> will be available in all controllers of frontend + backend.</p>
-<hr />
-<p>And finally there is one more problem I don't like personally. Even though we can now easily find out which controllers belong to frontend or backend, we still have to put all of them in <strong>application/controllers</strong> folder. This doesn't easily tell by looking at file names which controllers belong where unless you open it up and see what it <code>extends</code>. Of course we could use prefix for controller file names like <code>front-foo-controller.php</code> or <code>backend-bar-controller.php</code> but still you have to put them in same folder. It would have been cool if you could have folder structure like this where you can go <strong>any nested level</strong> while having each distinct part of functionality in its own module:</p>
-<pre>
-+ frontend
-   + module-one
-      + controllers
-          - controllers-one.php
-          - controllers-two.php
-      + models
-          - model-one.php
-          - model-two.php
-      + views
-          - view-one.php
-          - view-two.php
-   + module-two
-   + module-three
-+ backend
-   + module-one
-   + module-two
-   + module-three
-</pre>
-<p>Oh yes you can do that as well with the help of <a href="https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc">HMVC module for CodeIgniter</a> :)</p>
-<blockquote>
-<p><strong>Note</strong>: HMVC is not just about organizing folders, it is whole concept where you get ability to have one controller call some other
-controller. In HMVC, Each model-view-controller triad represents
-distinct piece of functionality or mini application which runs
-independent from other triads.</p>
-</blockquote>
-<p>Have fun!</p></p>
-                <br/><br/>
-
-                <div class="post-info">
-                        <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
-                        <a href="https://codeinphp.github.io/category/php">PHP</a>
-                        &nbsp;&nbsp;
-
-                    <span class="glyphicon glyphicon-bookmark"></span>
-
-                        <a href="https://codeinphp.github.io/tag/codeigniter">codeigniter</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/controller">controller</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
-                </div>
-
-            </article>
+            <h1>Tag Posts</h1>
             <hr/>
+            <br/>
 
-            <div class="text-center clearfix">
-                <div class="col-sm-4 col-md-4">
-                    <a class="prevpost btn btn-primary"><i class="fa fa-chevron-circle-left"></i> Prev Post</a>
-                </div>
-                <div class="col-sm-4 col-md-4">
-                    <a class="btn btn-primary" href="https://codeinphp.github.io/posts.html"><i class="fa fa-navicon"></i> View All
-                        Post</a>
-                </div>
-                <div class="col-sm-4 col-md-4">
-                    <a class="nextpost btn btn-primary"><i class="fa fa-chevron-circle-right"></i> Next Post</a>
-                </div>
-            </div>
-
-            <hr/>
-            <span class='st_facebook_large' displayText='Facebook'></span>
-            <span class='st_twitter_large' displayText='Tweet'></span>
-            <span class='st_pocket_large' displayText='Pocket'></span>
-            <span class='st_flipboard_large' displayText='Flipboard'></span>
-            <span class='st_googleplus_large' displayText='Google +'></span>
-            <span class='st_linkedin_large' displayText='LinkedIn'></span>
-            <span class='st_email_large' displayText='Email'></span>
-            <br/><br/>
-
-            <!-- Comment form -->
-            <div class="well">
-                <div id="disqus_thread"></div>
-                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">Comments
-                    powered by Disqus.</a></noscript>
-                <a href="http://disqus.com" class="dsq-brlink">Comments powered by
-                    <span class="logo-disqus">Disqus</span></a>
-            </div>
-
+                <h3><a href="https://codeinphp.github.io/post/late-static-binding-in-php">Late Static Binding in PHP</a></h3>
+                <span class="glyphicon glyphicon-time"></span> April 23, 2015 03:54 PM
         </div>
 
         <div class="sidebar col-md-4">
@@ -366,7 +196,6 @@ independent from other triads.</p>
                     </div>
                 </div>
             </div>
-
     </div>
 </div>
 
@@ -405,80 +234,3 @@ independent from other triads.</p>
 
 </body>
 </html>
-<!-- for pagination -->
-<script>
-    $(function () {
-
-        ///////////////////////////////////////////////////
-        // class/id/selector of prev link
-        var $prevPostSelector = $('.prevpost');
-        var $nextPostSelector = $('.nextpost');
-        ///////////////////////////////////////////////////
-
-        var pageArray = document.location.href.split('/');
-        var currentPageSlug = pageArray[pageArray.length - 1];
-
-        if (!currentPageSlug) {
-            currentPageSlug = pageArray[pageArray.length - 2];
-        }
-
-        $.ajax({
-            url: __blogURL + "/data/blog.json",
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                if (data.posts !== undefined && data.posts !== null) {
-                    $.each(data.posts, function (i, post) {
-                        if (post.slug === currentPageSlug || post.slug + '/' === currentPageSlug) {
-
-                            var prevPost = data.posts[i - 1];
-                            var nextPost = data.posts[i + 1];
-
-                            if (prevPost === undefined || prevPost === null) {
-                                // hide previous link if it is first post
-                                $prevPostSelector.hide();
-                            }
-                            else {
-                                $prevPostSelector.attr('href', __blogURL + '/post/' + prevPost.slug);
-                            }
-
-                            if (nextPost === undefined || nextPost === null) {
-                                // hide previous link if it is last post
-                                $nextPostSelector.hide();
-                            }
-                            else {
-                                $nextPostSelector.attr('href', __blogURL + '/post/' + nextPost.slug);
-                            }
-
-                            return false; // break out of each
-                        }
-                    });
-                }
-            },
-            error: function (e) {
-                $prevPostSelector.hide();
-                $nextPostSelector.hide();
-            }
-        });
-
-        // for Disqus
-        var disqus_shortname = 'codeinphp';
-        var dsq = document.createElement('script');
-        dsq.type = 'text/javascript';
-        dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-
-    });
-</script>
-
-<!-- for sharethis -->
-<script type="text/javascript">var switchTo5x = true;</script>
-<script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
-<script type="text/javascript">stLight.options({
-    publisher: "18a13a28-cab8-4bb2-9a13-25708fa3cd9b",
-    doNotHash: false,
-    doNotCopy: false,
-    hashAddressBar: false
-});
-</script>
