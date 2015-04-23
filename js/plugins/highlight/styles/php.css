@@ -5,7 +5,7 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 @font-face {
     font-family: 'PragmataPro';
     src: url('../PragmataPro/PragmataPro.eot?#iefix') format('embedded-opentype'), url('../PragmataPro/PragmataPro.woff') format('woff'), url('../PragmataPro/PragmataPro.ttf') format('truetype'), url('../PragmataPro/PragmataPro.svg#PragmataPro') format('svg');
-    font-weight: bold;
+    font-weight: normal;
     font-style: normal;
 }
 
@@ -19,10 +19,11 @@ pre {
 .hljs {
     display: block;
     font-family: 'PragmataPro';
+    font-weight: bold;
     overflow-x: auto;
     padding: 0.5em;
     color: #0000BB;
-    background: url(./codebg.png) repeat scroll left top #f8f8f8;
+    background: #f8f8f8;
     -webkit-text-size-adjust: none;
 }
 
