@@ -149,9 +149,9 @@ class Cat extends Animal {
 
 echo Animal::getName(); // Animal
 echo Cat::getName(); // Cat</code></pre>
-<p>This is better and works for out purpose.</p>
+<p>This is better and works for our purpose.</p>
 <p><strong>By Using <code>static</code> keyword</strong></p>
-<p>PHP 5.3 introduced the <code>static</code> keyword to help deal with this issue. Before that, <code>get_called_class()</code> method was what was used. Let's get the expected result using <code>static</code> keyword:</p>
+<p>PHP 5.3 introduced the <code>static</code> keyword to help deal with this issue. Before that, <code>get_called_class()</code> was what was used. Let's get the expected result using <code>static</code> keyword:</p>
 <pre><code>class Animal {
     protected static $name = 'Animal';
 
@@ -168,7 +168,7 @@ echo Animal::getName(); // Animal
 echo Cat::getName(); // Cat</code></pre>
 <p>And this works fine too. These days using <code>static</code> keyword seems to be common practice instead of <code>get_called_class()</code> to deal with this issue though <code>get_called_class()</code> has many other uses too.</p>
 <hr />
-<p>So in simple words, <strong>late static binding</strong> is something that helps us correctly resolve to <strong>static</strong> classes at run time. So when we use <code>self</code> keyword, PHP checks it at compile time which class to <strong>bind</strong> the method call to but when we use <code>static</code> keyword, PHP would check it <strong>late</strong> eg it would determine and bind method call to class at runtime which class to use. Doing it at runtime is what helps PHP determine which class was meant.</p></p>
+<p>So in simple words, <strong>late static binding</strong> is something that helps us correctly resolve to <strong>static</strong> classes at run time. So when we use <code>self</code> keyword, PHP checks it at compile time which class to <strong>bind</strong> the method call to but when we use <code>static</code> keyword, PHP would check it <strong>late</strong> eg it would determine which class to use and bind method call to at runtime. Doing it at runtime is what helps PHP determine which class was meant.</p></p>
                         <br/>
                 
                         <div class="post-info">
