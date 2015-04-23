@@ -1,5 +1,7 @@
 /*
-php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
 */
 
 @font-face {
@@ -18,19 +20,17 @@ pre {
 
 .hljs {
     display: block;
-    font-family: 'PragmataPro';
-    font-weight: 600;
     overflow-x: auto;
     padding: 0.5em;
-    color: #0000BB;
-    background: url(./codebg.png) repeat scroll left top #f8f8f8;
+    color: #333;
+    background: #f8f8f8;
     -webkit-text-size-adjust: none;
 }
 
 .hljs-comment,
 .diff .hljs-header,
 .hljs-javadoc {
-    color: #FF8000;
+    color: #998;
     font-style: italic;
 }
 
@@ -41,13 +41,14 @@ pre {
 .hljs-subst,
 .hljs-request,
 .hljs-status {
-    color: #009926;
+    color: #333;
+    font-weight: bold;
 }
 
 .hljs-number,
 .hljs-hexcolor,
 .ruby .hljs-constant {
-    color: #009926;
+    color: #008080;
 }
 
 .hljs-string,
@@ -55,13 +56,14 @@ pre {
 .hljs-phpdoc,
 .hljs-dartdoc,
 .tex .hljs-formula {
-    color: #DD0000;
+    color: #d14;
 }
 
 .hljs-title,
 .hljs-id,
 .scss .hljs-preprocessor {
-    color: #0000BB;
+    color: #900;
+    font-weight: bold;
 }
 
 .hljs-list .hljs-keyword,
@@ -73,14 +75,15 @@ pre {
 .hljs-type,
 .vhdl .hljs-literal,
 .tex .hljs-command {
-    color: #0000BB;
+    color: #458;
+    font-weight: bold;
 }
 
 .hljs-tag,
 .hljs-tag .hljs-title,
 .hljs-rule .hljs-property,
 .django .hljs-tag .hljs-keyword {
-    color: #0000BB;
+    color: #000080;
     font-weight: normal;
 }
 
@@ -88,7 +91,7 @@ pre {
 .hljs-variable,
 .lisp .hljs-body,
 .hljs-name {
-    color: #333;
+    color: #008080;
 }
 
 .hljs-regexp {
@@ -102,11 +105,11 @@ pre {
 .scheme .hljs-keyword,
 .tex .hljs-special,
 .hljs-prompt {
-    color: #0000BB;
+    color: #990073;
 }
 
 .hljs-built_in {
-    color: #0000BB;
+    color: #0086b3;
 }
 
 .hljs-preprocessor,
@@ -115,7 +118,8 @@ pre {
 .hljs-doctype,
 .hljs-shebang,
 .hljs-cdata {
-    color: #0000BB;
+    color: #999;
+    font-weight: bold;
 }
 
 .hljs-deletion {
@@ -131,5 +135,5 @@ pre {
 }
 
 .hljs-chunk {
-    color: #0000BB;
+    color: #aaa;
 }
