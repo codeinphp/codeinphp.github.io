@@ -100,7 +100,7 @@ echo Cat::getName(); // Cat</code></pre>
 <hr />
 <p>So in simple words, <strong>late static binding</strong> is something that helps us correctly resolve to <strong>static</strong> classes at run time. So when we use <code>self</code> keyword, PHP checks it at compile time which class to <strong>bind</strong> the method call to but when we use <code>static</code> keyword, PHP would check it <strong>late</strong> eg it would determine which class to use and bind method call to at runtime. Doing it at runtime is what helps PHP determine which class was meant.</p>]]></description>
 <link>https://codeinphp.github.io/post/late-static-binding-in-php</link>
-<pubDate>Thu, 23 Apr 2015 15:54:00 +0200</pubDate>
+<pubDate>Thu, 23 Apr 2015 15:54:00 +0500</pubDate>
 </item>
 <item>
 <title>Closures - PHP vs Javascript</title>
@@ -197,7 +197,7 @@ $f();</code></pre>
 <hr />
 <p>And that's also reason why you needed to pass variable by <code>reference</code> for the factorial example I had given in my <a href="http://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php/">previous post</a>. Hope this post clears the confusion of closures and scoping especially for someone who comes from Javascript to PHP.</p>]]></description>
 <link>https://codeinphp.github.io/post/closures-php-vs-javascript</link>
-<pubDate>Wed, 22 Apr 2015 14:17:00 +0200</pubDate>
+<pubDate>Wed, 22 Apr 2015 14:17:00 +0500</pubDate>
 </item>
 <item>
 <title>Database Migrations in CodeIgniter</title>
@@ -290,7 +290,7 @@ you deploy.</p>
 <p>In the above example, we used <code>$this-&gt;migration-&gt;current()</code> method to go to current migration version that is set in <code>config['migration_version']</code>. There are <a href="https://ellislab.com/codeigniter/user-guide/libraries/migration.html">couple of more methods</a> that allow you to migrate based on most recent version of migration based on file system and one that allows you to go to specific migration version. To lean more about <code>dbforge</code> methods, <a href="http://www.codeigniter.com/user_guide/database/forge.html?highlight=dbforge">check out its documentation</a>.</p>
 <p>So if you have never used database migrations before, you should definitely use them because they are awesome!</p>]]></description>
 <link>https://codeinphp.github.io/post/database-migrations-in-codeigniter</link>
-<pubDate>Tue, 21 Apr 2015 20:50:00 +0200</pubDate>
+<pubDate>Tue, 21 Apr 2015 20:50:00 +0500</pubDate>
 </item>
 <item>
 <title>Development Environments in CodeIgniter</title>
@@ -361,7 +361,7 @@ if ($isLocal) {
 <p>And then use <code>$env</code> variable:</p>
 <pre><code>define('ENVIRONMENT', $env);</code></pre>]]></description>
 <link>https://codeinphp.github.io/post/development-environments-in-codeigniter</link>
-<pubDate>Tue, 21 Apr 2015 17:06:00 +0200</pubDate>
+<pubDate>Tue, 21 Apr 2015 17:06:00 +0500</pubDate>
 </item>
 <item>
 <title>Controllers for Frontend and Backend in CodeIgniter</title>
@@ -486,7 +486,7 @@ independent from other triads.</p>
 </blockquote>
 <p>Have fun!</p>]]></description>
 <link>https://codeinphp.github.io/post/controllers-for-frontend-and-backend-in-codeigniter</link>
-<pubDate>Tue, 21 Apr 2015 15:10:00 +0200</pubDate>
+<pubDate>Tue, 21 Apr 2015 15:10:00 +0500</pubDate>
 </item>
 <item>
 <title>CodeIgniter Tip: Time Your Pages</title>
@@ -505,7 +505,7 @@ echo $this-&gt;benchmark-&gt;elapsed_time('code_start', 'code_end');</code></pre
 <pre><code>&lt;?php echo $elapsed_time;?&gt;</code></pre>
 <p>That variable is automatically created by CodeIgniter.</p>]]></description>
 <link>https://codeinphp.github.io/post/codeigniter-tip-time-your-pages</link>
-<pubDate>Tue, 21 Apr 2015 13:39:00 +0200</pubDate>
+<pubDate>Tue, 21 Apr 2015 13:39:00 +0500</pubDate>
 </item>
 <item>
 <title>Dependency Injection in PHP</title>
@@ -728,7 +728,7 @@ $user-&gt;setConfig($configArray);</code></pre>
 <hr />
 <p>So in conclusion, you must always remove hard-coded dependencies from your code and inject them using Dependency Injection instead for its benefits and then have all the injected dependencies managed automatically for you by using some dependency injection container.</p>]]></description>
 <link>https://codeinphp.github.io/post/dependency-injection-in-php</link>
-<pubDate>Sun, 19 Apr 2015 21:44:00 +0200</pubDate>
+<pubDate>Sun, 19 Apr 2015 21:44:00 +0500</pubDate>
 </item>
 <item>
 <title>Visual Query - A Basic MySQL Query Builder App</title>
@@ -770,7 +770,7 @@ $config['password'][] = 'admin';
 $config['username'][] = 'admin2';
 $config['password'][] = 'admin2';</code></pre>]]></description>
 <link>https://codeinphp.github.io/post/visual-query-a-basic-mysql-query-builder-app</link>
-<pubDate>Sun, 19 Apr 2015 12:31:00 +0200</pubDate>
+<pubDate>Sun, 19 Apr 2015 12:31:00 +0500</pubDate>
 </item>
 <item>
 <title>Extending DataMapper for CodeIgniter</title>
@@ -1101,7 +1101,7 @@ $apiClient-&gt;save(); // save to db</code></pre>
 <p>In above class, most of the code remains same for <code>_to_object()</code> and <code>save()</code> functions as in original data mapper class but I have modified few places so that I can put encryption for needed fields.</p>
 <p>So in conclusion, we learned how we tapped onto the data mapper class and extended it for our needs of auto-encryption of told fields. If you happen to have similar requirement or you wanted to inject your own functionality to the data mapper, you can do that through the use of <code>_to_object()</code>  and <code>save()</code> functions of data mapper.</p>]]></description>
 <link>https://codeinphp.github.io/post/extending-datamapper-for-codeigniter</link>
-<pubDate>Sun, 19 Apr 2015 11:35:00 +0200</pubDate>
+<pubDate>Sun, 19 Apr 2015 11:35:00 +0500</pubDate>
 </item>
 <item>
 <title>JavaScript Best Practices</title>
@@ -1324,7 +1324,7 @@ var myFunc = function(){
 <h2>BONUS</h2>
 <p>The good news is that you can solve most of above problems by using <a href="http://www.jshint.com/">JSHint</a> or <a href="http://jslint.com/">JSLint</a> code quality tool. It will tell you about best-practices and any errors that might exist in your code. Having said that, it is good to improve your JS skills and avoid the need to go to such tools.</p>]]></description>
 <link>https://codeinphp.github.io/post/javascript-best-practices</link>
-<pubDate>Sun, 19 Apr 2015 10:00:00 +0200</pubDate>
+<pubDate>Sun, 19 Apr 2015 10:00:00 +0500</pubDate>
 </item>
 <item>
 <title>Exploring Lambda Functions and Closures in PHP</title>
@@ -1533,7 +1533,7 @@ $getMyClass = function() {
 <pre><code>$myClass = $getMyClass();</code></pre>
 <p>And now you would see the message <code>I am initialized!</code>. So this is pretty neat trick to defer some piece of code and use it only when you need it.</p>]]></description>
 <link>https://codeinphp.github.io/post/exploring-lambda-functions-and-closures-in-php</link>
-<pubDate>Sat, 18 Apr 2015 23:57:00 +0200</pubDate>
+<pubDate>Sat, 18 Apr 2015 23:57:00 +0500</pubDate>
 </item>
 <item>
 <title>Learning Javascript</title>
@@ -1604,7 +1604,7 @@ console.log(f);    // undefined</code></pre>
 <li>Bonus: <a href="http://coding.smashingmagazine.com/2009/02/08/50-extremely-useful-javascript-tools/">50 Useful JavaScript Tools</a></li>
 </ul>]]></description>
 <link>https://codeinphp.github.io/post/learning-javascript</link>
-<pubDate>Sat, 18 Apr 2015 20:35:00 +0200</pubDate>
+<pubDate>Sat, 18 Apr 2015 20:35:00 +0500</pubDate>
 </item>
 <item>
 <title>Abstract Class vs Interface</title>
@@ -1733,7 +1733,7 @@ Members of interface can not be Static | Only Complete Member of abstract class 
 <hr />
 <p>In conclusion, interface and abstract classes are completely different from each other, you cannot interchange them or use one as alternative over the other. Interfaces are completely empty shells that expect child classes to implement everything for them. On the other hand, abstract class can not only contain <em>common piece of information</em> by implementing inside them but also expect child classes to fill in the remaining gaps.</p>]]></description>
 <link>https://codeinphp.github.io/post/abstract-class-vs-interface</link>
-<pubDate>Sat, 18 Apr 2015 20:26:00 +0200</pubDate>
+<pubDate>Sat, 18 Apr 2015 20:26:00 +0500</pubDate>
 </item>
 <item>
 <title>PHPExecute – PHP Code Runner</title>
@@ -1767,7 +1767,7 @@ Members of interface can not be Static | Only Complete Member of abstract class 
 <p><a href="https://github.com/sarfraznawaz2005/PHPExecute">Download PHPExecute at Github</a></p>
 <p>I hope PHPExecute turns out to be a useful tool for you. Please do share if you add anything to it via comments so that we could know it and integrate ourselves too :)</p>]]></description>
 <link>https://codeinphp.github.io/post/phpexecute-php-code-runner</link>
-<pubDate>Sun, 12 Apr 2015 20:57:00 +0200</pubDate>
+<pubDate>Sun, 12 Apr 2015 20:57:00 +0500</pubDate>
 </item>
 <item>
 <title>Outputting PHP To Browser Console</title>
@@ -1842,7 +1842,7 @@ logConsole('$user object', $user, true);</code></pre>
 <p><img src="https://codeinphp.github.io/images/1428862620552ab69c5381f.gif" alt="enter image description here" /></p>
 <p>Although this does not prevent committing code first to see the code output if you are on facebook application development but it defintely does save some time. I have been using this function successfully so far, please let me know your ideas if any on how to improve this piece of code further. </p>]]></description>
 <link>https://codeinphp.github.io/post/outputting-php-to-browser-console</link>
-<pubDate>Sun, 12 Apr 2015 20:23:00 +0200</pubDate>
+<pubDate>Sun, 12 Apr 2015 20:23:00 +0500</pubDate>
 </item>
 <item>
 <title>My Local Development Workflow with WAMP/XAMPP, GIT and Google Drive</title>
@@ -1949,7 +1949,7 @@ and so on</code></pre>
 <li><a href="http://net.tutsplus.com/?s=git">and more</a></li>
 </ul>]]></description>
 <link>https://codeinphp.github.io/post/my-local-development-workflow-with-wamp-xampp-git-and-google-drive</link>
-<pubDate>Sun, 12 Apr 2015 13:24:00 +0200</pubDate>
+<pubDate>Sun, 12 Apr 2015 13:24:00 +0500</pubDate>
 </item>
 <item>
 <title>GoodTodo PHP and SQlite App</title>
@@ -1962,7 +1962,7 @@ and so on</code></pre>
 <p>Make sure you have wamp/xampp or other stack installed. Download the app and put in www/htdocs folder and browse to that folder via browser something like <a href="http://localhost/todo">http://localhost/todo</a>. Please make sure you have sqlite extension turned on from php.ini if it isn’t already.</p>
 <p>So go ahead and <a href="https://dl.dropboxusercontent.com/u/11600057/todo.zip">download GoodTodo</a> to keep track of your todos.</p>]]></description>
 <link>https://codeinphp.github.io/post/goodtodo-php-and-sqlite-app</link>
-<pubDate>Sun, 12 Apr 2015 13:03:00 +0200</pubDate>
+<pubDate>Sun, 12 Apr 2015 13:03:00 +0500</pubDate>
 </item>
 <item>
 <title>BloggerCMS  - An Static Blog Generator CMS</title>
@@ -1995,7 +1995,7 @@ and so on</code></pre>
 </ul>
 <p>To know more about BloggerCMS, head over to <a href="https://bloggercms.github.io">it's blog</a> or see <a href="https://bloggercms.github.io/post/introducing-bloggercms.html">introductory post</a>.</p>]]></description>
 <link>https://codeinphp.github.io/post/bloggercms-an-static-blog-generator-cms</link>
-<pubDate>Mon, 06 Apr 2015 21:41:00 +0200</pubDate>
+<pubDate>Mon, 06 Apr 2015 21:41:00 +0500</pubDate>
 </item>
 <item>
 <title>Welcome !</title>
@@ -2004,7 +2004,7 @@ and so on</code></pre>
 <p>On this blog, I intend to write my ideas mainly about PHP as well as other related web development technologies. </p>
 <p><em>Stay tuned :)</em></p>]]></description>
 <link>https://codeinphp.github.io/post/welcome</link>
-<pubDate>Sun, 05 Apr 2015 15:46:00 +0200</pubDate>
+<pubDate>Sun, 05 Apr 2015 15:46:00 +0500</pubDate>
 </item>
 </channel>
 </rss>
