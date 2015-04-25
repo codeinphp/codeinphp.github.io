@@ -6,6 +6,75 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>CodeIgniter Tip: Accessing CodeIgniter Instance Outside</title>
+<description><![CDATA[<p>Sometimes you need to access CodeIgniter application instance completely outside of it, may be in Ajax request or an script which is not part of your main CI application. To do so, you can do this:</p>
+<pre><code>// file: CI.php
+ob_start();
+require_once 'index.php'; // adjust path accordingly
+ob_get_clean();
+return $CI;</code></pre>
+<p>Here we are including <code>index.php</code> file of main CI application. We are using buffering functions here so we don't see actual CI application page and finally we we <code>return</code> the <code>$CI</code> instance so that in any page where we need CI instance, we can simply include this file there. So to use it in some other script, you would simply include above file there:</p>
+<pre><code>$CI = require_once 'CI.php';
+echo $CI-&gt;config-&gt;item('base_url'); // test CI instance</code></pre>
+<p>That should work for the most cases.</p>
+<p>I happen to need CI instance in a cli/console application but above method didn't do the trick for me in console app. So here is another very very hacky way of getting instance of CI in a console app:</p>
+<pre><code>// Hacky Way of Accessing CI Instance Outside
+
+error_reporting(1);
+
+$environment = 'development';
+
+$system_path = 'system';
+
+$application_folder = 'application';
+
+if (realpath($system_path) !== false) {
+    $system_path = realpath($system_path) . '/';
+}
+
+// ensure there's a trailing slash
+$system_path = rtrim($system_path, '/') . '/';
+
+define('BASEPATH', str_replace("\\", "/", $system_path));
+define('APPPATH', $application_folder . '/');
+define('EXT', '.php');
+define('ENVIRONMENT', $environment ? $environment : 'development');
+
+require(BASEPATH .'core/Common.php');
+
+if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/constants.php')) {
+    require(APPPATH.'config/'.ENVIRONMENT.'/constants.php');
+} else {
+    require(APPPATH.'config/constants.php');
+}
+
+$GLOBALS['CFG'] =&amp; load_class('Config', 'core');
+$GLOBALS['UNI'] =&amp; load_class('Utf8', 'core');
+
+if (file_exists($basepath.'core/Security.php')) {
+  $GLOBALS['SEC'] =&amp; load_class('Security', 'core');
+}
+
+load_class('Loader', 'core');
+load_class('Router', 'core');
+load_class('Input', 'core');
+load_class('Lang', 'core');
+
+require(BASEPATH . 'core/Controller.php');
+
+function &amp;get_instance() {
+    return CI_Controller::get_instance();
+}
+
+$class = 'CI_Controller';
+$instance = new $class();
+
+return $instance;</code></pre>
+<p>As said above, this is extremely hacky way and may or may not work in all cases and you would also need to adjust paths in above code and/or load more libraries/helpers/etc you need by modifying it.</p>]]></description>
+<link>https://codeinphp.github.io/post/codeigniter-tip-accessing-codeigniter-instance-outside</link>
+<pubDate>Sun, 26 Apr 2015 02:17:00 +0500</pubDate>
+</item>
+<item>
 <title>Sharing Functionality Using Traits in PHP</title>
 <description><![CDATA[<p>Official <a href="http://php.net/manual/en/language.oop5.traits.php">documentation</a> defines traits as:</p>
 <blockquote>
