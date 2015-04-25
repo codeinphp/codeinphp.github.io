@@ -71,104 +71,147 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/late-static-binding-in-php">Late Static Binding in PHP</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/sharing-functionality-using-traits-in-php">Sharing Functionality Using Traits in PHP</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> April 23, 2015 03:54 PM
+                    <span class="glyphicon glyphicon-time"></span> April 26, 2015 01:04 AM
                 
                         <hr>
-                        <p class="post-content"><p>Let's jump into an example up front to understand the concept. Let's create two classes parent and child which would tell us the name of the object using <code>getName()</code> method:</p>
-<pre><code>class Animal {
-    protected $name = 'Animal';
+                        <p class="post-content"><p>Official <a href="http://php.net/manual/en/language.oop5.traits.php">documentation</a> defines traits as:</p>
+<blockquote>
+<p>Traits are a mechanism for code reuse in single inheritance languages
+such as PHP. A Trait is intended to reduce some limitations of single
+inheritance by enabling a developer to reuse sets of methods freely in
+several independent classes living in different class hierarchies. The
+semantics of the combination of Traits and classes is defined in a way
+which reduces complexity, and avoids the typical problems associated
+with multiple inheritance and Mixins.</p>
+</blockquote>
+<p>So what does this mean ? Let's understand through practical example. Imagine we have chat application and database contains two tables; <code>users</code> and <code>messages</code> and we want to be able to have <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> functionality for each of those entities. Here is how model class for <code>User</code> looks:</p>
+<pre><code>class User {
+    protected $table = 'users';
 
-    public function getName() {
-        return $this-&gt;name;
+    public function getAll() {
+        return DB::getAll($this-&gt;table);
+    }
+
+    public function get($id) {
+        return DB::get($this-&gt;table, $id);
+    }
+
+    public function add($data) {
+        return DB::add($this-&gt;table, $data);
+    }
+
+    public function update($id) {
+        return DB::update($this-&gt;table, $id);
+    }
+
+    public function remove($id) {
+        return DB::remove($this-&gt;table, $id);
     }
 }</code></pre>
-<p>Let's extend the <code>Animal</code> class so we can use its <code>getName()</code> method without repeating it in child class. We will only need the <code>$name</code> variable in child class to get it's name:</p>
-<pre><code>class Cat extends Animal {
-    protected $name = 'Cat';
+<p><code>Message</code> model class:</p>
+<pre><code>class Message {
+    protected $table = 'messages';
+
+    public function getAll() {
+        return DB::getAll($this-&gt;table);
+    }
+
+    public function get($id) {
+        return DB::get($this-&gt;table, $id);
+    }
+
+    public function add($data) {
+        return DB::add($this-&gt;table, $data);
+    }
+
+    public function update($id) {
+        return DB::update($this-&gt;table, $id);
+    }
+
+    public function remove($id) {
+        return DB::remove($this-&gt;table, $id);
+    }
 }</code></pre>
-<p>Now we expect to get names of each object, let's do so:</p>
-<pre><code>$animal = new Animal;
-$cat = new Cat;
-
-echo $animal-&gt;getName(); // Animal
-echo $cat-&gt;getName(); // Cat</code></pre>
-<p>And we successfully get <code>Animal</code> and <code>Cat</code> echoed out. But now let's modify code a bit so that we can use those classes without creating their instances with the help of <code>static</code> keyword (eg global state):</p>
-<pre><code>class Animal {
-    protected static $name = 'Animal';
-
-    public static function getName() {
-        return self::$name;
+<p>At first glance, we can see that both of these classes have exactly the same code for those five methods with only difference of <code>$table</code> being different. This smells and to follow the principle of <a href="http://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don't Repeat Yourself</a>, we can inheritance of course. So we create a new abstract class that will contain common functionality in the form of those five methods and then both classes would extend this base class:</p>
+<pre><code>abstract class Model {     
+    public function getAll() {
+        return DB::getAll($this-&gt;table);
     }
-}
 
-class Cat extends Animal {
-    protected static $name = 'Cat';
-}
-
-echo Animal::getName(); // Animal
-echo Cat::getName(); // Animal</code></pre>
-<p>Noticed the problem ? We wanted to see <code>Animal</code> and <code>Cat</code> to be echoed out like previous example but in both cases it said <code>Animal</code> not <code>Cat</code>.</p>
-<p>The reason why in previous example things worked the way expected is because we explicitly created new instances of both classes using <code>new</code> keyword and PHP knew which class and method to use. This is not the case in second static example. In the second example, we are using the <code>self</code> keyword which <em>always resolves to current class</em> where it is called. This is reason why the name for the <code>Cat</code> class wasn't echoed out.</p>
-<p>So how do we get the name of cat ? Here are few ways.</p>
-<p><strong>By Repeating Same Code In Child Class</strong></p>
-<pre><code>class Animal {
-    protected static $name = 'Animal';
-
-    public static function getName() {
-        return self::$name;
+    public function get($id) {
+        return DB::get($this-&gt;table, $id);
     }
-}
 
-class Cat extends Animal {
-    protected static $name = 'Cat';
-
-    public static function getName() {
-        return self::$name;
-    }    
-}
-
-echo Animal::getName(); // Animal
-echo Cat::getName(); // Cat</code></pre>
-<p>This works but it defeats the purpose of inheritance. What is the point of extending <code>Animal</code> class when we need to repeat same code in child class ? This isn't ideal.</p>
-<p><strong>By Using <code>get_called_class()</code></strong></p>
-<pre><code>class Animal {
-    protected static $name = 'Animal';
-
-    public static function getName() {
-        $class = get_called_class();
-        return $class::$name;
+    public function add($data) {
+        return DB::add($this-&gt;table, $data);
     }
-}
 
-class Cat extends Animal {
-    protected static $name = 'Cat';
-}
-
-echo Animal::getName(); // Animal
-echo Cat::getName(); // Cat</code></pre>
-<p>This is better and works for our purpose.</p>
-<p><strong>By Using <code>static</code> keyword</strong></p>
-<p>PHP 5.3 introduced the <code>static</code> keyword to help deal with this issue. Before that, <code>get_called_class()</code> was what was used. Let's get the expected result using <code>static</code> keyword:</p>
-<pre><code>class Animal {
-    protected static $name = 'Animal';
-
-    public static function getName() {
-        return static::$name;
+    public function update($id) {
+        return DB::update($this-&gt;table, $id);
     }
+
+    public function remove($id) {
+        return DB::remove($this-&gt;table, $id);
+    }
+}</code></pre>
+<p>And now our <code>User</code> and <code>Message</code> classes look like this:</p>
+<pre><code>class User extends Model {
+    protected $table = 'users';
 }
 
-class Cat extends Animal {
-    protected static $name = 'Cat';
+class Message extends Model {
+    protected $table = 'messages';
+}</code></pre>
+<p>And that's it, now both of these classes inherit those five methods from the base <code>Model</code> class, no need to repeat them now, perfect !</p>
+<p>Now imaging that suddenly clients requires that some of the fields in both of those tables should be encrypted. For that we create a class that contains two methods <code>encrypt()</code> and <code>decrypt()</code>:</p>
+<pre><code>class Encoder {
+    public static function encrypt($text, $key) {
+        // code to encrypt text
+    }
+
+    public static function decrypt($text, $key) {
+        // code to decrypt text
+    } 
+}</code></pre>
+<p>But how do we use it now ? First thought would be to use it as needed:</p>
+<pre><code>$user = new User();
+$user-&gt;add(array('email' =&gt; 'foo@bar.com', 'password' =&gt; Encoder::encrypt('some_password', 'key')));</code></pre>
+<p>This sounds okay but wouldn't it be better whenever we add a user, it should automatically apply <code>encrypt()</code> for the <code>password</code> field or other fields that we want? It would certainly help us save time and keep from repeating code of <code>encrypt()</code> and <code>decrypt()</code> whenever we operated on such field. So to achieve that we extend our classes with this functionality as well:</p>
+<pre><code>// wrong code...
+class User extends Model extends Encoder  {
+    protected $table = 'users';
+}</code></pre>
+<p>Of course we can't do above. We can't extend a class with multiple classes since in PHP you can only do single inheritance.</p>
+<p>So another thought that comes to mind is to extend <code>Model</code>class instead:</p>
+<pre><code>abstract class Model extends Encoder {
+    // ....
+}</code></pre>
+<p>And this would certainly work and we would have <code>Encoder</code> functionality available in all our model classes where we can use it the way we need. But think about it. Is it good idea to have Model and Encryption functionality mixed up ? They are totally different things and it doesn't sound like good idea to put encryption logic into your business logic. But then how ? We can use traits !</p>
+<p>So let's convert previous <code>Encoder</code> class into a trait:</p>
+<pre><code>trait Encoder {
+    public static function encrypt($text, $key) {
+        // code to encrypt text
+    }
+
+    public static function decrypt($text, $key) {
+        // code to decrypt text
+    } 
+}</code></pre>
+<p>And to use that trait in some other classes, we need to use it using <code>use Encoder;</code> syntax, so let's add this functionality in our classes:</p>
+<pre><code>class User extends Model {
+    use Encoder;
+    protected $table = 'users';
 }
 
-echo Animal::getName(); // Animal
-echo Cat::getName(); // Cat</code></pre>
-<p>And this works fine too. These days using <code>static</code> keyword seems to be common practice instead of <code>get_called_class()</code> to deal with this issue though <code>get_called_class()</code> has many other uses too.</p>
-<hr />
-<p>So in simple words, <strong>late static binding</strong> is something that helps us correctly resolve to <strong>static</strong> classes at run time. So when we use <code>self</code> keyword, PHP checks it at compile time which class to <strong>bind</strong> the method call to but when we use <code>static</code> keyword, PHP would check it <strong>late</strong> eg it would determine which class to use and bind method call to at runtime. Doing it at runtime is what helps PHP determine which class was meant.</p></p>
+class Message extends Model {
+    use Encoder;
+    protected $table = 'messages';
+}</code></pre>
+<p>And now not only our classes inherit functionality from base <code>Model</code> class but also can use the functionality of <code>Encoder</code> trait. We were also able to separate encryption logic from core model logic. So inside our <code>User</code> and <code>Message</code> classes, we can now use <code>$this-&gt;encrypt()</code> or <code>$this-&gt;decrypt()</code> methods as though they were defined in them (Actually that's what PHP does at runtime). We have been able to overcome the shortcoming of single inheritance.</p>
+<p>So now when you re-look the definition of traits given at top of this post, it should make better sense. So traits are noting but a way of code-reuse. To learn more about traits and their characteristics, please refer to its  <a href="http://php.net/manual/en/language.oop5.traits.php">documentation</a>.</p></p>
                         <br/>
                 
                         <div class="post-info">
@@ -178,9 +221,9 @@ echo Cat::getName(); // Cat</code></pre>
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
-                                <a href="https://codeinphp.github.io/tag/bind">bind</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/oop">oop</a>&nbsp;&nbsp;
                                 <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/static">static</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/trait">trait</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -233,11 +276,11 @@ echo Cat::getName(); // Cat</code></pre>
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/sharing-functionality-using-traits-in-php">Sharing Functionality Using Traits in PHP</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/late-static-binding-in-php">Late Static Binding in PHP</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/closures-php-vs-javascript">Closures - PHP vs Javascript</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/database-migrations-in-codeigniter">Database Migrations in CodeIgniter</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/development-environments-in-codeigniter">Development Environments in CodeIgniter</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/controllers-for-frontend-and-backend-in-codeigniter">Controllers for Frontend and Backend in CodeIgniter</a></li>
                 </ul>
             </div>
         
@@ -281,7 +324,7 @@ echo Cat::getName(); // Cat</code></pre>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/browser" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">browser</a>
 <a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/closure" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">closure</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/cms" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">cms</a>
-<a style="font-size: 17px" class="tag_cloud" href="https://codeinphp.github.io/tag/codeigniter" title="5 total posts" data-original-title="6 total posts" data-toggle="tooltip">codeigniter</a>
+<a style="font-size: 16px" class="tag_cloud" href="https://codeinphp.github.io/tag/codeigniter" title="5 total posts" data-original-title="6 total posts" data-toggle="tooltip">codeigniter</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/console" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">console</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/controller" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">controller</a>
 <a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/database" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">database</a>
@@ -299,8 +342,8 @@ echo Cat::getName(); // Cat</code></pre>
 <a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/lambda" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">lambda</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/migration" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">migration</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/mysql" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">mysql</a>
-<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">oop</a>
-<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="15 total posts" data-original-title="16 total posts" data-toggle="tooltip">php</a>
+<a style="font-size: 14px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="3 total posts" data-original-title="4 total posts" data-toggle="tooltip">oop</a>
+<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="16 total posts" data-original-title="17 total posts" data-toggle="tooltip">php</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/phpexecute" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">phpexecute</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/runner" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">runner</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/scope" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">scope</a>
@@ -309,6 +352,7 @@ echo Cat::getName(); // Cat</code></pre>
 <a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/static" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">static</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/tester" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">tester</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/todo" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">todo</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/trait" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">trait</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/visual" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">visual</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/wamp" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">wamp</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/welcome" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">welcome</a>

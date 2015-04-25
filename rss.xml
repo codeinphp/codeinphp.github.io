@@ -6,6 +6,146 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Sharing Functionality Using Traits in PHP</title>
+<description><![CDATA[<p>Official <a href="http://php.net/manual/en/language.oop5.traits.php">documentation</a> defines traits as:</p>
+<blockquote>
+<p>Traits are a mechanism for code reuse in single inheritance languages
+such as PHP. A Trait is intended to reduce some limitations of single
+inheritance by enabling a developer to reuse sets of methods freely in
+several independent classes living in different class hierarchies. The
+semantics of the combination of Traits and classes is defined in a way
+which reduces complexity, and avoids the typical problems associated
+with multiple inheritance and Mixins.</p>
+</blockquote>
+<p>So what does this mean ? Let's understand through practical example. Imagine we have chat application and database contains two tables; <code>users</code> and <code>messages</code> and we want to be able to have <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> functionality for each of those entities. Here is how model class for <code>User</code> looks:</p>
+<pre><code>class User {
+    protected $table = 'users';
+
+    public function getAll() {
+        return DB::getAll($this-&gt;table);
+    }
+
+    public function get($id) {
+        return DB::get($this-&gt;table, $id);
+    }
+
+    public function add($data) {
+        return DB::add($this-&gt;table, $data);
+    }
+
+    public function update($id) {
+        return DB::update($this-&gt;table, $id);
+    }
+
+    public function remove($id) {
+        return DB::remove($this-&gt;table, $id);
+    }
+}</code></pre>
+<p><code>Message</code> model class:</p>
+<pre><code>class Message {
+    protected $table = 'messages';
+
+    public function getAll() {
+        return DB::getAll($this-&gt;table);
+    }
+
+    public function get($id) {
+        return DB::get($this-&gt;table, $id);
+    }
+
+    public function add($data) {
+        return DB::add($this-&gt;table, $data);
+    }
+
+    public function update($id) {
+        return DB::update($this-&gt;table, $id);
+    }
+
+    public function remove($id) {
+        return DB::remove($this-&gt;table, $id);
+    }
+}</code></pre>
+<p>At first glance, we can see that both of these classes have exactly the same code for those five methods with only difference of <code>$table</code> being different. This smells and to follow the principle of <a href="http://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don't Repeat Yourself</a>, we can inheritance of course. So we create a new abstract class that will contain common functionality in the form of those five methods and then both classes would extend this base class:</p>
+<pre><code>abstract class Model {     
+    public function getAll() {
+        return DB::getAll($this-&gt;table);
+    }
+
+    public function get($id) {
+        return DB::get($this-&gt;table, $id);
+    }
+
+    public function add($data) {
+        return DB::add($this-&gt;table, $data);
+    }
+
+    public function update($id) {
+        return DB::update($this-&gt;table, $id);
+    }
+
+    public function remove($id) {
+        return DB::remove($this-&gt;table, $id);
+    }
+}</code></pre>
+<p>And now our <code>User</code> and <code>Message</code> classes look like this:</p>
+<pre><code>class User extends Model {
+    protected $table = 'users';
+}
+
+class Message extends Model {
+    protected $table = 'messages';
+}</code></pre>
+<p>And that's it, now both of these classes inherit those five methods from the base <code>Model</code> class, no need to repeat them now, perfect !</p>
+<p>Now imaging that suddenly clients requires that some of the fields in both of those tables should be encrypted. For that we create a class that contains two methods <code>encrypt()</code> and <code>decrypt()</code>:</p>
+<pre><code>class Encoder {
+    public static function encrypt($text, $key) {
+        // code to encrypt text
+    }
+
+    public static function decrypt($text, $key) {
+        // code to decrypt text
+    } 
+}</code></pre>
+<p>But how do we use it now ? First thought would be to use it as needed:</p>
+<pre><code>$user = new User();
+$user-&gt;add(array('email' =&gt; 'foo@bar.com', 'password' =&gt; Encoder::encrypt('some_password', 'key')));</code></pre>
+<p>This sounds okay but wouldn't it be better whenever we add a user, it should automatically apply <code>encrypt()</code> for the <code>password</code> field or other fields that we want? It would certainly help us save time and keep from repeating code of <code>encrypt()</code> and <code>decrypt()</code> whenever we operated on such field. So to achieve that we extend our classes with this functionality as well:</p>
+<pre><code>// wrong code...
+class User extends Model extends Encoder  {
+    protected $table = 'users';
+}</code></pre>
+<p>Of course we can't do above. We can't extend a class with multiple classes since in PHP you can only do single inheritance.</p>
+<p>So another thought that comes to mind is to extend <code>Model</code>class instead:</p>
+<pre><code>abstract class Model extends Encoder {
+    // ....
+}</code></pre>
+<p>And this would certainly work and we would have <code>Encoder</code> functionality available in all our model classes where we can use it the way we need. But think about it. Is it good idea to have Model and Encryption functionality mixed up ? They are totally different things and it doesn't sound like good idea to put encryption logic into your business logic. But then how ? We can use traits !</p>
+<p>So let's convert previous <code>Encoder</code> class into a trait:</p>
+<pre><code>trait Encoder {
+    public static function encrypt($text, $key) {
+        // code to encrypt text
+    }
+
+    public static function decrypt($text, $key) {
+        // code to decrypt text
+    } 
+}</code></pre>
+<p>And to use that trait in some other classes, we need to use it using <code>use Encoder;</code> syntax, so let's add this functionality in our classes:</p>
+<pre><code>class User extends Model {
+    use Encoder;
+    protected $table = 'users';
+}
+
+class Message extends Model {
+    use Encoder;
+    protected $table = 'messages';
+}</code></pre>
+<p>And now not only our classes inherit functionality from base <code>Model</code> class but also can use the functionality of <code>Encoder</code> trait. We were also able to separate encryption logic from core model logic. So inside our <code>User</code> and <code>Message</code> classes, we can now use <code>$this-&gt;encrypt()</code> or <code>$this-&gt;decrypt()</code> methods as though they were defined in them (Actually that's what PHP does at runtime). We have been able to overcome the shortcoming of single inheritance.</p>
+<p>So now when you re-look the definition of traits given at top of this post, it should make better sense. So traits are noting but a way of code-reuse. To learn more about traits and their characteristics, please refer to its  <a href="http://php.net/manual/en/language.oop5.traits.php">documentation</a>.</p>]]></description>
+<link>https://codeinphp.github.io/post/sharing-functionality-using-traits-in-php</link>
+<pubDate>Sun, 26 Apr 2015 01:04:00 +0500</pubDate>
+</item>
+<item>
 <title>Late Static Binding in PHP</title>
 <description><![CDATA[<p>Let's jump into an example up front to understand the concept. Let's create two classes parent and child which would tell us the name of the object using <code>getName()</code> method:</p>
 <pre><code>class Animal {
