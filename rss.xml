@@ -17,7 +17,7 @@ return $CI;</code></pre>
 <pre><code>$CI = require_once 'CI.php';
 echo $CI-&gt;config-&gt;item('base_url'); // test CI instance</code></pre>
 <p>That should work for the most cases.</p>
-<p>I happen to need CI instance in a cli/console application but above method didn't do the trick for me in console app. So here is another very very hacky way of getting instance of CI in a console app:</p>
+<p>I happen to need CI instance in a cli/console application but above method didn't do the trick for me in console app. So here is another very very hacky way of getting instance of CI in a console app that I was able to come up with after analyzing CodeIgniter code:</p>
 <pre><code>// Hacky Way of Accessing CI Instance Outside
 
 error_reporting(1);
@@ -32,7 +32,6 @@ if (realpath($system_path) !== false) {
     $system_path = realpath($system_path) . '/';
 }
 
-// ensure there's a trailing slash
 $system_path = rtrim($system_path, '/') . '/';
 
 define('BASEPATH', str_replace("\\", "/", $system_path));
