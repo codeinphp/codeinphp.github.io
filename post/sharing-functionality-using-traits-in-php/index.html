@@ -135,7 +135,7 @@ with multiple inheritance and Mixins.</p>
         return DB::remove($this-&gt;table, $id);
     }
 }</code></pre>
-<p>At first glance, we can see that both of these classes have exactly the same code for those five methods with only difference of <code>$table</code> being different. This smells and to follow the principle of <a href="http://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don't Repeat Yourself</a>, we can inheritance of course. So we create a new abstract class that will contain common functionality in the form of those five methods and then both classes would extend this base class:</p>
+<p>At first glance, we can see that both of these classes have exactly the same code for those five methods with only difference of <code>$table</code> being different. This smells and to follow the principle of <a href="http://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don't Repeat Yourself</a>, we can use inheritance of course. So we create a new abstract class that will contain common functionality in the form of those five methods and then both classes would extend this base class:</p>
 <pre><code>abstract class Model {     
     public function getAll() {
         return DB::getAll($this-&gt;table);
@@ -211,7 +211,13 @@ class Message extends Model {
     protected $table = 'messages';
 }</code></pre>
 <p>And now not only our classes inherit functionality from base <code>Model</code> class but also can use the functionality of <code>Encoder</code> trait. We were also able to separate encryption logic from core model logic. So inside our <code>User</code> and <code>Message</code> classes, we can now use <code>$this-&gt;encrypt()</code> or <code>$this-&gt;decrypt()</code> methods as though they were defined in them (Actually that's what PHP does at runtime). We have been able to overcome the shortcoming of single inheritance.</p>
-<p>So now when you re-look the definition of traits given at top of this post, it should make better sense. So traits are noting but a way of code-reuse. To learn more about traits and their characteristics, please refer to its  <a href="http://php.net/manual/en/language.oop5.traits.php">documentation</a>.</p></p>
+<p>So now when you re-look the definition of traits given at top of this post, it should make better sense. So traits are noting but a way of code-reuse. To learn more about traits and their characteristics, please refer to its  <a href="http://php.net/manual/en/language.oop5.traits.php">documentation</a>.</p>
+<blockquote>
+<p>Note: One might argue our <code>User</code> and <code>Message</code> classes are also model
+logic under the hood but this is just an example to give an idea of
+traits. We could have had controllers or other concrete classes too
+where we needed common functionality.</p>
+</blockquote></p>
                 <br/><br/>
 
                 <div class="post-info">
