@@ -8,7 +8,7 @@
     <meta name="description" content="PHP and more...">
     <meta name="author" content="Sarfraz Ahmed">
 
-    <title>Dependency Injection in PHP :: Code In PHP</title>
+    <title>Exceptions Are Bad Yet Awesome! :: Code In PHP</title>
 
     <!-- rss feed url -->
     <link rel="alternate" type="application/rss+xml" title="Code In PHP" href="https://codeinphp.github.io/rss.xml"/>
@@ -71,230 +71,227 @@
     <div class="row">
         <div class="col-md-8 main-content">
             <article>
-                <h3>Dependency Injection in PHP</h3>
+                <h3>Exceptions Are Bad Yet Awesome!</h3>
                 <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                 &nbsp;&nbsp;
-                <span class="glyphicon glyphicon-time"></span> April 19, 2015 09:44 PM
+                <span class="glyphicon glyphicon-time"></span> April 27, 2015 02:09 AM
                 <hr>
 
-                <p class="post-content"><p>This is what Wikipedia has to say about Dependency Injection:</p>
-<blockquote>
-<p>In software engineering, dependency injection is a software design
-pattern that implements inversion of control for software libraries.
-Caller delegates to an external framework the control flow of
-discovering and importing a service or software module specified or
-&quot;injected&quot; by the caller.</p>
-</blockquote>
-<p>In simple terms, Dependency Injection is a design pattern that helps <em>avoid hard-coded dependencies</em> for some piece of code or software. </p>
-<p>The dependencies can be changed at <em>run time as well as compile time</em>. We can use Dependency Injection to write modular, testable and maintainable code:</p>
-<ul>
-<li><strong>Modular</strong>: The Dependency Injection helps create completely self-sufficient classes or modules</li>
-<li><strong>Testable</strong>: It helps write testable code easily eg unit tests for example</li>
-<li><strong>Maintainable</strong>: Since each class becomes modular, it becomes easier to manage it</li>
-</ul>
-<hr />
-<h2>The Problem</h2>
-<p>We have dependencies almost always in our code. Consider the following procedural example which is pretty common:</p>
-<pre><code>function getUsers() {
-     global $database;
-     return $database-&gt;getAll('users');
-}</code></pre>
-<p>Here the function <code>getUsers</code> has dependency on the <code>$database</code> variable (tight coupling). It has some of these problems:</p>
+                <p class="post-content"><h2>Overview</h2>
+<p>At first thought, the words <strong>errors</strong> and <strong>exceptions</strong> give the general idea that they are the same thing or collectively <em>errors</em> especially to the beginners. For example, when we see this:</p>
+<p><code>Fatal error: Call to undefined method Foo::bar()</code></p>
+<p>Or this:</p>
+<p><code>Exception: Method is not callable by this object</code></p>
+<p>Most beginner developer would concluded that those are just errors that need to be fixed and that may be right in a superficial sense because both of those messages are bad and need to be fixed anyway but in reality they are different things. The first one is an <strong>Error</strong> while later one is an <strong>Exception</strong>. Once we understand there can be <em>both errors and exceptions</em> and how to successfully handle each, we can surely write better code. </p>
+<p>In this post, we will see how we can deal with both of them and even create our own customer error and exception handlers for more control over how we want them to be displayed or handled while following best practices.</p>
+<h1>Difference between Errors and Exceptions</h1>
+<p><strong>Errors</strong></p>
 <ul>
 <li>
-<p>The function <code>getUsers</code> needs a <strong>working</strong> connection to <em>some database</em> . Whether there is successful connection to database or not is the fate of <code>getUsers</code> function</p>
+<p>Errors are errors that are emitted by the programming language and you need to fix them. </p>
 </li>
-<li>The <code>$database</code> comes from outer scope so chances are it might be overwritten by some other library or code in the same scope in which case function may fail</li>
+<li>
+<p>There can be syntax errors or logic errors. In PHP, there are different <em>levels</em> of errors such as <code>ERROR</code>, <code>PARSE</code>, <code>WARNING</code>, <code>NOTICE</code>, <code>STRICT</code>. Some errors levels halt the further execution of your PHP script (such as <code>FATAL</code> errors) while others allow it to continue while presenting useful information that might also need to be fixed or payed attention to such as <code>WARNING</code> or <code>NOTICE</code>. And finally there are other error levels that can tell whether a particular function is deprecated (<code>DEPRECATED</code>) or whether or not standards are being followed (<code>STRICT</code>).</p>
+</li>
+<li>
+<p>Errors can be converted into user-thrown exceptions while still some being recoverable other not because they are emitted by core programming language</p>
+</li>
+<li>
+<p>We can emit custom/user errors through <a href="http://php.net/manual/en/function.trigger-error.php"><code>trigger_error()</code></a> function</p>
+</li>
+<li>
+<p>We can create custom error handler for all errors using <a href="http://php.net/manual/en/function.set-error-handler.php"><code>set_error_handler()</code></a></p>
+</li>
+<li>The <a href="http://php.net/manual/en/function.error-get-last.php"><code>error_get_last</code></a> function can be used to get any error that happened last in PHP code. The <a href="http://php.net/manual/en/reserved.variables.phperrormsg.php"><code>$php_errormsg</code></a> variable can be used to get previous error message.</li>
 </ul>
-<p>Of course you could have used the <code>try-catch</code> constructs but it still doesn't solve the second problem.</p>
-<p>Let's consider another example for a class:</p>
-<pre><code>class User 
-{
-    private $database = null;
+<p><strong>Exceptions</strong>:</p>
+<ul>
+<li>
+<p>Exceptions are object oriented approach to errors and are thrown intentionally by code/developer and should be handled/caught using <code>try - catch -finally</code> blocks</p>
+</li>
+<li>
+<p>An <code>Exception</code>is a standard class that can be used like any other class and can also be extended.</p>
+</li>
+<li>
+<p>Exceptions can have many types (through sub-classes) while errors can only have levels mentioned above.</p>
+</li>
+<li>
+<p>Exceptions can be caught at any point in the call stack and can also be caught at root/default exception handler. In comparison, errors are only handled in pre-defined error handler.</p>
+</li>
+<li>
+<p>We can throw custom/user exceptions by using <code>throw new Exception(...)</code></p>
+</li>
+<li>We can create custom exception handler for all exceptions using <a href="http://php.net/manual/en/function.set-exception-handler.php"><code>set_exception_handler()</code></a></li>
+</ul>
+<h2>General Practice</h2>
+<p>Nowadays, it seems common (and better) practice to always throw exceptions (even for errors) from your code so that they can be caught and dealt with in caller script. Of course if we throw an exception for error which is <code>FATAL</code>, we can't recover from it but we can still provide OOP approach to caller script. If you have used <code>MySQL</code> extension, you would notice that it emits normal errors if something goes wrong; here is an example when connection to database could not be made:</p>
+<p><code>Warning: mysql_connect(): Access denied for user 'root'@'localhost'</code></p>
+<p>Notice that it emits error level of <code>Warning</code>. This is just an example for the function <code>mysql_connect</code> but other functions of <code>MySQL</code> extension also emit errors in the same way and can be grabbed with <a href="http://php.net/manual/en/function.mysql-error.php"><code>mysql_error()</code></a> function.</p>
+<p>But if you use improved version of MySQL called <code>MySQLi</code> or even <code>PDO</code>, you would notice they can now also throw exceptions, here is same example if connection could not be made to database using <code>mysqli</code>:</p>
+<pre><code>mysqli_report(MYSQLI_REPORT_STRICT); // tell mysqli to generate exceptions as well
+mysqli_connect('localhost', 'root', 'wrongPassword', 'test');</code></pre>
+<p>It would give you both error as well as exception:</p>
+<p><code>Fatal error: Uncaught exception 'mysqli_sql_exception' with message 'Access denied for user 'root'@'localhost'</code></p>
+<p><code>mysqli_sql_exception: Access denied for user 'root'@'localhost' (using password: YES)</code></p>
+<p>So these days any good written package or library or some extension you use, it would most likely generate Exceptions of its own type so that they can be caught and handled gracefully.</p>
+<h2>How Do Exceptions Help ?</h2>
+<p>Let's understand through example. Let's say you want to connect to database using <code>mysql</code> and you would normally do something like this:</p>
+<pre><code>mysql_connect('localhost', 'root', 'wrongPassword', 'test');</code></pre>
+<p>If connection could not be made to database, you would receive error:</p>
+<p><code>Warning: mysql_connect(): Access denied for user 'root'@'localhost'</code></p>
+<p>Now the <strong><em>only</em></strong> thing you can do is go to your code and edit it to specify correct database credentials. </p>
+<p>Let's now do the same thing using <code>mysqli</code>:</p>
+<pre><code>mysqli_report(MYSQLI_REPORT_STRICT); // tell mysqli to generate exceptions as well
+mysqli_connect('localhost', 'root', 'wrongPassword', 'test');</code></pre>
+<p>This would generate an error as well as exception as shown previously. Since exception is generated, we can catch it and show the message:</p>
+<pre><code>try {    
+    mysqli_connect('localhost', 'root', 'wrongPassword', 'test');
+} catch (mysqli_sql_exception $e) {
+    echo $e-&gt;getMessage();
+}</code></pre>
+<p>The reason why exception is useful here is because you give a chance to your code to catch that exception gracefully. Inside <code>catch</code> block, we can handle the exception however we want. For the sake of example, let's say we want to connect to database again with correct password this time:</p>
+<pre><code>mysqli_report(MYSQLI_REPORT_STRICT);
 
-    public function __construct() {
-        $this-&gt;database = new database('host', 'user', 'pass', 'dbname');
-    }
+try {    
+    mysqli_connect('localhost', 'root', 'wrongPassword', 'test');
+} catch (mysqli_sql_exception $e) {
+    mysqli_connect('localhost', 'root', 'rightPassword', 'test');
+}</code></pre>
+<p>And thanks to exception, we were able to catch it and handle it the way we needed and we are now connected to database which was simply not possible with previous example using <code>mysql</code> which only emitted an error and we couldn't do much. Of course in real world applications, you might not have different passwords to connect to database but this example just gives an idea of <em>how</em> exceptions can be useful.</p>
+<p>As another example, let's say we want read feed/rss of some website using <a href="http://php.net/manual/en/book.simplexml.php">SimpleXML</a> (which can also throw exceptions) and store 10 posts in an array:</p>
+<pre><code>$feedUrl = 'http://some_feed_url';
+$feeds = file_get_contents($feedUrl);
+$xml = new SimpleXmlElement($feeds);
 
-    public function getUsers() {
-        return $this-&gt;database-&gt;getAll('users');
-    }
+$articles = array();
+foreach ($xml-&gt;channel-&gt;item as $item) {
+   $item = (array) $item;
+   $articles[] = array('title' =&gt; $item['title'], 'link' =&gt; $item['link']);
 }
 
-$user = new User();
-$user-&gt;getUsers();</code></pre>
-<p>This code again has these problems:</p>
-<ul>
-<li>
-<p>The class <code>User</code> has implicit dependency on the specific <code>database</code>. All dependencies should always be <strong>explicit</strong> not implicit. This defeats <a href="http://en.wikipedia.org/wiki/Dependency_inversion_principle">Dependency inversion principle</a></p>
-</li>
-<li>
-<p>If we wanted to change database credentials, we need to edit the <code>User</code> class which is not good; every class should be completely <strong>modular</strong> or black box. If we need to operate further on it, we should actually use its public properties and methods instead of editing it again and again. This defeats <a href="http://en.wikipedia.org/wiki/Open/closed_principle">Open/closed principle</a></p>
-</li>
-<li>
-<p>Let's assume right now class is using MySQL as database. What if we wanted to use some other type of database ? You will have to modify it.</p>
-</li>
-<li>
-<p>The <code>User</code> class does not necessarily need to know about database connection, it should be confined to its own functionality only. So writing database connection code in <code>User</code> class doesn't make it modular. This defeats the <a href="http://en.wikipedia.org/wiki/Single_responsibility_principle">Single responsibility principle</a>. Think of this analogy: A cat knows how to <code>meow</code> and a dog knows how to <code>woof</code>; you cannot mix them or expect dog to say <code>meow</code>. Just like real world, each object of a class should be responsible for its own specific task.</p>
-</li>
-<li>It would become harder to write unit tests for the <code>User</code> class because we are instantiating the database class inside its constructor so it would be impossible to write unit tests for the <code>User</code> class without also testing the database class.</li>
-</ul>
-<h2>Enter Dependency Injection!</h2>
-<p>Let's see how we can easily take care of above issues by using Dependency Injection. The Dependency Injection is nothing but <strong>injecting a dependency explicitly</strong>. Let's re-write above class:</p>
-<pre><code>class User 
-{
-    private $database = null;
+$data['articles'] = array_slice($articles, 0, 10);</code></pre>
+<p>This would work as long as feed url is correct and has posts but url is wrong, you would see a <code>Fatal</code> error as well <code>Exception</code> being generated by the script:</p>
+<p><code>Fatal error: Uncaught exception 'Exception' with message 'String could not be parsed as XML</code></p>
+<p><code>Exception: String could not be parsed as XML</code></p>
+<p>Since it is <code>FATAL</code> error, our script died at that point and we can't do anything. How do we ensure that our script continues working and runs any code below that feed code even if provided feed url was wrong ? Of course we need to <code>catch</code> the exception since as we saw it also generated an <code>Exception</code>:</p>
+<pre><code>try {
+    $feedUrl = 'http://some_feed_url';
+    $feeds = file_get_contents($feedUrl);
+    $xml = new SimpleXmlElement($feeds);
 
-    public function __construct(Database $database) {
-        $this-&gt;database = $database;
+    $articles = array();
+    foreach ($xml-&gt;channel-&gt;item as $item) {
+       $item = (array) $item;
+       $articles[] = array('title' =&gt; $item['title'], 'link' =&gt; $item['link']);
     }
 
-    public function getUsers() {
-        return $this-&gt;database-&gt;getAll('users');
-    }
+    $data['articles'] = array_slice($articles, 0, 10);
+} catch (Exception $e) {
+
 }
 
-$database = new Database('host', 'user', 'pass', 'dbname');
-$user = new User($database);
-$user-&gt;getUsers();</code></pre>
-<p>And there you have much better code, thanks to Dependency Injection principle. Notice that instead of hard-coding database dependency:</p>
-<pre><code>$this-&gt;database = new database('host', 'user', 'pass', 'dbname');</code></pre>
-<p>We are now injecting it into the constructor, that's it:</p>
-<pre><code>public function __construct(Database $database)</code></pre>
-<p>Notice also how we are passing database instance now:</p>
-<pre><code>$database = new Database('host', 'user', 'pass', 'dbname');
-$user = new User($database);
-$user-&gt;getUsers();</code></pre>
-<p>It follows <a href="http://en.wikipedia.org/wiki/Hollywood_Principle">Hollywood Principle</a>, which states: <strong>&quot;Don’t call us, we’ll call you.&quot;</strong></p>
-<p>Let's see if this explicit dependency injection now solves problems we mentioned above.</p>
-<hr />
-<blockquote>
-<p>The class User has implicit dependency on the specific database
-. All dependencies should always be explicit not implicit.
-This defeats Dependency inversion principle</p>
-</blockquote>
-<p>We have already made database dependency explicit by requiring it into the constructor of the <code>User</code> class:</p>
-<pre><code>public function __construct(Database $database)</code></pre>
-<p>Here we are taking advantage of <strong>type hinting</strong> by specifying type of object we are expecting which is <code>Database</code> although it wasn't necessary but it is always a good idea to type hint when you can.</p>
-<blockquote>
-<p>If we wanted to change database credentials, we need to edit the User
-class which is not good; every class should be completely modular or
-black box. If we need to operate further on it, we should actually use
-its public properties and methods instead of editing it again and
-again. This defeats Open/closed principle</p>
-</blockquote>
-<p>The <code>User</code> class now does not need to worry about how database is connected. All it expects is <code>Database</code> instance. We no more need to edit <code>User</code> class for it's dependency, we have just provided it with what it needed.</p>
-<blockquote>
-<p>Let's assume right now class is using MySQL as database. What if we
-wanted to use some other type of database ? You will have to modify
-it.</p>
-</blockquote>
-<p>Again, the <code>User</code> class doesn't need to know which type of database is used. For the <code>Database</code>, we could now create different adapters for different types of database and pass to <code>User</code> class. For example, we could create an <code>interface</code> that would enforce common methods for all different types of database classes that must be implement by them. For our example, we pretend that interface would enforce to have a <code>getUser()</code> method requirement in different types of database classes.</p>
-<blockquote>
-<p>The User class does not necessarily need to know about database
-connection, it should be confined to its own functionality only. So
-writing database connection code in User class doesn't make it
-modular. This defeats the Single responsibility principle.</p>
-</blockquote>
-<p>Of course <code>User</code> class now doesn't know how database was connected. It just needs a valid connected <code>Database</code> instance.</p>
-<blockquote>
-<p>It would become harder to write unit tests for the User class because
-we are instantiating the database class inside its constructor so it
-would be impossible to write unit tests for the User class without
-also testing the database class.</p>
-</blockquote>
-<p>If you have wrote unit tests, you know now it will be a breeze to write tests for the <code>User</code> class using something like <a href="https://github.com/padraic/mockery">Mockery</a> or similar to create mock object for the <code>Database</code>.</p>
-<hr />
-<h2>Different Ways of Injecting Dependencies</h2>
-<p>Now that we have seen how useful Dependency Injection is, let's see different ways of injecting dependencies. There are three ways you can inject dependencies:</p>
-<ul>
-<li>Constructor Injection</li>
-<li>Setter Injection</li>
-<li>Interface Injection</li>
-</ul>
-<p><strong>Constructor Injection</strong></p>
-<p>We have already seen example of <strong>Constructor Injection</strong> in above example. Constructor injection is useful when:</p>
-<ul>
-<li>
-<p>A dependency is <strong>required</strong> and class can't work without it. By using constructor injection. we make sure all its required dependencies are passed.</p>
-</li>
-<li>Since constructor is called only at the time of instantiating a class, we can make sure that its dependencies cant be changed during the life time of the object.</li>
-</ul>
-<p>Constructor injection suffer from one problem though:</p>
-<ul>
-<li>Since constructor has dependencies, it becomes rather difficult to extend/override it in child classes.</li>
-</ul>
-<p><strong>Setter Injection</strong></p>
-<p>Unlike Constructor injection which makes it <strong>required</strong> to have its dependencies passed, setter injection can be used to have <strong>optional dependencies</strong>. Let's pretend that our <code>User</code> class doesn't require <code>Database</code> instance but uses optionally for certain tasks. In this case, you would use a setter method to inject the <code>Database</code> into the <code>User</code> class something like:</p>
-<pre><code>class User 
+echo 'Hello World';</code></pre>
+<p>And now since we have wrapped our code in <code>try-catch</code> and caught the exception, our code below that should still run. In this case even if feed url was wrong, you should still see the <code>Hello World</code> message. So those two examples should now give idea of how useful exceptions can be when used.</p>
+<h2>How do I convert Errors into Exceptions?</h2>
+<p>To do so ,we can use the <a href="http://php.net/manual/en/function.set-error-handler.php"><code>set_error_handler()</code></a> function and throw exceptions of type <a href="http://php.net/manual/en/class.errorexception.php"><code>ErrorException</code></a> something like:</p>
+<pre><code>set_error_handler(function ($errorNumber, $errorText, $errorFile, $errorLine ) 
 {
-    private $database = null;
-
-    public function setDatabase(Database $database) {
-        $this-&gt;database = $database;
-    }
-
-    public function getUsers() {
-        return $this-&gt;database-&gt;getAll('users');
-    }
-}
-
-$database = new Database('host', 'user', 'pass', 'dbname');
-$user = new User();
-$user-&gt;setDatabase($database);
-$user-&gt;getUsers();</code></pre>
-<p>As you can see, here we have used <code>setDatabase()</code> setter function to inject <code>Database</code> dependency into the <code>User</code> class. If we needed some other dependency, we could have created one more setter method and injected in the similar fashion.</p>
-<p>So Setter Injection is useful when:</p>
-<ul>
-<li>A class needs optional dependencies so it can set itself up with default values or add additional functionality it needs.</li>
-</ul>
-<blockquote>
-<p>Notice that you could also inject dependency via <strong>public property</strong>
-for a class. So instead of using setter function
-<code>$user-&gt;setDatabase($database);</code>, you could also do <code>$user-&gt;database = new Database(...);</code></p>
-</blockquote>
-<p><strong>Interface Injection</strong></p>
-<p>In this type of injection, an interface enforces the dependencies for any classes that implement it, for example:</p>
-<pre><code>interface someInterface {
-    function getUsers(Database $database);
+    throw new ErrorException($errorText, 0, $errorNumber, $errorFile, $errorLine);
+});</code></pre>
+<p>With that custom exception now in place, you can do things like:</p>
+<pre><code>try {
+    // wrong url
+    file_get_contents('http://wrong_url');
+} catch (ErrorException $e) {
+    // fix the url
+    file_get_contents('http://right_url');
 }</code></pre>
-<p>Now any class that needs to implement <code>someInterface</code> must provide <code>Database</code> dependency in their <code>getUsers()</code> methods.</p>
-<hr />
-<h2>The Problem Again</h2>
-<p>So for we have seen very contrived example of injecting dependency into a simple class but in real world applications, a class might have many dependencies. It isn't all that easy to manage all those dependencies because you need to KNOW which dependencies are required by a certain class and HOW they need to be instantiated. Let's take example of setter injection:</p>
-<pre><code>class User 
-{
-    private $database = null;
+<p>So in <code>catch</code> block, we are now able to fix the URL for the <code>file_get_contents</code> function. Without this exception, we could do nothing but may be suppressing the error by using <a href="http://php.net/manual/en/language.operators.errorcontrol.php">error control operator @</a>.</p>
+<h2>Universal Exception Handler</h2>
+<p>Now that we have seen how useful exceptions are and how to convert errors into exceptions, we can create our custom universal exception handler that can be used throughout the application. It will always generate exceptions not errors. It will do these things:</p>
+<p>1 - Allow us to tell it our environment which can be either <code>development</code> or <code>production</code></p>
+<p>2 - In case of <code>production</code> environment, it will log all errors to a file instead of displaying them on screen</p>
+<p>3 - In case of <code>development</code> environment, it will display all errors on the screen</p>
+<pre><code>/**
+ * A class that handles both errors and exceptions and generates an Exception for both.
+ *
+ * In case of "production" environment, errors are logged to file
+ * In case of "development" environment, errors are echoed out on screen
+ *
+ * Usage:
+ *
+ * new ExceptionHandler('development', '/myDir/logs');
+ *
+ * Note: Make sure to use it on very beginning of your project or bootstrap file.
+ *
+ */
+class ExceptionHandler {
+    // file path where all exceptions will be written to
+    protected $log_file = '';
+    // environment type
+    protected $environment = '';
 
-    public function setDatabase(Database $database) {
-        $this-&gt;database = $database;
+    public function __construct($environment = 'production', $log_file = 'logs')
+    {
+        $this-&gt;environment = $environment;
+        $this-&gt;log_file = $log_file;
+
+        // NOTE: it is better to set ini_set settings via php.ini file instead to deal with parse errors.
+        if ($this-&gt;environment === 'production') {
+            // disable error reporting
+            error_reporting(0);
+            ini_set('display_errors', false);
+            // enable logging to file
+            ini_set("log_errors", true);
+            ini_set("error_log", $this-&gt;log_file);
+        }
+        else {
+            // enable error reporting
+            error_reporting(E_ALL);
+            ini_set('display_errors', 1);
+            // disable logging to file
+            ini_set("log_errors", false);
+        }
+
+        // setup error and exception handlers
+        set_error_handler(array($this, 'errorHandler'));
+        set_exception_handler(array($this, 'exceptionHandler'));        
     }
 
-    public function getUsers() {
-        return $this-&gt;database-&gt;getAll('users');
+    public function exceptionHandler($exception)
+    {
+        if ($this-&gt;environment === 'production') {
+            error_log($exception, 3, $this-&gt;log_file);
+        }
+
+        throw new Exception('', null, $exception);
+
+        return false;
+    }
+
+    public function errorHandler($error_level, $error_message, $error_file, $error_line)
+    {
+        if ($this-&gt;environment === 'production') {      
+            error_log($message, 3, $this-&gt;log_file);
+        }
+
+        throw new ErrorException($error_message, 0, $error_level, $error_file, $error_line);
+
+        return false;            
     }
 }</code></pre>
-<p>Since dependencies in this case are optional, we could have mistakenly written this code to get users:</p>
-<pre><code>$user = new User();
-$user-&gt;getUsers();</code></pre>
-<p>Since we didn't know <code>getUsers()</code> method is actually dependent on <code>Database</code> class, this would have given error. You could have found that out only by going to code of <code>User</code> class and then realizing there is <code>setDatabase()</code> method that must be called before using the <code>getUsers()</code> method. Or let's assume further that before using database, we needed to set some type of configuration for the <code>User</code> class like:</p>
-<pre><code>$user = new User();
-$user-&gt;setConfig($configArray);</code></pre>
-<p>Then again we needed to remember specific order of method calls:</p>
-<pre><code>$user = new User();
-$user-&gt;setConfig($configArray);
-$user-&gt;setDatabase($database);</code></pre>
-<p>So you must remember order of method calls, you can't use database if you don't setup configuration first, so you can't do:</p>
-<pre><code>$user = new User();
-$user-&gt;setDatabase($database);
-$user-&gt;setConfig($configArray);</code></pre>
-<p>This is example for setter injection but even with constructor injection if there are many dependencies, it becomes harder to manage all of those manually and you could easily and mistakenly create more than one instances of dependencies throughout your code which would result in high memory usage.</p>
-<p>You might wonder dependency injection sounded like good thing to have but these problems are not worth it. Well that's not true because there is solution to all of these problems discussed next :)</p>
-<h2>Solution - Dependency Injection Container</h2>
-<p>Of course it would be difficult to manage dependencies manually; this is why you need a Dependency Injection Container. A Dependency Injection Container is something that handles dependencies for your class(es) automatically. If you have worked with Laravel or Symfony, you know that their components have dependencies on on other classes. How do they manage all of those dependencies ? Yes they use some sort of Dependency Injection Container.</p>
-<p>There are <a href="http://www.sitepoint.com/php-dependency-injection-container-performance-benchmarks/">quite some dependency injection containers out there for PHP</a> that can be used for this purpose or you can also write your own. Each container might have bit of different syntax but they perform the same thing under the hood.</p>
+<p>Test it:</p>
+<pre><code>// register our error and exceptoin handlers
+new ExceptionHandler('development', 'logs');
+
+// create error and exception for testing
+trigger_error('Iam an error but will be converted into ErrorException!');
+throw new Exception('I am an exception anyway!');</code></pre>
+<p>So that is an example of <em>basic</em> universal error and exception handler class. Actually you can do a lot more like customizing the display of messages, getting the stack trace as well as code that caused it, creating timestamp for when those events take place, etc. You should checkout the official documentation in order to achieve those goodies. At any point in your code, you want to restore original PHP's error and exception handlers, you can use <a href="http://php.net/manual/en/function.restore-error-handler.php"><code>restore_error_handler()</code></a> and <a href="http://php.net/manual/en/function.restore-exception-handler.php"><code>restore_exception_handler()</code></a> functions.</p>
+<h2>Conclusion</h2>
+<p>No exception to exceptions!</p>
 <hr />
-<p>So in conclusion, you must always remove hard-coded dependencies from your code and inject them using Dependency Injection instead for its benefits and then have all the injected dependencies managed automatically for you by using some dependency injection container.</p></p>
+<p>As a side note, I personally hope someday a PSR standard is created for handling errors and exceptions and their best practices because they are integral part of any PHP code.</p></p>
                 <br/><br/>
 
                 <div class="post-info">
@@ -304,10 +301,11 @@ $user-&gt;setConfig($configArray);</code></pre>
 
                     <span class="glyphicon glyphicon-bookmark"></span>
 
-                        <a href="https://codeinphp.github.io/tag/dependency">dependency</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/injection">injection</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/oop">oop</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/database">database</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/error">error</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/exception">exception</a>&nbsp;&nbsp;
                         <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/zend">zend</a>&nbsp;&nbsp;
                 </div>
 
             </article>
