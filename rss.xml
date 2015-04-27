@@ -6,6 +6,139 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Throwing Your Own Library Exceptions in PHP</title>
+<description><![CDATA[<p>In the <a href="http://codeinphp.github.io/post/exceptions-are-bad-yet-awesome/">previous post</a>, we saw the difference between errors and exceptions, how exceptions can be useful and created our custom exception handler. In this post, we will look how we can create custom exceptions specific to our application, library or company. We also talk about <a href="http://php.net/manual/en/spl.exceptions.php">SPL Exceptions</a> that should be used in your code where possible as best practice.</p>
+<h2>Background</h2>
+<p>Let's start with bit of background. If you worked on PHP's DOM, PDO, MySQLi or some other extensions or frameworks such as Symphony, Laravel, Slim or any other third party libraries, you might have noticed usually they throw their own exceptions:</p>
+<pre><code>$dsn = 'mysql:dbname=testdb;host=127.0.0.1';
+$user = 'dbuser';
+$password = 'dbpass';
+
+$dbh = new PDO($dsn, $user, $password);
+$dbh-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);</code></pre>
+<p>In case of wrong database connection, it would throw <code>PDOException</code>:</p>
+<pre><code>PDOException: SQLSTATE[HY000] [1045] Access denied for user 'dbuser'@'localhost'</code></pre>
+<p>Where did <code>PDOException</code> come from ? Or how did PDO gave that exception ? It is simple. As I had pointed out in my <a href="http://codeinphp.github.io/post/exceptions-are-bad-yet-awesome/">previous post</a>, <a href="http://php.net/manual/en/class.exception.php"><code>Exception</code></a> is a class like any other normal class that can be <a href="http://php.net/manual/en/language.exceptions.extending.php">extended</a>. That's exactly what PDO does here, it simply <code>extends</code> the <code>Exception</code> class so PDO extension should be doing something like this under the hood to be able to throw <code>PDOException</code>:</p>
+<pre><code>class PDOException extends Exception {}</code></pre>
+<p>And that's <em>usually</em> it. And then PDO should now be throwing that new exception instead of <code>Exception</code>:</p>
+<pre><code>// something went wrong
+throw new PDOException('message here');</code></pre>
+<p>And then user of PDO sees those <code>PDOExceptions</code>.</p>
+<p>Now that we know <code>PDOException</code> actually extends <code>Exception</code>, we can come to conclusion that we can catch exceptions thrown by PDO either by using <code>PDOException</code> or <code>Exception</code> through <em>nested</em> catch blocks. If exception is NOT caught for <code>PDOException</code>, it will fall back to base <code>Exception</code>:</p>
+<pre><code>try{
+    // any PDO code here
+}
+catch(PDOException $e){
+    // handle PDOException
+}
+catch(Exception $e){
+    // handle Exception
+}</code></pre>
+<h2>Throwing Your Own Exceptions</h2>
+<p>As said above, we can throw our own exceptions by extending the <code>Exception</code> class:</p>
+<pre><code>class MyAwesomeLibraryException extends Exception {}</code></pre>
+<p>or</p>
+<pre><code>class MyCompanyException extends Exception {}</code></pre>
+<p>That's easy but one might ask why throw custom exceptions? I can see these reasons:</p>
+<ul>
+<li>It makes it easy to recognize which thing (library, class, extension, etc) generated exception in code hierarchy</li>
+<li>This helps developer of orginal library easily spot problems in their code</li>
+<li>It brands your library exceptions like PDO, DOM, etc do.</li>
+</ul>
+<p>Now as developer of some library/application, any time we find we need to throw exception, we simply throw our own custom exceptions:</p>
+<pre><code>// something wrong, throw our custom exception
+throw new MyAwesomeLibraryException('some message');</code></pre>
+<p>Of course you can have many exception types as well for your application if you want.</p>
+<h2>Prioritizing Your Own Exceptions</h2>
+<p>Imagine we want to create our own ORM library called <strong>SuperORM</strong> and it uses PDO under the hood. We create our custom exception first:</p>
+<pre><code>class SuperORMException extends PDOException {}</code></pre>
+<p>And now we throw <code>SuperORMException</code> exception from whole of our ORM where needed. But since we are using PDO under the hood, we get its <code>PDOException</code> as well and we don't want to show this <em>directly</em> to the consumers of our SuperORM library, we want to be able to first show them our own exception type. This is how we can do that:</p>
+<pre><code>class SuperORMException extends PDOException {}
+
+class SuperORM {
+    public function connect($dsn, $user, $password) {
+        // try connecting to database
+        try {
+            $dbh = new PDO($dsn, $user, $password);
+            $dbh-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        }
+        catch (PDOException $e) {
+            throw new SuperORMException($e-&gt;getMessage(), null, $e);
+        }        
+    }
+}
+
+$dsn = 'mysql:dbname=testdb;host=127.0.0.1';
+$user = 'dbuser';
+$password = 'dbpass';
+
+$superORM = new SuperORM;
+$superORM-&gt;connect($dsn, $user, $password);</code></pre>
+<p>And that would result in our <code>SuperORMException</code>:</p>
+<p><code>SuperORMException: SQLSTATE[HY000] [1045] Access denied for user 'dbuser'@'localhost'</code></p>
+<p>And consumer of our SuperORM can catch our exception now:</p>
+<pre><code>try {
+    $dsn = 'mysql:dbname=testdb;host=127.0.0.1';
+    $user = 'dbuser';
+    $password = 'dbpass';
+
+    $superORM = new SuperORM;
+    $superORM-&gt;connect($dsn, $user, $password);
+}
+catch (SuperORMException $e) {
+    echo $e-&gt;getMessage();
+}</code></pre>
+<p>This makes sure consumer of library will now know that SuperORM will always throw exception of type <code>SuperORMException</code>.</p>
+<p>We see that <code>SuperORMException</code> extends <code>PDOException</code> and <code>PDOException</code> extends <code>Exception</code>, this gives consumer the opportunity to catch exceptions in those types like so:</p>
+<pre><code>try {
+    $dsn = 'mysql:dbname=testdb;host=127.0.0.1';
+    $user = 'dbuser';
+    $password = 'dbpass';
+
+    $superORM = new SuperORM;
+    $superORM-&gt;connect($dsn, $user, $password);
+}
+catch (SuperORMException $e) {
+    // code to catch exception
+}
+catch (PDOException $e) {
+    // code to catch exception
+}
+catch (Exception $e) {
+    // code to catch exception
+}</code></pre>
+<p>So that's how you can throw your own custom exceptions. In fact that's how some of the ORMs or database libraries from various framework do and throw their own exceptions for consumers to catch.</p>
+<h2>Don't Always Throw Your Custom Exceptions</h2>
+<p>By this I mean there are certain exceptions types that are part of Standard PHP (SPL) known as <a href="http://php.net/manual/en/spl.exceptions.php">SPL Exceptions</a>. They are made to be thrown for <em>specific</em> reasons and considered best practice. You should throw SPL Exceptions <em>where applicable</em> instead of your own custom exceptions. Here they are:</p>
+<ul>
+<li><a href="http://php.net/manual/en/class.logicexception.php">LogicException</a> (extends <a href="http://php.net/manual/en/class.exception.php">Exception</a>)
+<ul>
+<li><a href="http://php.net/manual/en/class.badfunctioncallexception.php">BadFunctionCallException</a>
+<ul>
+<li><a href="http://php.net/manual/en/class.badmethodcallexception.php">BadMethodCallException</a></li>
+</ul></li>
+<li><a href="http://php.net/manual/en/class.domainexception.php">DomainException</a></li>
+<li><a href="http://php.net/manual/en/class.invalidargumentexception.php">InvalidArgumentException</a></li>
+<li><a href="http://php.net/manual/en/class.lengthexception.php">LengthException</a></li>
+<li><a href="http://php.net/manual/en/class.outofrangeexception.php">OutOfRangeException</a></li>
+</ul></li>
+<li><a href="http://php.net/manual/en/class.runtimeexception.php">RuntimeException</a> (extends <a href="http://php.net/manual/en/class.exception.php">Exception</a>)
+<ul>
+<li><a href="http://php.net/manual/en/class.outofboundsexception.php">OutOfBoundsException</a></li>
+<li><a href="http://php.net/manual/en/class.overflowexception.php">OverflowException</a></li>
+<li><a href="http://php.net/manual/en/class.rangeexception.php">RangeException</a></li>
+<li><a href="http://php.net/manual/en/class.underflowexception.php">UnderflowException</a></li>
+<li><a href="http://php.net/manual/en/class.unexpectedvalueexception.php">UnexpectedValueException</a></li>
+</ul></li>
+</ul>
+<p>As can be seen, those exceptions can be broadly divided into two main categories: <code>LogicException</code> and <code>RuntimeException</code>. All of those exceptions are self-explanatory from their names. For example <code>LogicException</code> represent any errors caused by the logical errors in your code,  <code>RuntimeException</code> represent any errors that are caused after script has run eg runtime errors; similarly <code>BadMethodCallException</code> exception should be thrown if a method in your class doesn't exist and so on.</p>
+<p>These SPL exceptions are excellent addition to PHP core because previously if call was made to some method which didn't exist, you usually communicated that to user through a message like:</p>
+<pre><code>throw new Exception('Method does not exist!');</code></pre>
+<p>So you communicated through those messages for different types of problems. The problem here was that we needed specific exceptions; if method didn't exist, we needed <code>BadMethodCallException</code> exception. This clearly tells developer what type of exception it is and <em>why</em> it might have come about. Another benefit is that such exceptions are useful even for Non-English speaking developers who can also easily spot the problem. Therefore, you must use SPL exceptions for different situations they are made for.</p>]]></description>
+<link>https://codeinphp.github.io/post/throwing-your-own-library-exceptions-in-php</link>
+<pubDate>Mon, 27 Apr 2015 18:06:00 +0500</pubDate>
+</item>
+<item>
 <title>Exceptions Are Bad Yet Awesome!</title>
 <description><![CDATA[<h2>Overview</h2>
 <p>At first thought, the words <strong>errors</strong> and <strong>exceptions</strong> give the general idea that they are the same thing or collectively <em>errors</em> especially to the beginners. For example, when we see this:</p>
