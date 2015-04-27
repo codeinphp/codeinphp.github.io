@@ -195,8 +195,6 @@ class ExceptionHandler {
         }
 
         throw new Exception('', null, $exception);
-
-        return false;
     }
 
     public function errorHandler($error_level, $error_message, $error_file, $error_line)
@@ -206,8 +204,6 @@ class ExceptionHandler {
         }
 
         throw new ErrorException($error_message, 0, $error_level, $error_file, $error_line);
-
-        return false;            
     }
 }</code></pre>
 <p>Test it:</p>
