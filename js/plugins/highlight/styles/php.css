@@ -13,7 +13,7 @@ pre {
     box-shadow: 0 0 10px 0 rgba(197, 197, 197, 0.75);
     -moz-box-shadow: 0 0 10px 0 rgba(197, 197, 197, 0.75);
     -webkit-box-shadow: 0 0 10px 0 rgba(197, 197, 197, 0.75);
-    padding: 0;
+    padding: 5px;
 }
 
 .hljs {
@@ -25,7 +25,6 @@ pre {
     color: #0000BB;
     background: url(./codebg.png) repeat scroll left top #f8f8f8;
     -webkit-text-size-adjust: none;
-    border-left:5px solid #ccc;
 }
 
 .hljs-comment,
