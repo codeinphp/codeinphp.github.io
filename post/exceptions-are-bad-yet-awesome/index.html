@@ -273,7 +273,10 @@ class ExceptionHandler {
             error_log($message, 3, $this-&gt;log_file);
         }
 
-        throw new ErrorException($error_message, 0, $error_level, $error_file, $error_line);
+        // throw exception for all error types but NOTICE and STRICT
+        if ($error_level !== E_NOTICE &amp;&amp; $error_level !== E_STRICT) {
+            throw new ErrorException($error_message, 0, $error_level, $error_file, $error_line);
+        }        
     }
 }</code></pre>
 <p>Test it:</p>
