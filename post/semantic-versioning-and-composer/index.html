@@ -77,7 +77,7 @@
                 <span class="glyphicon glyphicon-time"></span> April 30, 2015 12:53 AM
                 <hr>
 
-                <p class="post-content"><p>Today any seriously written application/software follows the <em>Semantic Versioning</em> (also called <em>SemVer</em>). It boils down to this (emphasis mine):</p>
+                <p class="post-content"><p>Today any seriously written application/software follows the <em><a href="http://semver.org/">Semantic Versioning</a></em> (also called <em>SemVer</em>). It boils down to this (emphasis mine):</p>
 <ol>
 <li>MAJOR version when you make <strong>incompatible API changes</strong></li>
 <li>MINOR version when you add functionality in a <strong>backwards-compatible</strong> manner</li>
@@ -85,7 +85,6 @@
 </ol>
 <p>Let's take example of <a href="http://symfony.com/">Symfony</a> framework which follows SemVer. As of this writing, its stable version stands at <code>2.6.6</code></p>
 <p><strong>Symfony Versioning</strong></p>
-<div  style="padding:10px;">
 <pre>
 +-------+---------+
 | Name  | Version |
@@ -97,12 +96,11 @@
 | PATCH | 6       |
 +-------+---------+
 </pre>
-</div>
 <p>Here, we can see that MAJOR and MINOR versions are  backwards-compatible. This means if you install Symfony version <code>2.0.0</code> or <code>2.x.x</code> with <code>x</code> being any number, it will be backwards-compatible. Meaning if you had initially installed Symfony version <code>2.0.0</code> and now you want to install version <code>2.6.6</code>, you can do so <strong>without worrying</strong> it breaking functionality. However when Symfony announces a version starting with <code>3</code> as MAJOR version then it will most likely break some of the functionality with all previous version  less than <code>3.x.x</code>.  Thanks to SemVer, we can easily find that out now. Not to mention, almost all nicely written frameworks or libraries or software in general now follow SemVer. <a href="http://semver.org/">Please read more about it</a>.</p>
 <p>As a PHP developer, <a href="https://getcomposer.org/">composer</a> is something we can't do without these days. If you think you are a PHP developer and haven't started using composer yet, you are not a PHP developer DOT In that case, search on Google on what it is and its tutorials or see its <a href="https://getcomposer.org/doc/">official documentation</a>.  In short, it is package manager for PHP that has superseded older methods such as PEAR, etc. It is like NPM for NodeJS or RubyGem for Ruby developers.</p>
 <p>Let's say I want to install Symfony via composer, I can specify specific version to use in quite some ways like:</p>
-<div  style="padding:10px;">
-<pre>
+<pre>+--------------------------------+-----------------------------------------------------------------------------------+
+| 0                              | 1                                                                                 |
 +--------------------------------+-----------------------------------------------------------------------------------+
 | Version                        | Description                                                                       |
 +--------------------------------+-----------------------------------------------------------------------------------+
@@ -121,9 +119,7 @@
 | symfony/symfony: "dev-testing" | Latest version from "testing" branch                                              |
 +--------------------------------+-----------------------------------------------------------------------------------+
 </pre>
-</div>
 <p>Thankfully most packages that you can install with composer follow SemVer. In composer, for packages that follow SemVer, we can use special tilde character <code>~</code>:</p>
-<div  style="padding:10px;">
 <pre>
 +---------------------------+-----------------------------------------------------------------------+
 | Version                   | Description                                                           |
@@ -135,7 +131,6 @@
 | symfony/symfony: "~2"     | Any Major version greater than or equal to 2 like 2.x or 5.x.x        |
 +---------------------------+-----------------------------------------------------------------------+
 </pre>
-</div>
 <p>Once you know how to specify versions in composer, you can easily make sure you are only installing those packages that are <strong>backwards-compatible</strong> unless you want fresh installation of some package. Similarly, if you have wrote some package, you should choose versioning sensibly so that users of your package don't go <strong>incompatible</strong> accidentally if you have not made Major changes to your package.</p></p>
                 <br/><br/>
 
@@ -147,8 +142,8 @@
                     <span class="glyphicon glyphicon-bookmark"></span>
 
                         <a href="https://codeinphp.github.io/tag/composer">composer</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/versioning">versioning</a>&nbsp;&nbsp;
                         <a href="https://codeinphp.github.io/tag/semantic">semantic</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/versioning">versioning</a>&nbsp;&nbsp;
                 </div>
 
             </article>
