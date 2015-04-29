@@ -35,9 +35,9 @@
 +--------------------------------+----------------------------------------------------------------+
 | symfony/symfony: "2.6.6"       | Exact 2.6.6 version                                            |
 +--------------------------------+----------------------------------------------------------------+
-| symfony/symfony: "&gt;= 2.6"      | Any version greater than or equal to 2.6 like 2.6.7, 6.6.9     |
+| symfony/symfony: ">= 2.6"      | Any version greater than or equal to 2.6 like 2.6.7, 6.6.9     |
 +--------------------------------+----------------------------------------------------------------+
-| symfony/symfony: "&gt;= 2.6,&lt;3.0" | Any version greater than or equal to 2.6 but less than 3 Major |
+| symfony/symfony: ">= 2.6,<3.0" | Any version greater than or equal to 2.6 but less than 3 Major |
 +--------------------------------+----------------------------------------------------------------+
 | symfony/symfony: "2.*"         | Any version as long as Major version is 2                      |
 +--------------------------------+----------------------------------------------------------------+
@@ -48,7 +48,7 @@
 | symfony/symfony: "dev-testing" | Latest version from "testing" branch                           |
 +--------------------------------+----------------------------------------------------------------+
 </pre>
-<p>Thankfully most packages that you can install with composer follow SemVer. In composer, for packages that follow SemVer, we can use special tilde character <code>~</code>:</p>
+<p>We can also use special tilde character <code>~</code>:</p>
 <pre>
 +---------------------------+-----------------------------------------------------------------------+
 | Version                   | Description                                                           |
