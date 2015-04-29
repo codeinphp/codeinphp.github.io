@@ -100,23 +100,23 @@
 <p>As a PHP developer, <a href="https://getcomposer.org/">composer</a> is something we can't do without these days. If you think you are a PHP developer and haven't started using composer yet, you are not a PHP developer DOT In that case, search on Google on what it is and its tutorials or see its <a href="https://getcomposer.org/doc/">official documentation</a>.  In short, it is package manager for PHP that has superseded older methods such as PEAR, etc. It is like NPM for NodeJS or RubyGem for Ruby developers.</p>
 <p>Let's say I want to install Symfony via composer, I can specify specific version to use in quite some ways like:</p>
 <pre>
-+--------------------------------+-----------------------------------------------------------------------------------+
-| Version                        | Description                                                                       |
-+--------------------------------+-----------------------------------------------------------------------------------+
-| symfony/symfony: "2.6.6"       | Exact 2.6.6 version                                                               |
-+--------------------------------+-----------------------------------------------------------------------------------+
-| symfony/symfony: "&gt;= 2.6"      | Any version greater than or equal to 2.6 such as 2.6.7, 2.6.33, 6.6.9             |
-+--------------------------------+-----------------------------------------------------------------------------------+
-| symfony/symfony: "&gt;= 2.6,&lt;3.0" | Any version greater than or equal to 2.6 but less than 3 Major                    |
-+--------------------------------+-----------------------------------------------------------------------------------+
-| symfony/symfony: "2.*"         | Any version as long as Major version is 2                                         |
-+--------------------------------+-----------------------------------------------------------------------------------+
-| symfony/symfony: "*"           | Latest version                                                                    |
-+--------------------------------+-----------------------------------------------------------------------------------+
-| symfony/symfony: "dev-master"  | Latest version from "master" branch                                               |
-+--------------------------------+-----------------------------------------------------------------------------------+
-| symfony/symfony: "dev-testing" | Latest version from "testing" branch                                              |
-+--------------------------------+-----------------------------------------------------------------------------------+
++--------------------------------+----------------------------------------------------------------+
+| Version                        | Description                                                    |
++--------------------------------+----------------------------------------------------------------+
+| symfony/symfony: "2.6.6"       | Exact 2.6.6 version                                            |
++--------------------------------+----------------------------------------------------------------+
+| symfony/symfony: "&gt;= 2.6"      | Any version greater than or equal to 2.6 like 2.6.7, 6.6.9     |
++--------------------------------+----------------------------------------------------------------+
+| symfony/symfony: "&gt;= 2.6,&lt;3.0" | Any version greater than or equal to 2.6 but less than 3 Major |
++--------------------------------+----------------------------------------------------------------+
+| symfony/symfony: "2.*"         | Any version as long as Major version is 2                      |
++--------------------------------+----------------------------------------------------------------+
+| symfony/symfony: "*"           | Latest version                                                 |
++--------------------------------+----------------------------------------------------------------+
+| symfony/symfony: "dev-master"  | Latest version from "master" branch                            |
++--------------------------------+----------------------------------------------------------------+
+| symfony/symfony: "dev-testing" | Latest version from "testing" branch                           |
++--------------------------------+----------------------------------------------------------------+
 </pre>
 <p>Thankfully most packages that you can install with composer follow SemVer. In composer, for packages that follow SemVer, we can use special tilde character <code>~</code>:</p>
 <pre>
