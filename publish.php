@@ -15,3 +15,5 @@ foreach($output as $line) {
   flush();
   sleep (1);
 }  
+
+echo '<hr>DONE!';
