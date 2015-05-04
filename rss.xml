@@ -60,7 +60,9 @@
 | symfony/symfony: "~2"     | Any Major version greater than or equal to 2 like 2.x or 5.x.x        |
 +---------------------------+-----------------------------------------------------------------------+
 </pre>
-<p>Once you know how to specify versions in composer, you can easily make sure you are only installing those packages that are <strong>backwards-compatible</strong> unless you want fresh installation of some package. Similarly, if you have wrote some package, you should choose versioning sensibly so that users of your package don't go <strong>incompatible</strong> accidentally if you have not made Major changes to your package.</p>]]></description>
+<p>Once you know how to specify versions in composer, you can easily make sure you are only installing those packages that are <strong>backwards-compatible</strong> unless you want fresh installation of some package. Similarly, if you have wrote some package, you should choose versioning sensibly so that users of your package don't go <strong>incompatible</strong> accidentally if you have not made Major changes to your package.</p>
+<hr />
+<p>By the way, here is extremely useful <a href="http://composer.json.jolicode.com/">Composer cheat sheet</a>, have fun !</p>]]></description>
 <link>https://codeinphp.github.io/post/semantic-versioning-and-composer</link>
 <pubDate>Thu, 30 Apr 2015 00:53:00 +0500</pubDate>
 </item>
