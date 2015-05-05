@@ -12,10 +12,10 @@ exec('git push 2>&1', $output);
 foreach($output as $line) {
   if (!trim($line)) continue;
   
-  ob_flush();
+  //ob_flush();
   echo $line . '<br>';
-  flush();
-  sleep (1);
+  //flush();
+  //sleep (1);
 }  
 
 echo '<hr>DONE!';
