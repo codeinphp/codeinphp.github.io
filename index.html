@@ -71,68 +71,102 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/semantic-versioning-and-composer">Semantic Versioning and Composer</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/managing-times-for-users-in-php">Managing Times for Users in PHP</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> April 30, 2015 12:53 AM
+                    <span class="glyphicon glyphicon-time"></span> May 05, 2015 01:31 PM
                 
                         <hr>
-                        <p class="post-content"><p>Today any seriously written application/software follows the <em><a href="http://semver.org/">Semantic Versioning</a></em> (also called <em>SemVer</em>). It boils down to this (emphasis mine):</p>
-<ol>
-<li>MAJOR version when you make <strong>incompatible API changes</strong></li>
-<li>MINOR version when you add functionality in a <strong>backwards-compatible</strong> manner</li>
-<li>PATCH version when you make <strong>backwards-compatible bug fixes</strong></li>
-</ol>
-<p>Let's take example of <a href="http://symfony.com/">Symfony</a> framework which follows SemVer. As of this writing, its stable version stands at <code>2.6.6</code></p>
-<p><strong>Symfony Versioning</strong></p>
-<pre>
-+-------+---------+
-| Name  | Version |
-+-------+---------+
-| MAJOR | 2       |
-+-------+---------+
-| MINOR | 6       |
-+-------+---------+
-| PATCH | 6       |
-+-------+---------+
-</pre>
-<p>Here, we can see that MAJOR and MINOR versions are  backwards-compatible. This means if you install Symfony version <code>2.0.0</code> or <code>2.x.x</code> with <code>x</code> being any number, it will be backwards-compatible. Meaning if you had initially installed Symfony version <code>2.0.0</code> and now you want to install version <code>2.6.6</code>, you can do so <strong>without worrying</strong> it breaking functionality. However when Symfony announces a version starting with <code>3</code> as MAJOR version then it will most likely break some of the functionality with all previous version  less than <code>3.x.x</code>.  Thanks to SemVer, we can easily find that out now. Not to mention, almost all nicely written frameworks or libraries or software in general now follow SemVer. <a href="http://semver.org/">Please read more about it</a>.</p>
-<p>As a PHP developer, <a href="https://getcomposer.org/">composer</a> is something we can't do without these days. If you think you are a PHP developer and haven't started using composer yet, you are not a PHP developer DOT In that case, search on Google on what it is and its tutorials or see its <a href="https://getcomposer.org/doc/">official documentation</a>.  In short, it is package manager for PHP that has superseded older methods such as PEAR, etc. It is like NPM for NodeJS or RubyGem for Ruby developers.</p>
-<p>Let's say I want to install Symfony via composer, I can specify specific version to use in quite some ways like:</p>
-<pre>
-+--------------------------------+----------------------------------------------------------------+
-| Version                        | Description                                                    |
-+--------------------------------+----------------------------------------------------------------+
-| symfony/symfony: "2.6.6"       | Exact 2.6.6 version                                            |
-+--------------------------------+----------------------------------------------------------------+
-| symfony/symfony: ">= 2.6"      | Any version greater than or equal to 2.6 like 2.6.7, 6.6.9     |
-+--------------------------------+----------------------------------------------------------------+
-| symfony/symfony: ">= 2.6,<3.0" | Any version greater than or equal to 2.6 but less than 3 Major |
-+--------------------------------+----------------------------------------------------------------+
-| symfony/symfony: "2.*"         | Any version as long as Major version is 2                      |
-+--------------------------------+----------------------------------------------------------------+
-| symfony/symfony: "*"           | Latest version                                                 |
-+--------------------------------+----------------------------------------------------------------+
-| symfony/symfony: "dev-master"  | Latest version from "master" branch                            |
-+--------------------------------+----------------------------------------------------------------+
-| symfony/symfony: "dev-testing" | Latest version from "testing" branch                           |
-+--------------------------------+----------------------------------------------------------------+
-</pre>
-<p>We can also use special tilde character <code>~</code>:</p>
-<pre>
-+---------------------------+-----------------------------------------------------------------------+
-| Version                   | Description                                                           |
-+---------------------------+-----------------------------------------------------------------------+
-| symfony/symfony: "~2.6.6" | Any version starting from 2.6.0 to 2.6.x with x being any number      |
-+---------------------------+-----------------------------------------------------------------------+
-| symfony/symfony: "~2.6"   | Any version starting from 2.0 to 2.x or 2.x.x with x being any number |
-+---------------------------+-----------------------------------------------------------------------+
-| symfony/symfony: "~2"     | Any Major version greater than or equal to 2 like 2.x or 5.x.x        |
-+---------------------------+-----------------------------------------------------------------------+
-</pre>
-<p>Once you know how to specify versions in composer, you can easily make sure you are only installing those packages that are <strong>backwards-compatible</strong> unless you want fresh installation of some package. Similarly, if you have wrote some package, you should choose versioning sensibly so that users of your package don't go <strong>incompatible</strong> accidentally if you have not made Major changes to your package.</p>
-<hr />
-<p>By the way, here is extremely useful <a href="http://composer.json.jolicode.com/">Composer cheat sheet</a>, have fun !</p></p>
+                        <p class="post-content"><p>Most of the time applications we write are meant to be used by users all over the world from parts of the world having different time zones. Imagine a users from USA posts an status update and some other user from Asia sees completely different time even though original users might have posted status update moments ago.</p>
+<p>Well the easiest way to deal with this problem would be to allow users in your application choose their timezones; for example you can present them with a dropdown of all timezones. That's first step.</p>
+<p>Now once you know user's timezone, we can easily convert it back and forth. We can use GMT for this purpose because it makes it easy to convert users' timezones. So when saving times to database for example, we would first convert it to GMT. When reading from database and to show on actual webpage, we convert it from GMT to user's actual timezone. This way, we always save times in GMT and show them back to users according to their timezones.</p>
+<p>I have made this simple class you can use in your applications:</p>
+<pre><code>/**
+ * A class to ease timezone managment for users in an applications
+ *
+ * @author Sarfraz Ahmed &lt;sarfraznawaz2005@gmail.com&gt;
+ * @license http://www.opensource.org/licenses/mit-license.html MIT License
+ */
+class UserTimeZone
+{
+
+    /**
+     * Time format to be used
+     *
+     * @var string
+     */
+    protected $format = null;
+
+    /**
+     * Timezone to be used
+     *
+     * @var string
+     */
+    protected $defaultTimeZone = null;
+
+    /**
+     * @param string $format
+     * @param string $defaultTimeZone
+     */
+    public function __construct($format = 'Y-m-d h:i:s P', $defaultTimeZone = 'UTC')
+    {
+        $this-&gt;format = $format;
+        $this-&gt;defaultTimeZone = $defaultTimeZone;
+    }
+
+    /**
+     * Returns all timezones in an array.
+     * Can be used to construct a dropdown of all timezones
+     * for users to select
+     *
+     * @return array
+     */
+    public function getTimeZones()
+    {
+        return DateTimeZone::listIdentifiers();
+    }
+
+    /**
+     * Sets dates in GMT format.
+     * Should be used when saving dates in database for example.
+     *
+     * @param $date
+     * @return string
+     */
+    public function setDate($date)
+    {
+        $date = new DateTime($date, new DateTimeZone($this-&gt;defaultTimeZone));
+        $date-&gt;setTimezone(new DateTimeZone('GMT'));
+
+        return $date-&gt;format($this-&gt;format);
+    }
+
+    /**
+     * Gets data based on users' timezones.
+     * Should be used when showing dates in pages for example.
+     *
+     * @param $date
+     * @return string
+     */
+    public function getDate($date)
+    {
+        $date = new DateTime($date, new DateTimeZone('GMT'));
+        $date-&gt;setTimezone(new DateTimeZone($this-&gt;defaultTimeZone));
+
+        return $date-&gt;format($this-&gt;format);
+    }
+}</code></pre>
+<p>It is self-explanatory. Read the comments in class please.</p>
+<p>Usage:</p>
+<pre><code>$format = 'd-m-Y h:i:s';
+$userTZ = 'Asia/Karachi'; // user's time zone
+$tz = new UserTimeZone($format, $userTZ);
+
+$date = $tz-&gt;setDate('2010-01-01 6:32 PM');
+// save $date in db for example
+
+$date = $tz-&gt;getDate('2010-01-01 6:32 PM');
+// show $date on webapge for example</code></pre></p>
                         <br/>
                 
                         <div class="post-info">
@@ -142,9 +176,10 @@
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
-                                <a href="https://codeinphp.github.io/tag/composer">composer</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/semver">semver</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/versioning">versioning</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/time">time</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/date">date</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/timezone">timezone</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -197,11 +232,11 @@
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/managing-times-for-users-in-php">Managing Times for Users in PHP</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/semantic-versioning-and-composer">Semantic Versioning and Composer</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/throwing-your-own-library-exceptions-in-php">Throwing Your Own Library Exceptions in PHP</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/exceptions-are-bad-yet-awesome">Exceptions Are Bad Yet Awesome!</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/codeigniter-tip-accessing-codeigniter-instance-outside">CodeIgniter Tip: Accessing CodeIgniter Instance Outside</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/sharing-functionality-using-traits-in-php">Sharing Functionality Using Traits in PHP</a></li>
                 </ul>
             </div>
         
@@ -226,7 +261,7 @@
                         <strong>Archives</strong>
                     </div>
         
-                    <ul class="archives list-group"><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/april-2015">April 2015</a></li></ul>
+                    <ul class="archives list-group"><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/may-2015">May 2015</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/april-2015">April 2015</a></li></ul>
                 </div>
         
             <!-- Tags -->
@@ -242,33 +277,34 @@
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/blog" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">blog</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/bloggercms" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">bloggercms</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/browser" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">browser</a>
-<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/closure" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">closure</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/closure" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">closure</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/cms" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">cms</a>
-<a style="font-size: 17px" class="tag_cloud" href="https://codeinphp.github.io/tag/codeigniter" title="6 total posts" data-original-title="7 total posts" data-toggle="tooltip">codeigniter</a>
+<a style="font-size: 16px" class="tag_cloud" href="https://codeinphp.github.io/tag/codeigniter" title="6 total posts" data-original-title="7 total posts" data-toggle="tooltip">codeigniter</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/composer" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">composer</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/console" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">console</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/controller" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">controller</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/custom" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">custom</a>
-<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/database" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">database</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/database" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">database</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/datamapper" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">datamapper</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/date" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">date</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/dependency" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">dependency</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/development" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">development</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/devtools" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">devtools</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/drive" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">drive</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/error" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">error</a>
-<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/exception" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">exception</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/exception" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">exception</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/function" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">function</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/git" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">git</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/googledrive" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">googledrive</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/injection" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">injection</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/interface" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">interface</a>
-<a style="font-size: 14px" class="tag_cloud" href="https://codeinphp.github.io/tag/javascript" title="3 total posts" data-original-title="4 total posts" data-toggle="tooltip">javascript</a>
-<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/lambda" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">lambda</a>
+<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/javascript" title="3 total posts" data-original-title="4 total posts" data-toggle="tooltip">javascript</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/lambda" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">lambda</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/migration" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">migration</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/mysql" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">mysql</a>
-<a style="font-size: 14px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="3 total posts" data-original-title="4 total posts" data-toggle="tooltip">oop</a>
+<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="3 total posts" data-original-title="4 total posts" data-toggle="tooltip">oop</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/pdo" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">pdo</a>
-<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="19 total posts" data-original-title="20 total posts" data-toggle="tooltip">php</a>
+<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="20 total posts" data-original-title="21 total posts" data-toggle="tooltip">php</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/phpexecute" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">phpexecute</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/runner" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">runner</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/scope" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">scope</a>
@@ -276,9 +312,11 @@
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/spl" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">spl</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sql" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">sql</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sqlite" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">sqlite</a>
-<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/static" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">static</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/static" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">static</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/tester" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">tester</a>
-<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/tip" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">tip</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/time" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">time</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/timezone" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">timezone</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/tip" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">tip</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/todo" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">todo</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/trait" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">trait</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/versioning" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">versioning</a>
