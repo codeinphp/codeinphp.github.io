@@ -1,4 +1,6 @@
 <?php
+error_reporting(1);
+
 set_time_limit(0);
 
 ini_set('output_buffering', false);
