@@ -14,7 +14,7 @@ pre {
     overflow-x: auto;
     padding: 0.5em;
     color: #0000BB;
-    background: url(./codebg.png) repeat scroll left top #f8f8f8;
+    background: #f8f8f8;
     -webkit-text-size-adjust: none;
 }
 
