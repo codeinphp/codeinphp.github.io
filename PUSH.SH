@@ -1,6 +1,6 @@
 #!/bin/sh
 ###########################
-#git pull
+git pull
 git add .
 git commit -am "updated blog"
 git push
