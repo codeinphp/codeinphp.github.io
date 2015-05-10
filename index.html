@@ -71,62 +71,74 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/replace-nested-conditions-with-guard-clauses">Replace Nested Conditions with Guard Clauses</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/strategy-design-pattern">Strategy Design Pattern</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> May 09, 2015 01:53 PM
+                    <span class="glyphicon glyphicon-time"></span> May 10, 2015 05:40 PM
                 
                         <hr>
-                        <p class="post-content"><p>Sometimes we have to write code when we need to put conditions inside conditions (nested conditions) and once all of those are true, we perform some action. Here is dummy example of what I mean:</p>
-<pre><code>function isAuthorized($userId, $age)
-{
-    if (isLoggedIn($userId))
-    {        
-        if (isAdmin($userId) &amp;&amp; $age &gt;= 18)
-        {            
-            if (hasAcess($userId, $resourceId))
-            {
-                return true;
-            }
-        }
-    }
+                        <p class="post-content"><p>In this post, we will explore what strategy design pattern is and what problems does it solve but first, what is a design pattern ? Here is how Wikipedia defines it:</p>
+<blockquote>
+<p>In software engineering, a design pattern is a general <strong>reusable
+solution</strong> to a <strong>commonly occurring problem</strong> within a given context in
+software design.</p>
+</blockquote>
+<p>So a design pattern is nothing but a <strong>re-usable solution towards commonly occurring problems</strong> you may face while programming.</p>
+<h2>Overview</h2>
+<p>One of the common problems we face in programming is to make decisions based on <em>different conditions/inputs.</em> </p>
+<p>Let's say we have created a framework of our own and we want to be able to allow users to choose <em>different</em> types of logging methods such as logging to file, database or email.</p>
+<h2>Example</h2>
+<p>First, we create our logger classes for the framework that implement common interface:</p>
+<pre><code>interface InterfaceLogger {
+    function log($message);
+}
 
-    return false;
-}</code></pre>
-<p>Although functionally nothing wrong with above code but it is good practice to avoid nested conditions (also nested loops) in some way or the other. This is simple example that may look easy to grasp to the naked eye, this isn't always the case. Obviously we can refactor above code and avoid nested conditions like this:</p>
-<pre><code>function isAuthorized($userId, $age)
-{
-    if (isLoggedIn($userId) &amp;&amp; isAdmin($userId) &amp;&amp; $age &gt;= 18 &amp;&amp; hasAcess($userId, $resourceId))
-    {        
-        return true;
-    }
+class FileLogger implements InterfaceLogger {
+    public function log($message) {
+        // code to write logging information to file system
+    }   
+}
 
-    return false;
-}</code></pre>
-<p>We have shortened the code but still it doesn't look that good and readability is compromised here. Depending on the code editor/IDE you are using and font you are using or if you have even more nested conditions, this doesn't seem good solution or one that is easy to understand.</p>
-<p>The solution is something called <strong>Guard Clauses</strong> which essentially mean you put your conditions in inverted way than your original conditions. Guard clauses should return opposite value compared to your original conditions. Here is how we can use guard conditions with above example:</p>
-<pre><code>function isAuthorized($userId, $age)
-{
-    if (! isLoggedIn($userId)) { return false; }
-    if (! isAdmin($userId) || $age &lt; 18) { return false; }
-    if (! hasAcess($userId, $resourceId)) { return false; }
+class DatabaseLogger implements InterfaceLogger {
+    public function log($message) {
+        // code to write logging information to database
+    }   
+}
 
-    return true;
+class EmailLogger implements InterfaceLogger {
+    public function log($message) {
+        // code to write logging information to email
+    }   
 }</code></pre>
-<p>As can be seen, we have got rid of nested conditions by putting reverse conditions on top of the function. We don't proceed any further when any of these is <code>false</code>. If none is false, <code>true</code> is returned as default value in the end.</p>
-<p>The benefit here is that code looks easy to understand and gives quick idea of what it is doing at first glimpse. Pretty simple yet effective stuff. </p></p>
+<p>Let's assume users of our framework are allowed to choose an specific logger through some configuration file by typing <code>file</code>, <code>database</code> or <code>email</code> and our framework is able to know it:</p>
+<pre><code>$loggerType = App::getConfig('logger');</code></pre>
+<p>Now we can easily find out which logger to use using strategy design pattern:</p>
+<pre><code>switch($loggerType) {
+    case "file":
+        $logger = new FileLogger();
+        break;
+    case "database":
+        $logger = new DatabaseLogger();
+        break;
+    case "email":
+        $logger = new EmailLogger();
+        break;
+    default:
+        $logger = new FileLogger();
+}</code></pre>
+<p>And then throughout our framework, we can use <code>$logger-&gt;log()</code> method which would automatically know which logger type to use.</p>
+<p>As you might have noticed, strategy pattern is very simple one and we might have written similar code a number of times before albeit without realizing it is actually some design pattern.</p></p>
                         <br/>
                 
                         <div class="post-info">
                                 <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
-                                <a href="https://codeinphp.github.io/category/php">PHP</a>
+                                <a href="https://codeinphp.github.io/category/design-patterns">Design Patterns</a>
                                 &nbsp;&nbsp;
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
-                                <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/tip">tip</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/refactoring">refactoring</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/Design Patterns">Design Patterns</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/strategy">strategy</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -179,11 +191,11 @@
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/strategy-design-pattern">Strategy Design Pattern</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/replace-nested-conditions-with-guard-clauses">Replace Nested Conditions with Guard Clauses</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/managing-times-for-users-in-php">Managing Times for Users in PHP</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/semantic-versioning-and-composer">Semantic Versioning and Composer</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/throwing-your-own-library-exceptions-in-php">Throwing Your Own Library Exceptions in PHP</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/exceptions-are-bad-yet-awesome">Exceptions Are Bad Yet Awesome!</a></li>
                 </ul>
             </div>
         
@@ -196,6 +208,7 @@
                 <ul class="list-group">
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/blog">Blog</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/bloggercms">BloggerCMS</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/category/design-patterns">Design Patterns</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/javascript">Javascript</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/php">PHP</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/sql">SQL</a></li>
@@ -235,6 +248,8 @@
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/datamapper" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">datamapper</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/date" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">date</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/dependency" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">dependency</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/design" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">Design</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/patterns" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">Patterns</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/development" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">development</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/devtools" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">devtools</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/drive" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">drive</a>
@@ -261,6 +276,7 @@
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sql" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">sql</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sqlite" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">sqlite</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/static" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">static</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/strategy" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">strategy</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/tester" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">tester</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/time" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">time</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/timezone" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">timezone</a>

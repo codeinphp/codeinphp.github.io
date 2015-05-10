@@ -6,6 +6,62 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Strategy Design Pattern</title>
+<description><![CDATA[<p>In this post, we will explore what strategy design pattern is and what problems does it solve but first, what is a design pattern ? Here is how Wikipedia defines it:</p>
+<blockquote>
+<p>In software engineering, a design pattern is a general <strong>reusable
+solution</strong> to a <strong>commonly occurring problem</strong> within a given context in
+software design.</p>
+</blockquote>
+<p>So a design pattern is nothing but a <strong>re-usable solution towards commonly occurring problems</strong> you may face while programming.</p>
+<h2>Overview</h2>
+<p>One of the common problems we face in programming is to make decisions based on <em>different conditions/inputs.</em> </p>
+<p>Let's say we have created a framework of our own and we want to be able to allow users to choose <em>different</em> types of logging methods such as logging to file, database or email.</p>
+<h2>Example</h2>
+<p>First, we create our logger classes for the framework that implement common interface:</p>
+<pre><code>interface InterfaceLogger {
+    function log($message);
+}
+
+class FileLogger implements InterfaceLogger {
+    public function log($message) {
+        // code to write logging information to file system
+    }   
+}
+
+class DatabaseLogger implements InterfaceLogger {
+    public function log($message) {
+        // code to write logging information to database
+    }   
+}
+
+class EmailLogger implements InterfaceLogger {
+    public function log($message) {
+        // code to write logging information to email
+    }   
+}</code></pre>
+<p>Let's assume users of our framework are allowed to choose an specific logger through some configuration file by typing <code>file</code>, <code>database</code> or <code>email</code> and our framework is able to know it:</p>
+<pre><code>$loggerType = App::getConfig('logger');</code></pre>
+<p>Now we can easily find out which logger to use using strategy design pattern:</p>
+<pre><code>switch($loggerType) {
+    case "file":
+        $logger = new FileLogger();
+        break;
+    case "database":
+        $logger = new DatabaseLogger();
+        break;
+    case "email":
+        $logger = new EmailLogger();
+        break;
+    default:
+        $logger = new FileLogger();
+}</code></pre>
+<p>And then throughout our framework, we can use <code>$logger-&gt;log()</code> method which would automatically know which logger type to use.</p>
+<p>As you might have noticed, strategy pattern is very simple one and we might have written similar code a number of times before albeit without realizing it is actually some design pattern.</p>]]></description>
+<link>https://codeinphp.github.io/post/strategy-design-pattern</link>
+<pubDate>Sun, 10 May 2015 17:40:00 +0500</pubDate>
+</item>
+<item>
 <title>Replace Nested Conditions with Guard Clauses</title>
 <description><![CDATA[<p>Sometimes we have to write code when we need to put conditions inside conditions (nested conditions) and once all of those are true, we perform some action. Here is dummy example of what I mean:</p>
 <pre><code>function isAuthorized($userId, $age)
