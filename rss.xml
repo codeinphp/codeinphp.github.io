@@ -34,11 +34,11 @@ $statusUpdate-&gt;postUpdate('some message');</code></pre>
         // code to post status update
     }
 }</code></pre>
-<p>And here is the problem. We can see that Twitter's library has different method names which means we will have to modify code everywhere where we are using status updates. At this point, ad developer, we should also overrule the fact that client may again ask to use Facebook again or may be some other service to allow users to post status update but we don't want to change our code again and again.</p>
+<p>And here is the problem. We can see that Twitter's library has different method names which means we will have to modify code everywhere where we are using status updates. At this point, as developer, we should also not overrule the fact that client may again ask to use Facebook again or may be some other service to allow users to post status update but we don't want to change our code again and again.</p>
 <p>So how do we make sure that:</p>
 <ul>
 <li>We should easily be able to add any new service easily when client asks</li>
-<li>We should be able to not modify code again and again, same code should post status updates without modifying it</li>
+<li>We should be able to not modify code again and again, same code should post status updates without modifying it much</li>
 </ul>
 <p>This is where Adapter pattern comes out to be as life saver. In order to implement that, we first set rules/interface that all status update service should follow so let's create one:</p>
 <pre><code>interface iStatusUpdate {
@@ -91,7 +91,7 @@ $statusUpdate = new SomeOtherServiceAdapter($someOtherService);
 $statusUpdate-&gt;getUserToken($someUserId);
 $statusUpdate-&gt;postUpdate('some message');</code></pre>
 <p>Again most of the code remains same. </p>
-<p>So these simple examples show how useful and time-saver adapter pattern is. It provides us with consistent API to work with and allows us to use new services extremely easily.</p>]]></description>
+<p>So these simple examples show how useful and time-saver adapter pattern is. It provides us with consistent API to work with and allows us to use new services easily.</p>]]></description>
 <link>https://codeinphp.github.io/post/adapter-design-pattern</link>
 <pubDate>Mon, 11 May 2015 14:20:00 +0500</pubDate>
 </item>
