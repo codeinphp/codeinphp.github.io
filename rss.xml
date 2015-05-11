@@ -64,8 +64,7 @@ $statusUpdate-&gt;postUpdate('some message');</code></pre>
 }</code></pre>
 <p>Notice how we have passed <code>Twitter</code> object via the constructor. Of course we could have used setter or interface injection as well. </p>
 <p>We can see that we now have same method names for Facebook and Twitter which means we won't have to modify much code in our codebase where we need to post status updates for users. Now all we need to do is to use our new adapter class providing it with actual Twitter object:</p>
-<pre><code>$twitter = new Twitter;
-$statusUpdate = new TwitterAdapter($twitter);
+<pre><code>$statusUpdate = new TwitterAdapter(new Twitter);
 $statusUpdate-&gt;getUserToken($someUserId);
 $statusUpdate-&gt;postUpdate('some message');</code></pre>
 <p>As can be we have added a line or couple but most of status update code remains same, thanks to adapter pattern. We as developers should foresee such changes client may require in which case we would have created adapter class even for our first Facebook service and then we didn't need to modify even a single line of code.</p>
@@ -87,8 +86,7 @@ $statusUpdate-&gt;postUpdate('some message');</code></pre>
     }
 }</code></pre>
 <p>And then:</p>
-<pre><code>$someOtherService = new SomeOtherService;
-$statusUpdate = new SomeOtherServiceAdapter($someOtherService);
+<pre><code>$statusUpdate = new SomeOtherServiceAdapter(new SomeOtherService);
 $statusUpdate-&gt;getUserToken($someUserId);
 $statusUpdate-&gt;postUpdate('some message');</code></pre>
 <p>Again most of the code remains same. </p>
