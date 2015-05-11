@@ -8,7 +8,7 @@
     <meta name="description" content="PHP and more...">
     <meta name="author" content="Sarfraz Ahmed">
 
-    <title>Visual Query - A Basic MySQL Query Builder App :: Code In PHP</title>
+    <title>Adapter Design Pattern :: Code In PHP</title>
 
     <!-- rss feed url -->
     <link rel="alternate" type="application/rss+xml" title="Code In PHP" href="https://codeinphp.github.io/rss.xml"/>
@@ -71,62 +71,108 @@
     <div class="row">
         <div class="col-md-8 main-content">
             <article>
-                <h3>Visual Query - A Basic MySQL Query Builder App</h3>
+                <h3>Adapter Design Pattern</h3>
                 <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                 &nbsp;&nbsp;
-                <span class="glyphicon glyphicon-time"></span> April 19, 2015 12:31 PM
+                <span class="glyphicon glyphicon-time"></span> May 11, 2015 02:20 PM
                 <hr>
 
-                <p class="post-content"><p>The client I am working with is <em>somewhat</em> technical and he wanted the ability to create his own reporting out of database. He isn't all that expert in knowing SQL so in order to help him I built <strong>Visual Query</strong> app to help him <strong>build his SQL queries visually</strong> through a provided interface.</p>
-<p>Visual Query is basic MySQL query builder and database browser app that has these basic features:</p>
+                <p class="post-content"><h2>Overview</h2>
+<p>The adapter design pattern as the name suggests is like real life adapter that converts one thing into some other one. Similarly, it can help us wrap functionality of some object into adapter providing us with consistent methods/API to work with. Understanding through an example is always the best way to learn.</p>
+<h2>Example</h2>
+<p>Suppose you have developed a website where client has asked you to allow users to post status updates on the Facebook. In order to to that, we use Facebook PHP client library which looks something like this:</p>
+<pre><code>class Facebook {    
+    public function getUserToken($userId) {
+        // code to get user token
+    }
+
+    public function postUpdate($message) {
+        // code to post status update
+    }
+}</code></pre>
+<p>And then you use it to post updates on Facebook:</p>
+<pre><code>$statusUpdate = new Facebook;
+$statusUpdate-&gt;getUserToken($someUserId);
+$statusUpdate-&gt;postUpdate('some message');</code></pre>
+<p>Now let's assume suddenly client requires that instead of Facebook, he wants users to post updates on Twitter and Twitter's PHP client library looks like this:</p>
+<pre><code>class Twitter {    
+    public function checkUserToken($userId) {
+        // code to get user token
+    }
+
+    public function setStatusUpdate($message) {
+        // code to post status update
+    }
+}</code></pre>
+<p>And here is the problem. We can see that Twitter's library has different method names which means we will have to modify code everywhere where we are using status updates. At this point, ad developer, we should also overrule the fact that client may again ask to use Facebook again or may be some other service to allow users to post status update but we don't want to change our code again and again.</p>
+<p>So how do we make sure that:</p>
 <ul>
-<li>Ability to choose different databases</li>
-<li>Ability to export result set to CSV and Excel</li>
-<li>Custom queries option</li>
-<li>Visual Query builder</li>
-<li>Query log, search facility, pagination, etc</li>
+<li>We should easily be able to add any new service easily when client asks</li>
+<li>We should be able to not modify code again and again, same code should post status updates without modifying it</li>
 </ul>
-<p>Here is how it looks:</p>
-<p><img src="https://codeinphp.github.io/images/1429438678553380d670675.png" alt="enter image description here" /></p>
-<hr />
-<p>One can also write custom queries with syntax highlighting support as well as code prediction support:</p>
-<p><img src="https://codeinphp.github.io/images/1429438683553380db1db48.png" alt="enter image description here" /></p>
-<hr />
-<p>And here is the query builder interface:</p>
-<p><img src="https://codeinphp.github.io/images/1429438687553380df677ee.png" alt="enter image description here" /></p>
-<hr />
-<h2>How to Use</h2>
-<p>First of all, download it from <a href="https://github.com/sarfraznawaz2005/VisualQuery">its repository</a>. Once downloaded, edit the <code>config.php</code> file with database details and users login information:</p>
-<pre><code>// edit database settings
-$config['database_host'] = 'localhost';
-$config['database_user'] = 'root';
-$config['database_password'] = '';
-$config['database_dbname'] = 'mydb';
+<p>This is where Adapter pattern comes out to be as life saver. In order to implement that, we first set rules/interface that all status update service should follow so let's create one:</p>
+<pre><code>interface iStatusUpdate {
+    function getUserToken($userId);
+    function postUpdate($message);
+}</code></pre>
+<p>Now we create our Twitter adapter class:</p>
+<pre><code>class TwitterAdapter implements iStatusUpdate {
 
-//////////////////////////////////////////////
-// user details who can login - You can also specify more than one user
-//////////////////////////////////////////////
+    protected $twitter;
 
-// user 1
-$config['username'][] = 'admin';
-$config['password'][] = 'admin';
+    public function __construct(Twitter $twitter){
+        $this-&gt;twitter = $twitter;
+    }
 
-// user 2
-$config['username'][] = 'admin2';
-$config['password'][] = 'admin2';</code></pre></p>
+    public function getUserToken($userId) {
+        $this-&gt;twitter-&gt;checkUserToken($userId);
+    }
+
+    public function postUpdate($message) {
+        $this-&gt;twitter-&gt;setStatusUpdate($message);
+    }
+}</code></pre>
+<p>Notice how we have passed <code>Twitter</code> object via the constructor. Of course we could have used setter or interface injection as well. </p>
+<p>We can see that we now have same method names for Facebook and Twitter which means we won't have to modify much code in our codebase where we need to post status updates for users. Now all we need to do is to use our new adapter class providing it with actual Twitter object:</p>
+<pre><code>$twitter = new Twitter;
+$statusUpdate = new TwitterAdapter($twitter);
+$statusUpdate-&gt;getUserToken($someUserId);
+$statusUpdate-&gt;postUpdate('some message');</code></pre>
+<p>As can be we have added a line or couple but most of status update code remains same, thanks to adapter pattern. Client asks some other service to use, no problem:</p>
+<pre><code>class SomeOtherServiceAdapter implements iStatusUpdate {
+
+    protected $otherService;
+
+    public function __construct(SomeOtherService $otherService){
+        $this-&gt;otherService = $otherService;
+    }
+
+    public function getUserToken($userId) {
+        $this-&gt;otherService-&gt;authenticate($userId);
+    }
+
+    public function postUpdate($message) {
+        $this-&gt;otherService-&gt;postMessage($message);
+    }
+}</code></pre>
+<p>And then:</p>
+<pre><code>$someOtherService = new SomeOtherService;
+$statusUpdate = new SomeOtherServiceAdapter($someOtherService);
+$statusUpdate-&gt;getUserToken($someUserId);
+$statusUpdate-&gt;postUpdate('some message');</code></pre>
+<p>Again most of the code remains same. </p>
+<p>So these simple examples show how useful and time-saver adapter pattern is. It provides us with consistent API to work with and allows us to use new services extremely easily.</p></p>
                 <br/><br/>
 
                 <div class="post-info">
                         <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
-                        <a href="https://codeinphp.github.io/category/sql">SQL</a>
+                        <a href="https://codeinphp.github.io/category/design-patterns">Design Patterns</a>
                         &nbsp;&nbsp;
 
                     <span class="glyphicon glyphicon-bookmark"></span>
 
-                        <a href="https://codeinphp.github.io/tag/database">database</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/mysql">mysql</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/sql">sql</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/visual">visual</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/design-pattern">design-pattern</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/adapter">adapter</a>&nbsp;&nbsp;
                 </div>
 
             </article>
