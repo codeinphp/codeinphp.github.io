@@ -108,7 +108,7 @@ $statusUpdate-&gt;postUpdate('some message');</code></pre>
 <p>So how do we make sure that:</p>
 <ul>
 <li>We should easily be able to add any new service easily when client asks</li>
-<li>We should be able to not modify code again and again, same code should post status updates without modifying it much</li>
+<li>We should be able to not modify code again and again, same code should post status updates without modifying it</li>
 </ul>
 <p>This is where Adapter pattern comes out to be as life saver. In order to implement that, we first set rules/interface that all status update service should follow so let's create one:</p>
 <pre><code>interface iStatusUpdate {
@@ -138,7 +138,8 @@ $statusUpdate-&gt;postUpdate('some message');</code></pre>
 $statusUpdate = new TwitterAdapter($twitter);
 $statusUpdate-&gt;getUserToken($someUserId);
 $statusUpdate-&gt;postUpdate('some message');</code></pre>
-<p>As can be we have added a line or couple but most of status update code remains same, thanks to adapter pattern. Client asks some other service to use, no problem:</p>
+<p>As can be we have added a line or couple but most of status update code remains same, thanks to adapter pattern. We as developers should foresee such changes client may require in which case we would have created adapter class even for our first Facebook service and then we didn't need to modify even a single line of code.</p>
+<p>Okay, client asks some other service to use, no problem:</p>
 <pre><code>class SomeOtherServiceAdapter implements iStatusUpdate {
 
     protected $otherService;
