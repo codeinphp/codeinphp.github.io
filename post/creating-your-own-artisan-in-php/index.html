@@ -8,7 +8,7 @@
     <meta name="description" content="PHP and more...">
     <meta name="author" content="Sarfraz Ahmed">
 
-    <title>Replace Nested Conditions with Guard Clauses :: Code In PHP</title>
+    <title>Creating Your Own Artisan in PHP :: Code In PHP</title>
 
     <!-- rss feed url -->
     <link rel="alternate" type="application/rss+xml" title="Code In PHP" href="https://codeinphp.github.io/rss.xml"/>
@@ -71,50 +71,146 @@
     <div class="row">
         <div class="col-md-8 main-content">
             <article>
-                <h3>Replace Nested Conditions with Guard Clauses</h3>
+                <h3>Creating Your Own Artisan in PHP</h3>
                 <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                 &nbsp;&nbsp;
-                <span class="glyphicon glyphicon-time"></span> May 09, 2015 01:53 PM
+                <span class="glyphicon glyphicon-time"></span> May 13, 2015 04:28 PM
                 <hr>
 
-                <p class="post-content"><p>Sometimes we have to write code when we need to put conditions inside conditions (nested conditions) and once all of those are true, we perform some action. Here is dummy example of what I mean:</p>
-<pre><code>function isAuthorized($userId, $age)
+                <p class="post-content"><p>This post is basic tutorial of how you can create your own command line tool. I will try to explain things step by step so things are easily understood.</p>
+<p>When I first saw Laravel framework, I really liked its Artisan console tool, it seemed like magic providing us with a bunch of stuff we could do with it such as creating MVC triads, running migrations and a lot more. Although similar concepts already existed in frameworks like CakePHP but Laravel did good job of making us realize how useful a console app can be and that we can it use beyond basic CRUD operations.</p>
+<p>To create a console app, we can use <a href="http://symfony.com/doc/current/components/console/introduction.html">Symfony's console component</a> and in fact Laravel also uses the same. We could also use <a href="https://github.com/auraphp/Aura.Cli">Aura.Cli</a> from AuraPHP but for this post, we will stick with one provided by Symfony.</p>
+<h2>Installing Symfony Console Component</h2>
+<p>The easiest way to install it is via composer. Create a new folder in your document root named <strong>consoleApp</strong> and inside it create <strong>composer.json</strong> file with these contents:</p>
+<pre><code>{
+    "require" :{
+        "symfony/console": "2.6.7"
+    }
+}</code></pre>
+<p>and then run <code>composer install</code> command in newly created folder from your cli application. After some while you should have <strong>vendor</strong> directory created. </p>
+<h2>Creating Our First Command</h2>
+<p>A command is something that performs an specific task. For example, in Laravel's artisan tool, you can type this:</p>
+<pre><code>&gt; php artisan app:name yourAppName</code></pre>
+<p>Here <code>app:name</code> is a command that can changes namespace of your Laravel application. Here is also breakdown of above line:</p>
+<ul>
+<li><code>php</code> - php executable (php.exe). This assumes you have already added php.exe in your <code>PATH</code> enviroment variable in your system</li>
+<li><code>artisan</code> - The name of the console application</li>
+<li><code>app:name</code> - The name of the command that will be run</li>
+<li><code>yourAppName</code> is an argument to the <code>app:name</code> command</li>
+</ul>
+<p>Create a <strong>Commands</strong> folder in root of application, this will contain all our commands for the console app we will be creating. Also create empty file called <strong>app</strong> (without extension) either by using editor of your choice or running this command via your cli in app root folder <code>touch app</code>. The folder structure should now look like this:</p>
+<p><img src="https://codeinphp.github.io/images/1431513018555327ba67b95.png" alt="enter image description here" /></p>
+<p>Open app <code>app</code> file in editor of your choice and paste this line in it:</p>
+<pre><code>#!/usr/bin/env php</code></pre>
+<p>This tells the system that is a php env file and should be run by php executable. You may need to apply <em>execute</em> permission on this file if you are on Linux.</p>
+<p>Next, let's include our dependencies through composer's autoload feature, so add this line:</p>
+<pre><code>require __DIR__ . '/vendor/autoload.php';</code></pre>
+<p>This will automatically include our dependencies which in this case is Symfony Console Component.</p>
+<p>By now <code>app</code> file should have these contents:</p>
+<pre><code>#!/usr/bin/env php
+&lt;?php
+require __DIR__ . '/vendor/autoload.php';</code></pre>
+<p>Before we edit this file further, let's first create our command which will basically be a <code>Greet</code> command. Our commands will essentially be class files therefore inside Commands directory that we created earlier, create a file called <code>GreetCommand.php</code>. </p>
+<p>The Symfony Console Component requires that we should extend it provide at least two methods called <code>configure()</code> and <code>execute()</code>. As the names suggest, the <code>configure()</code> method can be used to configure our command such as what command will be called, what arguments and options it will accept and the <code>execute()</code> command will actually execute our command.</p>
+<p>In <code>GreetCommand.php</code> file, paste in these contents:</p>
+<pre><code>&lt;?php
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+
+class GreetCommand extends Command
 {
-    if (isLoggedIn($userId))
-    {        
-        if (isAdmin($userId) &amp;&amp; $age &gt;= 18)
-        {            
-            if (hasAcess($userId, $resourceId))
-            {
-                return true;
-            }
+    protected $commandName = 'app:greet';
+    protected $commandDescription = "Greets Someone";
+
+    protected $commandArgumentName = "name";
+    protected $commandArgumentDescription = "Who do you want to greet?";
+
+    protected $commandOptionName = "cap"; // should be specified like "app:greet John --cap"
+    protected $commandOptionDescription = 'If set, it will greet in uppercase letters';    
+
+    protected function configure()
+    {
+        $this
+            -&gt;setName($this-&gt;commandName)
+            -&gt;setDescription($this-&gt;commandDescription)
+            -&gt;addArgument(
+                $this-&gt;commandArgumentName,
+                InputArgument::OPTIONAL,
+                $this-&gt;commandArgumentDescription
+            )
+            -&gt;addOption(
+               $this-&gt;commandOptionName,
+               null,
+               InputOption::VALUE_NONE,
+               $this-&gt;commandOptionDescription
+            )
+        ;
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $name = $input-&gt;getArgument($this-&gt;commandArgumentName);
+
+        if ($name) {
+            $text = 'Hello '.$name;
+        } else {
+            $text = 'Hello';
         }
+
+        if ($input-&gt;getOption($this-&gt;commandOptionName)) {
+            $text = strtoupper($text);
+        }
+
+        $output-&gt;writeln($text);
     }
-
-    return false;
 }</code></pre>
-<p>Although functionally nothing wrong with above code but it is good practice to avoid nested conditions (also nested loops) in some way or the other. This is simple example that may look easy to grasp to the naked eye, this isn't always the case. Obviously we can refactor above code and avoid nested conditions like this:</p>
-<pre><code>function isAuthorized($userId, $age)
-{
-    if (isLoggedIn($userId) &amp;&amp; isAdmin($userId) &amp;&amp; $age &gt;= 18 &amp;&amp; hasAcess($userId, $resourceId))
-    {        
-        return true;
-    }
+<p>The code is pretty much self-explanatory:</p>
+<ul>
+<li><code>$commandName</code> is the name of our command</li>
+<li><code>$commandDescription</code> is description/help text for our command</li>
+<li><code>$commandArgumentName</code> is argument name of our command</li>
+<li><code>$commandOptionName</code> is option name of our command. The difference between argument and option is that an option is optional one unlike argument and can be specified with <code>--optionName</code>.</li>
+<li>Inside <code>configure()</code> method, we can easily understand how we set command name, argument and options. </li>
+<li>Inside <code>execute()</code> method, we get argument and check to see if it is set. If set, we say <code>Hello Name</code> otherwise we simply say <code>Hello</code>. Then we check if option is provided and if so we upper case it and finally output the result.</li>
+</ul>
+<p>Now finally let's tell Symfony Console Component to use our command we just created. Modify <code>app</code> file so it looks like this:</p>
+<pre><code>#!/usr/bin/env php
+&lt;?php
+require __DIR__ . '/vendor/autoload.php';
 
-    return false;
-}</code></pre>
-<p>We have shortened the code but still it doesn't look that good and readability is compromised here. Depending on the code editor/IDE you are using and font you are using or if you have even more nested conditions, this doesn't seem good solution or one that is easy to understand.</p>
-<p>The solution is something called <strong>Guard Clauses</strong> which essentially mean you put your conditions in inverted way than your original conditions. Guard clauses should return opposite value compared to your original conditions. Here is how we can use guard conditions with above example:</p>
-<pre><code>function isAuthorized($userId, $age)
-{
-    if (! isLoggedIn($userId)) { return false; }
-    if (! isAdmin($userId) || $age &lt; 18) { return false; }
-    if (! hasAcess($userId, $resourceId)) { return false; }
+use Symfony\Component\Console\Application;
 
-    return true;
+$application = new Application();
+
+# add our commands
+$application-&gt;add(new GreetCommand());
+
+$application-&gt;run();</code></pre>
+<p>Let's test our command. Open your cli app and point it to our app root and run this command:</p>
+<pre><code>&gt; app app:greet John</code></pre>
+<p>That should result in error that <code>GreetCommand.php</code> flle was not found. Let's tell composer to automatically include our commands from <strong>Commands</strong> folder. Edit composer.json file so it looks like this:</p>
+<pre><code>{
+  "require": {
+    "symfony/console": "2.6.7"
+  },
+  "autoload": {
+    "classmap": ["Commands"]
+  }
 }</code></pre>
-<p>As can be seen, we have got rid of nested conditions by putting reverse conditions on top of the function. We don't proceed any further when any of these is <code>false</code>. If none is false, <code>true</code> is returned as default value in the end.</p>
-<p>The benefit here is that code looks easy to understand and gives quick idea of what it is doing at first glimpse. Pretty simple yet effective stuff. </p></p>
+<p>and then type <code>composer dump -o</code> from your cli app. Now run our command again:</p>
+<pre><code>&gt; app app:greet John</code></pre>
+<p>and you should see <code>Hello John</code>. Type:</p>
+<pre><code>&gt; app app:greet John --cap</code></pre>
+<p>and you should see <code>HELLO JOHN</code>.</p>
+<p>Here we named our console file <code>app</code> but if you rename it to <code>artisan</code> and then run above commands replacing <code>app</code> with <code>artisan</code>, you will have your own artisan tool, funny enough :)</p>
+<p>Of course, you can now add any commands you want to your new console app. You can even run composer commands through your new console app or may be some deployment scripts or even system commands. If you are using some MVC framework, you can use this tool to for example create your own way of creating controllers, entity classes, run your custom migrations, call methods from your controllers and more.</p>
+<p>If you want to see how Laravel does it all, you can take a look inside this folder and see how those commands are created:</p>
+<p><code>vendor/laravel/framework/src/Illuminate/Foundation/Console</code> </p>
+<p>I am currently working on a project powered by CodeIgniter (and it doesn't have built-in console app as you know) and I have created quite some commands that have really helped me speed up my development time where I do a host of different things via my console app.</p>
+<p>Have fun with your artisan tool :)</p></p>
                 <br/><br/>
 
                 <div class="post-info">
@@ -124,9 +220,8 @@
 
                     <span class="glyphicon glyphicon-bookmark"></span>
 
-                        <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/tip">tip</a>&nbsp;&nbsp;
-                        <a href="https://codeinphp.github.io/tag/refactoring">refactoring</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/console">console</a>&nbsp;&nbsp;
+                        <a href="https://codeinphp.github.io/tag/laravel">laravel</a>&nbsp;&nbsp;
                 </div>
 
             </article>
