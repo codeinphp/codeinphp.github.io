@@ -8,7 +8,7 @@
 <item>
 <title>Creating Your Own Artisan in PHP</title>
 <description><![CDATA[<p>This post is basic tutorial of how you can create your own command line tool. I will try to explain things step by step so things are easily understood.</p>
-<p>When I first saw Laravel framework, I really liked its Artisan console tool, it seemed like magic providing us with a bunch of stuff we could do with it such as creating MVC triads, running migrations and a lot more. Although similar concepts already existed in frameworks like CakePHP but Laravel did good job of making us realize how useful a console app can be and that we can it use beyond basic CRUD operations.</p>
+<p>When I first saw Laravel framework, I really liked its Artisan console tool, it seemed like magic providing us with a bunch of stuff we could do with it such as creating MVC triads, running migrations and a lot more. Although similar concepts already existed in frameworks like CakePHP but Laravel did good job of making us realize how useful a console app can be and that we can use it beyond basic CRUD operations.</p>
 <p>To create a console app, we can use <a href="http://symfony.com/doc/current/components/console/introduction.html">Symfony's console component</a> and in fact Laravel also uses the same. We could also use <a href="https://github.com/auraphp/Aura.Cli">Aura.Cli</a> from AuraPHP but for this post, we will stick with one provided by Symfony.</p>
 <h2>Installing Symfony Console Component</h2>
 <p>The easiest way to install it is via composer. Create a new folder in your document root named <strong>consoleApp</strong> and inside it create <strong>composer.json</strong> file with these contents:</p>
@@ -41,7 +41,7 @@
 &lt;?php
 require __DIR__ . '/vendor/autoload.php';</code></pre>
 <p>Before we edit this file further, let's first create our command which will basically be a <code>Greet</code> command. Our commands will essentially be class files therefore inside Commands directory that we created earlier, create a file called <code>GreetCommand.php</code>. </p>
-<p>The Symfony Console Component requires that we should extend it provide at least two methods called <code>configure()</code> and <code>execute()</code>. As the names suggest, the <code>configure()</code> method can be used to configure our command such as what command will be called, what arguments and options it will accept and the <code>execute()</code> command will actually execute our command.</p>
+<p>The Symfony Console Component requires that we should extend it and provide at least two methods called <code>configure()</code> and <code>execute()</code>. As the names suggest, the <code>configure()</code> method can be used to configure our command such as what command will be called, what arguments and options it will accept and the <code>execute()</code> command will actually execute our command.</p>
 <p>In <code>GreetCommand.php</code> file, paste in these contents:</p>
 <pre><code>&lt;?php
 use Symfony\Component\Console\Command\Command;
@@ -136,7 +136,7 @@ $application-&gt;run();</code></pre>
 <pre><code>&gt; app app:greet John --cap</code></pre>
 <p>and you should see <code>HELLO JOHN</code>.</p>
 <p>Here we named our console file <code>app</code> but if you rename it to <code>artisan</code> and then run above commands replacing <code>app</code> with <code>artisan</code>, you will have your own artisan tool, funny enough :)</p>
-<p>Of course, you can now add any commands you want to your new console app. You can even run composer commands through your new console app or may be some deployment scripts or even system commands. If you are using some MVC framework, you can use this tool to for example create your own way of creating controllers, entity classes, run your custom migrations, call methods from your controllers and more.</p>
+<p>Of course, you can now add any commands you want to your new console app. You can even run composer or git commands through your new console app or may be some deployment scripts or even system commands. If you are using some MVC framework, you can use this tool to for example create your own way of creating controllers, entity classes, run your custom migrations, call methods from your controllers and more.</p>
 <p>If you want to see how Laravel does it all, you can take a look inside this folder and see how those commands are created:</p>
 <p><code>vendor/laravel/framework/src/Illuminate/Foundation/Console</code> </p>
 <p>I am currently working on a project powered by CodeIgniter (and it doesn't have built-in console app as you know) and I have created quite some commands that have really helped me speed up my development time where I do a host of different things via my console app.</p>
