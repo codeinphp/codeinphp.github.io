@@ -189,7 +189,7 @@ elseif (Config::item('db_type') === 'sqlite') {
         $DB-&gt;setPassword($pass);
         $DB-&gt;connect();
 
-        return new $DB;
+        return $DB;
     }
 }</code></pre>
 <p>And then using it:</p>
