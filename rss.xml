@@ -6,6 +6,28 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Quick Learning Resources via StackOverflow</title>
+<description><![CDATA[<p>Did you know that you that other than asking questions and answering, you can also use StackOverflow to find very useful information and learning resources for certain language or technology? Do you want to get started with some new programming language or technology ? StackOverflow can help you get started.</p>
+<p>StackOverflow can help you get started by providing you with information such as history of some language/technology, books, references, commonly asked questions and tools, videos and more. Here is the format of the URL you can go to and find out useful information about certain language or technology:</p>
+<p><code>http://stackoverflow.com/tags/TECHNOLOGY/info</code></p>
+<p>In above URL, replace <code>TECHNOLOGY</code> with what you want to learn about such as <code>javascript</code>, <code>php</code>, <code>.net</code>, etc</p>
+<p>Here are few examples:</p>
+<ul>
+<li><a href="http://stackoverflow.com/tags/language-agnostic/info">http://stackoverflow.com/tags/language-agnostic/info</a></li>
+<li><a href="http://stackoverflow.com/tags/javascript/info">http://stackoverflow.com/tags/javascript/info</a></li>
+<li><a href="http://stackoverflow.com/tags/php/info">http://stackoverflow.com/tags/php/info</a></li>
+<li><a href="http://stackoverflow.com/tags/.net/info">http://stackoverflow.com/tags/.net/info</a></li>
+<li><a href="http://stackoverflow.com/tags/node.js/info">http://stackoverflow.com/tags/node.js/info</a></li>
+<li><a href="http://stackoverflow.com/tags/java/info">http://stackoverflow.com/tags/java/info</a></li>
+<li><a href="http://stackoverflow.com/tags/android/info">http://stackoverflow.com/tags/android/info</a></li>
+<li><a href="http://stackoverflow.com/tags/iphone/info">http://stackoverflow.com/tags/iphone/info</a></li>
+<li><a href="http://stackoverflow.com/tags/bash/info">http://stackoverflow.com/tags/bash/info</a></li>
+</ul>
+<p>Of course, you can replace tag in above URL from <a href="http://stackoverflow.com/tags">various tags to choose from</a>.</p>]]></description>
+<link>https://codeinphp.github.io/post/quick-learning-resources-via-stackoverflow</link>
+<pubDate>Thu, 14 May 2015 22:25:00 +0500</pubDate>
+</item>
+<item>
 <title>Creating Your Own Artisan in PHP</title>
 <description><![CDATA[<p>This post is basic tutorial of how you can create your own command line tool. I will try to explain things step by step so things are easily understood.</p>
 <p>When I first saw Laravel framework, I really liked its Artisan console tool, it seemed like magic providing us with a bunch of stuff we could do with it such as creating MVC triads, running migrations and a lot more. Although similar concepts already existed in frameworks like CakePHP but Laravel did good job of making us realize how useful a console app can be and that we can use it beyond basic CRUD operations.</p>

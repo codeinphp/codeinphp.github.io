@@ -71,157 +71,39 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/creating-your-own-artisan-in-php">Creating Your Own Artisan in PHP</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/quick-learning-resources-via-stackoverflow">Quick Learning Resources via StackOverflow</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> May 13, 2015 04:28 PM
+                    <span class="glyphicon glyphicon-time"></span> May 14, 2015 10:25 PM
                 
                         <hr>
-                        <p class="post-content"><p>This post is basic tutorial of how you can create your own command line tool. I will try to explain things step by step so things are easily understood.</p>
-<p>When I first saw Laravel framework, I really liked its Artisan console tool, it seemed like magic providing us with a bunch of stuff we could do with it such as creating MVC triads, running migrations and a lot more. Although similar concepts already existed in frameworks like CakePHP but Laravel did good job of making us realize how useful a console app can be and that we can use it beyond basic CRUD operations.</p>
-<p>To create a console app, we can use <a href="http://symfony.com/doc/current/components/console/introduction.html">Symfony's console component</a> and in fact Laravel also uses the same. We could also use <a href="https://github.com/auraphp/Aura.Cli">Aura.Cli</a> from AuraPHP but for this post, we will stick with one provided by Symfony.</p>
-<h2>Installing Symfony Console Component</h2>
-<p>The easiest way to install it is via composer. Create a new folder in your document root named <strong>consoleApp</strong> and inside it create <strong>composer.json</strong> file with these contents:</p>
-<pre><code>{
-    "require" :{
-        "symfony/console": "2.6.7"
-    }
-}</code></pre>
-<p>and then run <code>composer install</code> command in newly created folder from your cli application. After some while you should have <strong>vendor</strong> directory created. </p>
-<h2>Creating Our First Command</h2>
-<p>A command is something that performs an specific task. For example, in Laravel's artisan tool, you can type this:</p>
-<pre><code>&gt; php artisan app:name yourAppName</code></pre>
-<p>Here <code>app:name</code> is a command that can changes namespace of your Laravel application. Here is also breakdown of above line:</p>
+                        <p class="post-content"><p>Did you know that you that other than asking questions and answering, you can also use StackOverflow to find very useful information and learning resources for certain language or technology? Do you want to get started with some new programming language or technology ? StackOverflow can help you get started.</p>
+<p>StackOverflow can help you get started by providing you with information such as history of some language/technology, books, references, commonly asked questions and tools, videos and more. Here is the format of the URL you can go to and find out useful information about certain language or technology:</p>
+<p><code>http://stackoverflow.com/tags/TECHNOLOGY/info</code></p>
+<p>In above URL, replace <code>TECHNOLOGY</code> with what you want to learn about such as <code>javascript</code>, <code>php</code>, <code>.net</code>, etc</p>
+<p>Here are few examples:</p>
 <ul>
-<li><code>php</code> - php executable (php.exe). This assumes you have already added php.exe in your <code>PATH</code> enviroment variable in your system</li>
-<li><code>artisan</code> - The name of the console application</li>
-<li><code>app:name</code> - The name of the command that will be run</li>
-<li><code>yourAppName</code> is an argument to the <code>app:name</code> command</li>
+<li><a href="http://stackoverflow.com/tags/language-agnostic/info">http://stackoverflow.com/tags/language-agnostic/info</a></li>
+<li><a href="http://stackoverflow.com/tags/javascript/info">http://stackoverflow.com/tags/javascript/info</a></li>
+<li><a href="http://stackoverflow.com/tags/php/info">http://stackoverflow.com/tags/php/info</a></li>
+<li><a href="http://stackoverflow.com/tags/.net/info">http://stackoverflow.com/tags/.net/info</a></li>
+<li><a href="http://stackoverflow.com/tags/node.js/info">http://stackoverflow.com/tags/node.js/info</a></li>
+<li><a href="http://stackoverflow.com/tags/java/info">http://stackoverflow.com/tags/java/info</a></li>
+<li><a href="http://stackoverflow.com/tags/android/info">http://stackoverflow.com/tags/android/info</a></li>
+<li><a href="http://stackoverflow.com/tags/iphone/info">http://stackoverflow.com/tags/iphone/info</a></li>
+<li><a href="http://stackoverflow.com/tags/bash/info">http://stackoverflow.com/tags/bash/info</a></li>
 </ul>
-<p>Create a <strong>Commands</strong> folder in root of application, this will contain all our commands for the console app we will be creating. Also create empty file called <strong>app</strong> (without extension) either by using editor of your choice or running this command via your cli in app root folder <code>touch app</code>. The folder structure should now look like this:</p>
-<p><img src="https://codeinphp.github.io/images/1431513018555327ba67b95.png" alt="enter image description here" /></p>
-<p>Open app <code>app</code> file in editor of your choice and paste this line in it:</p>
-<pre><code>#!/usr/bin/env php</code></pre>
-<p>This tells the system that is a php env file and should be run by php executable. You may need to apply <em>execute</em> permission on this file if you are on Linux.</p>
-<p>Next, let's include our dependencies through composer's autoload feature, so add this line:</p>
-<pre><code>require __DIR__ . '/vendor/autoload.php';</code></pre>
-<p>This will automatically include our dependencies which in this case is Symfony Console Component.</p>
-<p>By now <code>app</code> file should have these contents:</p>
-<pre><code>#!/usr/bin/env php
-&lt;?php
-require __DIR__ . '/vendor/autoload.php';</code></pre>
-<p>Before we edit this file further, let's first create our command which will basically be a <code>Greet</code> command. Our commands will essentially be class files therefore inside Commands directory that we created earlier, create a file called <code>GreetCommand.php</code>. </p>
-<p>The Symfony Console Component requires that we should extend it and provide at least two methods called <code>configure()</code> and <code>execute()</code>. As the names suggest, the <code>configure()</code> method can be used to configure our command such as what command will be called, what arguments and options it will accept and the <code>execute()</code> command will actually execute our command.</p>
-<p>In <code>GreetCommand.php</code> file, paste in these contents:</p>
-<pre><code>&lt;?php
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-
-class GreetCommand extends Command
-{
-    protected $commandName = 'app:greet';
-    protected $commandDescription = "Greets Someone";
-
-    protected $commandArgumentName = "name";
-    protected $commandArgumentDescription = "Who do you want to greet?";
-
-    protected $commandOptionName = "cap"; // should be specified like "app:greet John --cap"
-    protected $commandOptionDescription = 'If set, it will greet in uppercase letters';    
-
-    protected function configure()
-    {
-        $this
-            -&gt;setName($this-&gt;commandName)
-            -&gt;setDescription($this-&gt;commandDescription)
-            -&gt;addArgument(
-                $this-&gt;commandArgumentName,
-                InputArgument::OPTIONAL,
-                $this-&gt;commandArgumentDescription
-            )
-            -&gt;addOption(
-               $this-&gt;commandOptionName,
-               null,
-               InputOption::VALUE_NONE,
-               $this-&gt;commandOptionDescription
-            )
-        ;
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $name = $input-&gt;getArgument($this-&gt;commandArgumentName);
-
-        if ($name) {
-            $text = 'Hello '.$name;
-        } else {
-            $text = 'Hello';
-        }
-
-        if ($input-&gt;getOption($this-&gt;commandOptionName)) {
-            $text = strtoupper($text);
-        }
-
-        $output-&gt;writeln($text);
-    }
-}</code></pre>
-<p>The code is pretty much self-explanatory:</p>
-<ul>
-<li><code>$commandName</code> is the name of our command</li>
-<li><code>$commandDescription</code> is description/help text for our command</li>
-<li><code>$commandArgumentName</code> is argument name of our command</li>
-<li><code>$commandOptionName</code> is option name of our command. The difference between argument and option is that an option is optional one unlike argument and can be specified with <code>--optionName</code>.</li>
-<li>Inside <code>configure()</code> method, we can easily understand how we set command name, argument and options. </li>
-<li>Inside <code>execute()</code> method, we get argument and check to see if it is set. If set, we say <code>Hello Name</code> otherwise we simply say <code>Hello</code>. Then we check if option is provided and if so we upper case it and finally output the result.</li>
-</ul>
-<p>Now finally let's tell Symfony Console Component to use our command we just created. Modify <code>app</code> file so it looks like this:</p>
-<pre><code>#!/usr/bin/env php
-&lt;?php
-require __DIR__ . '/vendor/autoload.php';
-
-use Symfony\Component\Console\Application;
-
-$application = new Application();
-
-# add our commands
-$application-&gt;add(new GreetCommand());
-
-$application-&gt;run();</code></pre>
-<p>Let's test our command. Open your cli app and point it to our app root and run this command:</p>
-<pre><code>&gt; php app app:greet John</code></pre>
-<p>That should result in error that <code>GreetCommand.php</code> flle was not found. Let's tell composer to automatically include our commands from <strong>Commands</strong> folder. Edit composer.json file so it looks like this:</p>
-<pre><code>{
-  "require": {
-    "symfony/console": "2.6.7"
-  },
-  "autoload": {
-    "classmap": ["Commands"]
-  }
-}</code></pre>
-<p>and then type <code>composer dump -o</code> from your cli app. Now run our command again:</p>
-<pre><code>&gt; php app app:greet John</code></pre>
-<p>and you should see <code>Hello John</code>. Type:</p>
-<pre><code>&gt; php app app:greet John --cap</code></pre>
-<p>and you should see <code>HELLO JOHN</code>.</p>
-<p>Here we named our console file <code>app</code> but if you rename it to <code>artisan</code> and then run above commands replacing <code>app</code> with <code>artisan</code>, you will have your own artisan tool, funny enough :)</p>
-<p>Of course, you can now add any commands you want to your new console app. You can even run composer or git commands through your new console app or may be some deployment/build scripts or even system commands. If you are using some MVC framework, you can use this tool to for example create your own way of creating controllers, entity classes, run your custom migrations, call methods from your controllers and more.</p>
-<p>If you want to see how Laravel does it all, you can take a look inside this folder and see how those commands are created:</p>
-<p><code>vendor/laravel/framework/src/Illuminate/Foundation/Console</code> </p>
-<p>I am currently working on a project powered by CodeIgniter (and it doesn't have built-in console app as you know) and I have created quite some commands that have really helped me speed up my development time where I do a host of different things via my console app.</p>
-<p>Have fun with your artisan tool :)</p></p>
+<p>Of course, you can replace tag in above URL from <a href="http://stackoverflow.com/tags">various tags to choose from</a>.</p></p>
                         <br/>
                 
                         <div class="post-info">
                                 <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
-                                <a href="https://codeinphp.github.io/category/php">PHP</a>
+                                <a href="https://codeinphp.github.io/category/random">Random</a>
                                 &nbsp;&nbsp;
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
-                                <a href="https://codeinphp.github.io/tag/console">console</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/laravel">laravel</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/stackoverflow">stackoverflow</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -274,11 +156,11 @@ $application-&gt;run();</code></pre>
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/quick-learning-resources-via-stackoverflow">Quick Learning Resources via StackOverflow</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/creating-your-own-artisan-in-php">Creating Your Own Artisan in PHP</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/adapter-design-pattern">Adapter Design Pattern</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/strategy-design-pattern">Strategy Design Pattern</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/replace-nested-conditions-with-guard-clauses">Replace Nested Conditions with Guard Clauses</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/managing-times-for-users-in-php">Managing Times for Users in PHP</a></li>
                 </ul>
             </div>
         
@@ -293,6 +175,7 @@ $application-&gt;run();</code></pre>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/design-patterns">Design Patterns</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/javascript">Javascript</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/php">PHP</a></li>
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/category/random">Random</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/category/sql">SQL</a></li>
                 </ul>
             </div>
@@ -358,6 +241,7 @@ $application-&gt;run();</code></pre>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/spl" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">spl</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sql" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">sql</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sqlite" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">sqlite</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/stackoverflow" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">stackoverflow</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/static" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">static</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/strategy" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">strategy</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/tester" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">tester</a>
