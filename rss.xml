@@ -91,7 +91,7 @@ elseif (Config::item('db_type') === 'sqlite') {
 <li>The code is hard coded with database type names</li>
 <li>Whole process becomes tedious</li>
 </ul>
-<p>To solve these issues, we can instead create a central object factory that would create those objects and make sure that code is not tightly coupled and testable.</p>
+<p>To solve these issues, we can instead create a central factory object that would create those objects for us:</p>
 <pre><code>class DBFactory
 {
     protected $driver = null;
@@ -117,6 +117,7 @@ elseif (Config::item('db_type') === 'sqlite') {
         $DB-&gt;setDB($dbname);
         $DB-&gt;setUserName($user);
         $DB-&gt;setPassword($pass);
+        $DB-&gt;connect();
 
         return new $DB;
     }
