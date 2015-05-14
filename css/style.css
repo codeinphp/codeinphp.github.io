@@ -3,6 +3,10 @@ body {
     background:#fcfcfc;
 }
 
+.panel, .list-group-item {
+    background:#fcfcfc;
+}
+
 .post-content, .page-content, .main-content {
     margin-bottom: 20px;
     font-size: 16px;
