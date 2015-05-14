@@ -71,39 +71,146 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/quick-learning-resources-via-stackoverflow">Quick Learning Resources via StackOverflow</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/factory-design-pattern">Factory Design Pattern</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> May 14, 2015 10:25 PM
+                    <span class="glyphicon glyphicon-time"></span> May 15, 2015 12:29 AM
                 
                         <hr>
-                        <p class="post-content"><p>Did you know that you that other than asking questions and answering, you can also use StackOverflow to find very useful information and learning resources for certain language or technology? Do you want to get started with some new programming language or technology ? StackOverflow can help you get started.</p>
-<p>StackOverflow can help you get started by providing you with information such as history of some language/technology, books, references, commonly asked questions and tools, videos and more. Here is the format of the URL you can go to and find out useful information about certain language or technology:</p>
-<p><code>http://stackoverflow.com/tags/TECHNOLOGY/info</code></p>
-<p>In above URL, replace <code>TECHNOLOGY</code> with what you want to learn about such as <code>javascript</code>, <code>php</code>, <code>.net</code>, etc</p>
-<p>Here are few examples:</p>
+                        <p class="post-content"><h2>Overview</h2>
+<p>Factory design pattern works like a factory in the real world in that it creates something for others to use. In the context of OOP, it helps in creating and instantiating objects. </p>
+<h2>Example</h2>
+<p>Let's say for our application we are using different types of databases based on requirement such as MySQL, PostgreSQL, and SQLite. Our classes look like this:</p>
+<p>MySQL:</p>
+<pre><code>class MySQLDB
+{
+    public function setHost($host)
+    {
+        // code
+    }
+    public function setDB($db)
+    {
+        // code
+    }
+    public function setUserName($user)
+    {
+        // code
+    }
+    public function setPassword($pwd)
+    {
+        // code
+    }
+    public function connect()
+    {
+        // code
+    }
+}</code></pre>
+<p>PostgreSQL:</p>
+<pre><code>class PostgreSQLDB
+{
+    public function setHost($host)
+    {
+        // code
+    }
+    public function setDB($db)
+    {
+        // code
+    }
+    public function setUserName($user)
+    {
+        // code
+    }
+    public function setPassword($pwd)
+    {
+        // code
+    }
+    public function connect()
+    {
+        // code
+    }
+}</code></pre>
+<p>...and so on for SQLite database.</p>
+<p>Then we instantiate different objects based on configuration:</p>
+<pre><code>if (Config::item('db_type') === 'mysql') {
+    $DB = new MySQLDB();
+    $DB-&gt;setHost("host");
+    $DB-&gt;setDB("db");
+    $DB-&gt;setUserName("user");
+    $DB-&gt;setPassword("pwd");
+    $DB-&gt;connect();
+}
+elseif (Config::item('db_type') === 'postgre') {
+    $DB = new PostgreSQLDB();
+    $DB-&gt;setHost("host");
+    $DB-&gt;setDB("db");
+    $DB-&gt;setUserName("user");
+    $DB-&gt;setPassword("pwd");
+    $DB-&gt;connect();
+}
+elseif (Config::item('db_type') === 'sqlite') {
+    $DB = new SQLiteDB();
+    $DB-&gt;setHost("host");
+    $DB-&gt;setDB("db");
+    $DB-&gt;setUserName("user");
+    $DB-&gt;setPassword("pwd");
+    $DB-&gt;connect();
+}</code></pre>
+<p>Generally above works but it creates problems in rather big applications. Above code has these problems:</p>
 <ul>
-<li><a href="http://stackoverflow.com/tags/language-agnostic/info">http://stackoverflow.com/tags/language-agnostic/info</a></li>
-<li><a href="http://stackoverflow.com/tags/javascript/info">http://stackoverflow.com/tags/javascript/info</a></li>
-<li><a href="http://stackoverflow.com/tags/php/info">http://stackoverflow.com/tags/php/info</a></li>
-<li><a href="http://stackoverflow.com/tags/.net/info">http://stackoverflow.com/tags/.net/info</a></li>
-<li><a href="http://stackoverflow.com/tags/node.js/info">http://stackoverflow.com/tags/node.js/info</a></li>
-<li><a href="http://stackoverflow.com/tags/java/info">http://stackoverflow.com/tags/java/info</a></li>
-<li><a href="http://stackoverflow.com/tags/android/info">http://stackoverflow.com/tags/android/info</a></li>
-<li><a href="http://stackoverflow.com/tags/iphone/info">http://stackoverflow.com/tags/iphone/info</a></li>
-<li><a href="http://stackoverflow.com/tags/bash/info">http://stackoverflow.com/tags/bash/info</a></li>
+<li>Should you add more database types, code would keep on growing making it complex</li>
+<li>The code is hard coded with database type names</li>
+<li>Whole process becomes tedious</li>
 </ul>
-<p>Of course, you can replace tag in above URL from <a href="http://stackoverflow.com/tags">various tags to choose from</a>.</p></p>
+<p>To solve these issues, we can instead create a central object factory that would create those objects and make sure that code is not tightly coupled and testable.</p>
+<pre><code>class DBFactory
+{
+    protected $driver = null;
+
+    public function setDriver($driver)
+    {
+        $this-&gt;driver = $driver;
+    }
+
+    protected function makeDB($host, $user, $pass, $dbname)
+    {
+        if ($this-&gt;driver === 'mysql') {
+            $DB = new MySQLDB();
+        }
+        elseif ($this-&gt;driver === 'postgre') {
+            $DB = new PostgreSQLDB();
+        }
+        elseif ($this-&gt;driver === 'sqlite') {
+            $DB = new SQLiteDB();
+        }
+
+        $DB-&gt;setHost($host);
+        $DB-&gt;setDB($dbname);
+        $DB-&gt;setUserName($user);
+        $DB-&gt;setPassword($pass);
+
+        return new $DB;
+    }
+}</code></pre>
+<p>And then using it:</p>
+<pre><code>$dbFactory = new DBFactory;
+$dbFactory-&gt;setDriver(Config::item('db_type'));
+$DB = $dbFactory-&gt;makeDB("host", "db", "user", "pwd");</code></pre>
+<p>And that's it. You won't have to modify above code, it will always remain same, we have moved the complex object creation logic separate in the factory itself which now makes our code a lot more easier to work with. </p>
+<p>Please notice that there are some variations of factory design pattern such as <code>simple factory</code>, <code>abstract factory</code> and <code>factory method</code>. In this example, we used the <code>factory method</code> eg we used a <em>method</em> named <code>makeDB()</code> to create our objects. Other variations are almost similar; for example with <code>abstract factory</code>, you actually create an abstract class and then all concrete classes should extend it. It just enforces commonality between similar concrete classes.</p>
+<blockquote>
+<p><strong>Note:</strong> In modern day, the object creation has become very simple with the help of <a href="http://ralphschindler.com/2012/10/10/di-dic-service-locator-redux">Dependency Injection Containers and Service
+Locators</a>. There are quite some <a href="http://www.sitepoint.com/php-dependency-injection-container-performance-benchmarks/">DICs to choose from for PHP</a>.</p>
+</blockquote></p>
                         <br/>
                 
                         <div class="post-info">
                                 <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
-                                <a href="https://codeinphp.github.io/category/random">Random</a>
+                                <a href="https://codeinphp.github.io/category/design-patterns">Design Patterns</a>
                                 &nbsp;&nbsp;
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
-                                <a href="https://codeinphp.github.io/tag/stackoverflow">stackoverflow</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/design-pattern">design-pattern</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -156,11 +263,11 @@
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/factory-design-pattern">Factory Design Pattern</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/quick-learning-resources-via-stackoverflow">Quick Learning Resources via StackOverflow</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/creating-your-own-artisan-in-php">Creating Your Own Artisan in PHP</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/adapter-design-pattern">Adapter Design Pattern</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/strategy-design-pattern">Strategy Design Pattern</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/replace-nested-conditions-with-guard-clauses">Replace Nested Conditions with Guard Clauses</a></li>
                 </ul>
             </div>
         
@@ -214,7 +321,7 @@
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/datamapper" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">datamapper</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/date" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">date</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/dependency" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">dependency</a>
-<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/design-pattern" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">design-pattern</a>
+<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/design-pattern" title="3 total posts" data-original-title="4 total posts" data-toggle="tooltip">design-pattern</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/development" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">development</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/devtools" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">devtools</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/drive" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">drive</a>

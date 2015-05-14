@@ -5,6 +5,12 @@
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
+<loc>https://codeinphp.github.io/post/factory-design-pattern/</loc>
+<lastmod>2015-05-15T00:29:00+05:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>1.00</priority>
+</url>
+<url>
 <loc>https://codeinphp.github.io/post/quick-learning-resources-via-stackoverflow/</loc>
 <lastmod>2015-05-14T22:25:00+05:00</lastmod>
 <changefreq>daily</changefreq>

@@ -6,6 +6,135 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Factory Design Pattern</title>
+<description><![CDATA[<h2>Overview</h2>
+<p>Factory design pattern works like a factory in the real world in that it creates something for others to use. In the context of OOP, it helps in creating and instantiating objects. </p>
+<h2>Example</h2>
+<p>Let's say for our application we are using different types of databases based on requirement such as MySQL, PostgreSQL, and SQLite. Our classes look like this:</p>
+<p>MySQL:</p>
+<pre><code>class MySQLDB
+{
+    public function setHost($host)
+    {
+        // code
+    }
+    public function setDB($db)
+    {
+        // code
+    }
+    public function setUserName($user)
+    {
+        // code
+    }
+    public function setPassword($pwd)
+    {
+        // code
+    }
+    public function connect()
+    {
+        // code
+    }
+}</code></pre>
+<p>PostgreSQL:</p>
+<pre><code>class PostgreSQLDB
+{
+    public function setHost($host)
+    {
+        // code
+    }
+    public function setDB($db)
+    {
+        // code
+    }
+    public function setUserName($user)
+    {
+        // code
+    }
+    public function setPassword($pwd)
+    {
+        // code
+    }
+    public function connect()
+    {
+        // code
+    }
+}</code></pre>
+<p>...and so on for SQLite database.</p>
+<p>Then we instantiate different objects based on configuration:</p>
+<pre><code>if (Config::item('db_type') === 'mysql') {
+    $DB = new MySQLDB();
+    $DB-&gt;setHost("host");
+    $DB-&gt;setDB("db");
+    $DB-&gt;setUserName("user");
+    $DB-&gt;setPassword("pwd");
+    $DB-&gt;connect();
+}
+elseif (Config::item('db_type') === 'postgre') {
+    $DB = new PostgreSQLDB();
+    $DB-&gt;setHost("host");
+    $DB-&gt;setDB("db");
+    $DB-&gt;setUserName("user");
+    $DB-&gt;setPassword("pwd");
+    $DB-&gt;connect();
+}
+elseif (Config::item('db_type') === 'sqlite') {
+    $DB = new SQLiteDB();
+    $DB-&gt;setHost("host");
+    $DB-&gt;setDB("db");
+    $DB-&gt;setUserName("user");
+    $DB-&gt;setPassword("pwd");
+    $DB-&gt;connect();
+}</code></pre>
+<p>Generally above works but it creates problems in rather big applications. Above code has these problems:</p>
+<ul>
+<li>Should you add more database types, code would keep on growing making it complex</li>
+<li>The code is hard coded with database type names</li>
+<li>Whole process becomes tedious</li>
+</ul>
+<p>To solve these issues, we can instead create a central object factory that would create those objects and make sure that code is not tightly coupled and testable.</p>
+<pre><code>class DBFactory
+{
+    protected $driver = null;
+
+    public function setDriver($driver)
+    {
+        $this-&gt;driver = $driver;
+    }
+
+    protected function makeDB($host, $user, $pass, $dbname)
+    {
+        if ($this-&gt;driver === 'mysql') {
+            $DB = new MySQLDB();
+        }
+        elseif ($this-&gt;driver === 'postgre') {
+            $DB = new PostgreSQLDB();
+        }
+        elseif ($this-&gt;driver === 'sqlite') {
+            $DB = new SQLiteDB();
+        }
+
+        $DB-&gt;setHost($host);
+        $DB-&gt;setDB($dbname);
+        $DB-&gt;setUserName($user);
+        $DB-&gt;setPassword($pass);
+
+        return new $DB;
+    }
+}</code></pre>
+<p>And then using it:</p>
+<pre><code>$dbFactory = new DBFactory;
+$dbFactory-&gt;setDriver(Config::item('db_type'));
+$DB = $dbFactory-&gt;makeDB("host", "db", "user", "pwd");</code></pre>
+<p>And that's it. You won't have to modify above code, it will always remain same, we have moved the complex object creation logic separate in the factory itself which now makes our code a lot more easier to work with. </p>
+<p>Please notice that there are some variations of factory design pattern such as <code>simple factory</code>, <code>abstract factory</code> and <code>factory method</code>. In this example, we used the <code>factory method</code> eg we used a <em>method</em> named <code>makeDB()</code> to create our objects. Other variations are almost similar; for example with <code>abstract factory</code>, you actually create an abstract class and then all concrete classes should extend it. It just enforces commonality between similar concrete classes.</p>
+<blockquote>
+<p><strong>Note:</strong> In modern day, the object creation has become very simple with the help of <a href="http://ralphschindler.com/2012/10/10/di-dic-service-locator-redux">Dependency Injection Containers and Service
+Locators</a>. There are quite some <a href="http://www.sitepoint.com/php-dependency-injection-container-performance-benchmarks/">DICs to choose from for PHP</a>.</p>
+</blockquote>]]></description>
+<link>https://codeinphp.github.io/post/factory-design-pattern</link>
+<pubDate>Fri, 15 May 2015 00:29:00 +0500</pubDate>
+</item>
+<item>
 <title>Quick Learning Resources via StackOverflow</title>
 <description><![CDATA[<p>Did you know that you that other than asking questions and answering, you can also use StackOverflow to find very useful information and learning resources for certain language or technology? Do you want to get started with some new programming language or technology ? StackOverflow can help you get started.</p>
 <p>StackOverflow can help you get started by providing you with information such as history of some language/technology, books, references, commonly asked questions and tools, videos and more. Here is the format of the URL you can go to and find out useful information about certain language or technology:</p>
