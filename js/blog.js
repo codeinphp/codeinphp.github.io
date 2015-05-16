@@ -4,7 +4,10 @@
 
 $(function () {
     // enable syntax highlighting
-    hljs.initHighlightingOnLoad();
+    $('pre code').each(function(i, block) {
+      hljs.highlightBlock(block);
+      $(this).addClass('code');
+    });
 
     // set nav link as selected if on the page
     var pageArray = document.location.href.split('/');
