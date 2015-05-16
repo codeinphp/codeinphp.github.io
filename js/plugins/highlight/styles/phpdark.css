@@ -1,0 +1,119 @@
+/*
+php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
+*/
+
+.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+    color: #73FF73;
+    background: #282B2E;
+    -webkit-text-size-adjust: none;
+}
+
+.hljs-comment,
+.diff .hljs-header,
+.hljs-javadoc {
+    color: #FFB273;
+    font-style: italic;
+}
+
+.hljs-keyword,
+.css .rule .hljs-keyword,
+.hljs-winutils,
+.nginx .hljs-title,
+.hljs-subst,
+.hljs-request,
+.hljs-status {
+    color: #73FF73;
+}
+
+.hljs-number,
+.hljs-hexcolor,
+.ruby .hljs-constant {
+    color: #73FF73;
+}
+
+.hljs-string,
+.hljs-tag .hljs-value,
+.hljs-phpdoc,
+.hljs-dartdoc,
+.tex .hljs-formula {
+    color: #FF7373;
+}
+
+.hljs-title,
+.hljs-id,
+.scss .hljs-preprocessor {
+    color: #79A1FF;
+}
+
+.hljs-list .hljs-keyword,
+.hljs-subst {
+    font-weight: normal;
+}
+
+.hljs-class .hljs-title,
+.hljs-type,
+.vhdl .hljs-literal,
+.tex .hljs-command {
+    color: #79A1FF;
+}
+
+.hljs-tag,
+.hljs-tag .hljs-title,
+.hljs-rule .hljs-property,
+.django .hljs-tag .hljs-keyword {
+    color: #79A1FF;
+    font-weight: normal;
+}
+
+.hljs-attribute,
+.hljs-variable,
+.lisp .hljs-body,
+.hljs-name {
+    color: #eee;
+}
+
+.hljs-regexp {
+    color: #73FF73;
+}
+
+.hljs-symbol,
+.ruby .hljs-symbol .hljs-string,
+.lisp .hljs-keyword,
+.clojure .hljs-keyword,
+.scheme .hljs-keyword,
+.tex .hljs-special,
+.hljs-prompt {
+    color: #79A1FF;
+}
+
+.hljs-built_in {
+    color: #79A1FF;
+}
+
+.hljs-preprocessor,
+.hljs-pragma,
+.hljs-pi,
+.hljs-doctype,
+.hljs-shebang,
+.hljs-cdata {
+    color: #79A1FF;
+}
+
+.hljs-deletion {
+    background: #eee;
+}
+
+.hljs-addition {
+    background: #73FF73;
+}
+
+.diff .hljs-change {
+    background: #79A1FF;
+}
+
+.hljs-chunk {
+    color: #79A1FF;
+}
