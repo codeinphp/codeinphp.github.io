@@ -116,7 +116,7 @@
 <p>Having said that, many argue that you can at least use singletons for single-nature things like an instance of database or logging (though it is matter of personal preference on how you design database or logging stuff)  while others avoid singletons completely (especially <em><a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD Worshipers</a></em>).</p>
 <p>That's all there is to a singleton.</p>
 <h2>Multiton</h2>
-<p>As the name suggests, a multiton is a design pattern that helps you create multiple singletons. Both are same, the only difference is that a multiton can store and retrieve <em>multiple</em> instances of itself. Obviously multiton  suffers from same problems as singletons.</p>
+<p>As the name suggests, a multiton is a design pattern that helps you create multiple instances of itself. Both singleton and multiton are same, the only difference is that a multiton can store and retrieve <em>multiple</em> instances of itself. Obviously multiton suffers from same problems as singletons.</p>
 <p>Here is example of multiton:</p>
 <pre><code>class Logger
 {
