@@ -6,7 +6,7 @@ $(function () {
     // enable syntax highlighting
     $('pre code').each(function(i, block) {
       hljs.highlightBlock(block);
-      $(this).addClass('code');
+      $(this).parent().addClass('code');
     });
 
     // set nav link as selected if on the page
