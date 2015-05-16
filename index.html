@@ -71,137 +71,78 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/factory-design-pattern">Factory Design Pattern</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/singleton-and-multiton-design-patterns">Singleton and Multiton Design Patterns</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> May 15, 2015 12:29 AM
+                    <span class="glyphicon glyphicon-time"></span> May 16, 2015 05:21 PM
                 
                         <hr>
-                        <p class="post-content"><h2>Overview</h2>
-<p>Factory design pattern works like a factory in the real world in that it creates something for others to use. In the context of OOP, it helps in creating and instantiating objects. </p>
-<h2>Example</h2>
-<p>Let's say for our application we are using different types of databases based on requirement such as MySQL, PostgreSQL, and SQLite. Our classes look like this:</p>
-<p>MySQL:</p>
-<pre><code>class MySQLDB
+                        <p class="post-content"><h2>Singleton</h2>
+<p>One of the simplest design patterns is the Singleton. The purpose of Singleton design pattern is to always have a <strong>single</strong> instance of a some class. Singletons are usually used for things you don't necessarily need multiple instances of such as database or logging or similar. You always work with same instance of a singleton object.</p>
+<p>This is how you create a singleton:</p>
+<pre><code>class MySingleton
 {
-    public function setHost($host)
+    public static function getInstance()
     {
-        // code
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new self();
+        }
+
+        return $instance;
     }
-    public function setDB($db)
-    {
-        // code
-    }
-    public function setUserName($user)
-    {
-        // code
-    }
-    public function setPassword($pwd)
-    {
-        // code
-    }
-    public function connect()
-    {
-        // code
-    }
+
+    // prevent creating multiple instances due to "private" constructor
+    private function __construct(){}
+
+    // prevent the instance from being cloned
+    private function __clone(){}
+
+    // prevent from being unserialized
+    private function __wakeup(){}
 }</code></pre>
-<p>PostgreSQL:</p>
-<pre><code>class PostgreSQLDB
-{
-    public function setHost($host)
-    {
-        // code
-    }
-    public function setDB($db)
-    {
-        // code
-    }
-    public function setUserName($user)
-    {
-        // code
-    }
-    public function setPassword($pwd)
-    {
-        // code
-    }
-    public function connect()
-    {
-        // code
-    }
-}</code></pre>
-<p>...and so on for SQLite database.</p>
-<p>Then we instantiate different objects based on configuration:</p>
-<pre><code>if (Config::item('db_type') === 'mysql') {
-    $DB = new MySQLDB();
-    $DB-&gt;setHost("host");
-    $DB-&gt;setDB("db");
-    $DB-&gt;setUserName("user");
-    $DB-&gt;setPassword("pwd");
-    $DB-&gt;connect();
-}
-elseif (Config::item('db_type') === 'postgre') {
-    $DB = new PostgreSQLDB();
-    $DB-&gt;setHost("host");
-    $DB-&gt;setDB("db");
-    $DB-&gt;setUserName("user");
-    $DB-&gt;setPassword("pwd");
-    $DB-&gt;connect();
-}
-elseif (Config::item('db_type') === 'sqlite') {
-    $DB = new SQLiteDB();
-    $DB-&gt;setHost("host");
-    $DB-&gt;setDB("db");
-    $DB-&gt;setUserName("user");
-    $DB-&gt;setPassword("pwd");
-    $DB-&gt;connect();
-}</code></pre>
-<p>Generally above works but it creates problems in rather big applications. Above code has these problems:</p>
+<p>Usage:</p>
+<pre><code>$instance = MySingleton::getInstance();</code></pre>
+<p>Following the same pattern, you can create your own singletons and add any necessary functionality you want. The <strong>main</strong> trick here is that we have made the constructor <code>private</code> which is what disallows creation of multiple instances of singleton class.</p>
+<p>It is important to point out that Singleton design pattern is considered anti-pattern (and more so in the world of PHP) because of following reasons:</p>
 <ul>
-<li>Should you add more database types, code would keep on growing making it complex</li>
-<li>The code is hard coded with database type names</li>
-<li>Whole process becomes tedious</li>
+<li>Singletons create global state which is bad; they create tight-coupling</li>
+<li>Singletons are essentially class-oriented not object-oriented</li>
+<li>We cannot tell what dependencies it contains, it hides logic</li>
+<li>Because you cannot create multiple instances, you cannot easily test them</li>
+<li>PHP runs on <a href="http://en.wikipedia.org/wiki/Shared_nothing_architecture">shared nothing architecture</a> which essentially means unlike other languages like Java/.Net, life of a PHP application is just one http request which is why singletons do not make <em>much</em> sense in PHP</li>
 </ul>
-<p>To solve these issues, we can instead create a central factory object that would create those objects for us:</p>
-<pre><code>class DBFactory
+<p>Having said that, many argue that you can at least use singletons for single-nature things like an instance of database or logging (though it is matter of personal preference on how you design database or logging stuff)  while others avoid singletons completely (especially <em><a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD Worshipers</a></em>).</p>
+<p>That's all there is to a singleton.</p>
+<h2>Multiton</h2>
+<p>As the name suggests, a multiton is a design pattern that helps you create multiple singletons. Both are same, the only difference is that a multiton can store and retrieve <em>multiple</em> instances of itself. Obviously multiton  suffers from same problems as singletons.</p>
+<p>Here is example of multiton:</p>
+<pre><code>class Logger
 {
-    protected $driver = null;
+    private static $instances = array();
 
-    public function setDriver($driver)
+    public static function getInstance($key)
     {
-        $this-&gt;driver = $driver;
+        if(!array_key_exists($key, self::$instances)) {
+            self::$instances[$key] = new self();
+        }
+
+        return self::$instances[$key];
     }
 
-    protected function makeDB($host, $user, $pass, $dbname)
-    {
-        if ($this-&gt;driver === 'mysql') {
-            $DB = new MySQLDB();
-        }
-        elseif ($this-&gt;driver === 'postgre') {
-            $DB = new PostgreSQLDB();
-        }
-        elseif ($this-&gt;driver === 'sqlite') {
-            $DB = new SQLiteDB();
-        }
+    // prevent creating multiple instances due to "private" constructor
+    private function __construct(){}
 
-        $DB-&gt;setHost($host);
-        $DB-&gt;setDB($dbname);
-        $DB-&gt;setUserName($user);
-        $DB-&gt;setPassword($pass);
-        $DB-&gt;connect();
+    // prevent the instance from being cloned
+    private function __clone(){}
 
-        return $DB;
-    }
+    // prevent from being unserialized
+    private function __wakeup(){}
 }</code></pre>
-<p>And then using it:</p>
-<pre><code>$dbFactory = new DBFactory;
-$dbFactory-&gt;setDriver(Config::item('db_type'));
-$DB = $dbFactory-&gt;makeDB("host", "db", "user", "pwd");</code></pre>
-<p>And that's it. You won't have to modify above code, it will always remain same, we have moved the complex object creation logic separate in the factory itself which now makes our code a lot more easier to work with. </p>
-<p>Please notice that there are some variations of factory design pattern such as <code>simple factory</code>, <code>abstract factory</code> and <code>factory method</code>. In this example, we used the <code>factory method</code> eg we used a <em>method</em> named <code>makeDB()</code> to create our objects. Other variations are almost similar; for example with <code>abstract factory</code>, you actually create an abstract class and then all concrete classes should extend it. It just enforces commonality between similar concrete classes.</p>
-<blockquote>
-<p><strong>Note:</strong> In modern day, the object creation has become very simple with the help of <a href="http://ralphschindler.com/2012/10/10/di-dic-service-locator-redux">Dependency Injection Containers and Service
-Locators</a>. There are quite some <a href="http://www.sitepoint.com/php-dependency-injection-container-performance-benchmarks/">DICs to choose from for PHP</a>.</p>
-</blockquote></p>
+<p>Usage:</p>
+<pre><code>$firstInstance = Logger::getInstance('file');
+$secondInstance = Logger::getInstance('email');</code></pre></p>
                         <br/>
                 
                         <div class="post-info">
@@ -212,6 +153,7 @@ Locators</a>. There are quite some <a href="http://www.sitepoint.com/php-depende
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
                                 <a href="https://codeinphp.github.io/tag/design-pattern">design-pattern</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/singleton">singleton</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -264,11 +206,11 @@ Locators</a>. There are quite some <a href="http://www.sitepoint.com/php-depende
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/singleton-and-multiton-design-patterns">Singleton and Multiton Design Patterns</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/factory-design-pattern">Factory Design Pattern</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/quick-learning-resources-via-stackoverflow">Quick Learning Resources via StackOverflow</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/creating-your-own-artisan-in-php">Creating Your Own Artisan in PHP</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/adapter-design-pattern">Adapter Design Pattern</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/strategy-design-pattern">Strategy Design Pattern</a></li>
                 </ul>
             </div>
         
@@ -322,7 +264,7 @@ Locators</a>. There are quite some <a href="http://www.sitepoint.com/php-depende
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/datamapper" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">datamapper</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/date" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">date</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/dependency" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">dependency</a>
-<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/design-pattern" title="3 total posts" data-original-title="4 total posts" data-toggle="tooltip">design-pattern</a>
+<a style="font-size: 14px" class="tag_cloud" href="https://codeinphp.github.io/tag/design-pattern" title="4 total posts" data-original-title="5 total posts" data-toggle="tooltip">design-pattern</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/development" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">development</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/devtools" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">devtools</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/drive" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">drive</a>
@@ -346,6 +288,7 @@ Locators</a>. There are quite some <a href="http://www.sitepoint.com/php-depende
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/runner" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">runner</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/scope" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">scope</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/semver" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">semver</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/singleton" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">singleton</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/spl" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">spl</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sql" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">sql</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sqlite" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">sqlite</a>

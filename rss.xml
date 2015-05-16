@@ -6,6 +6,77 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Singleton and Multiton Design Patterns</title>
+<description><![CDATA[<h2>Singleton</h2>
+<p>One of the simplest design patterns is the Singleton. The purpose of Singleton design pattern is to always have a <strong>single</strong> instance of a some class. Singletons are usually used for things you don't necessarily need multiple instances of such as database or logging or similar. You always work with same instance of a singleton object.</p>
+<p>This is how you create a singleton:</p>
+<pre><code>class MySingleton
+{
+    public static function getInstance()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new self();
+        }
+
+        return $instance;
+    }
+
+    // prevent creating multiple instances due to "private" constructor
+    private function __construct(){}
+
+    // prevent the instance from being cloned
+    private function __clone(){}
+
+    // prevent from being unserialized
+    private function __wakeup(){}
+}</code></pre>
+<p>Usage:</p>
+<pre><code>$instance = MySingleton::getInstance();</code></pre>
+<p>Following the same pattern, you can create your own singletons and add any necessary functionality you want. The <strong>main</strong> trick here is that we have made the constructor <code>private</code> which is what disallows creation of multiple instances of singleton class.</p>
+<p>It is important to point out that Singleton design pattern is considered anti-pattern (and more so in the world of PHP) because of following reasons:</p>
+<ul>
+<li>Singletons create global state which is bad; they create tight-coupling</li>
+<li>Singletons are essentially class-oriented not object-oriented</li>
+<li>We cannot tell what dependencies it contains, it hides logic</li>
+<li>Because you cannot create multiple instances, you cannot easily test them</li>
+<li>PHP runs on <a href="http://en.wikipedia.org/wiki/Shared_nothing_architecture">shared nothing architecture</a> which essentially means unlike other languages like Java/.Net, life of a PHP application is just one http request which is why singletons do not make <em>much</em> sense in PHP</li>
+</ul>
+<p>Having said that, many argue that you can at least use singletons for single-nature things like an instance of database or logging (though it is matter of personal preference on how you design database or logging stuff)  while others avoid singletons completely (especially <em><a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD Worshipers</a></em>).</p>
+<p>That's all there is to a singleton.</p>
+<h2>Multiton</h2>
+<p>As the name suggests, a multiton is a design pattern that helps you create multiple singletons. Both are same, the only difference is that a multiton can store and retrieve <em>multiple</em> instances of itself. Obviously multiton  suffers from same problems as singletons.</p>
+<p>Here is example of multiton:</p>
+<pre><code>class Logger
+{
+    private static $instances = array();
+
+    public static function getInstance($key)
+    {
+        if(!array_key_exists($key, self::$instances)) {
+            self::$instances[$key] = new self();
+        }
+
+        return self::$instances[$key];
+    }
+
+    // prevent creating multiple instances due to "private" constructor
+    private function __construct(){}
+
+    // prevent the instance from being cloned
+    private function __clone(){}
+
+    // prevent from being unserialized
+    private function __wakeup(){}
+}</code></pre>
+<p>Usage:</p>
+<pre><code>$firstInstance = Logger::getInstance('file');
+$secondInstance = Logger::getInstance('email');</code></pre>]]></description>
+<link>https://codeinphp.github.io/post/singleton-and-multiton-design-patterns</link>
+<pubDate>Sat, 16 May 2015 17:21:00 +0500</pubDate>
+</item>
+<item>
 <title>Factory Design Pattern</title>
 <description><![CDATA[<h2>Overview</h2>
 <p>Factory design pattern works like a factory in the real world in that it creates something for others to use. In the context of OOP, it helps in creating and instantiating objects. </p>
