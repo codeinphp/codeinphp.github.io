@@ -11,6 +11,13 @@
   -webkit-text-size-adjust: none;
 }
 
+.hljs-attribute,
+.hljs-variable,
+.lisp .hljs-body,
+.hljs-name {
+    color: #89ADFF;
+}
+
 .hljs-keyword,
 .hljs-literal,
 .hljs-change,
@@ -104,7 +111,7 @@
 }
 
 .hljs-string {
-  color: #ec7600;
+  color: #FFFF7B;
 }
 
 .hljs-comment,
