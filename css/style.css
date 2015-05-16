@@ -22,3 +22,8 @@ body {
 footer {
     margin: 10px 0;
 }
+
+pre.code {
+    padding:0;
+    border:0;
+}
