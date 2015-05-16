@@ -78,7 +78,7 @@
 .hljs {
   display: block;
   overflow-x: auto;
-  background: black;
+  background: url(./pojoaque.jpg) repeat scroll left top #181914;
   color: #eaeaea;
   padding: 0.5em;
   -webkit-text-size-adjust: none;
