@@ -6,6 +6,33 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Slim3 Skeleton</title>
+<description><![CDATA[<p>I needed to start working on some personal project which essentially isn't going to be that big. For this I was looking for light framework so I looked into <a href="http://silex.sensiolabs.org/">Silex</a>, <a href="http://lumen.laravel.com/">Lumen</a> and <a href="http://www.slimframework.com/">Slim</a>. Even though all of them do good job I however chose Slim3 to go with.</p>
+<p>I had downloaded and started <em>configuring</em> Slim for my needs but then I saw a <a href="http://akrabat.com/a-slim3-skeleton/">post by Rob Allen</a> he posted yesterday mentioning that he has created Slim 3 skeleton. It was good because he already had put together all the goodies I needed:</p>
+<ul>
+<li>Built-in Dependency Injection Container (Slim uses Pimple DIC)</li>
+<li>Monolog</li>
+<li>Ability to inject middlewares</li>
+<li>Twig templating engine</li>
+<li>Dependency-Aware Controllers</li>
+</ul>
+<p>It provided good base to start with. I modified his skeleton a bit:</p>
+<ul>
+<li>Added <a href="http://tracy.nette.org/en/">Tracy PHP debugger</a></li>
+<li>Added nice-looking interface</li>
+<li>Created Twig templates with partials</li>
+<li>Modified folder structure a bit so that both frontend and backend assets can easily be added and used</li>
+</ul>
+<p>This now allows me to easily start working on my project.</p>
+<hr />
+<p>Here is screenshot of default page of Slim 3 skeleton I created:</p>
+<p><a href="https://codeinphp.github.io/images/1432042531555b3c238f08c.png">enter link description here</a></p>
+<hr />
+<p><strong><a href="https://github.com/sarfraznawaz2005/slim3-skeleton">Slim 3 Skeleton on Github</a></strong></p>]]></description>
+<link>https://codeinphp.github.io/post/slim3-skeleton</link>
+<pubDate>Tue, 19 May 2015 18:57:00 +0500</pubDate>
+</item>
+<item>
 <title>Singleton and Multiton Design Patterns</title>
 <description><![CDATA[<h2>Singleton</h2>
 <p>One of the simplest design patterns is the Singleton. The purpose of Singleton design pattern is to always have a <strong>single</strong> instance of a some class. Singletons are usually used for things you don't necessarily need multiple instances of such as database or logging or similar. You always work with same instance of a singleton object.</p>
