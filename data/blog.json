@@ -51,17 +51,18 @@
 			"author": "Sarfraz Ahmed",
 			"title": "Slim3 Skeleton",
 			"tags": [
-				"slim",
-				"github"
+				"github",
+				"slim"
 			],
 			"category": "PHP",
-			"body": "<p>I needed to start working on some personal project which essentially isn't going to be that big. For this I was looking for light framework so I looked into <a href=\"http:\/\/silex.sensiolabs.org\/\">Silex<\/a>, <a href=\"http:\/\/lumen.laravel.com\/\">Lumen<\/a> and <a href=\"http:\/\/www.slimframework.com\/\">Slim<\/a>. Even though all of them do good job I however chose Slim3 to go with.<\/p>\n<p>I had downloaded and started <em>configuring<\/em> Slim for my needs but then I saw a <a href=\"http:\/\/akrabat.com\/a-slim3-skeleton\/\">post by Rob Allen<\/a> he posted yesterday mentioning that he has created Slim 3 skeleton. It was good because he already had put together all the goodies I needed:<\/p>\n<ul>\n<li>Built-in Dependency Injection Container (Slim uses Pimple DIC)<\/li>\n<li>Monolog<\/li>\n<li>Ability to inject middlewares<\/li>\n<li>Twig templating engine<\/li>\n<li>Dependency-Aware Controllers<\/li>\n<\/ul>\n<p>It provided good base to start with. I modified his skeleton a bit:<\/p>\n<ul>\n<li>Added <a href=\"http:\/\/tracy.nette.org\/en\/\">Tracy PHP debugger<\/a><\/li>\n<li>Added nice-looking interface<\/li>\n<li>Created Twig templates with partials<\/li>\n<li>Modified folder structure a bit so that both frontend and backend assets can easily be added and used<\/li>\n<\/ul>\n<p>This now allows me to easily start working on my project.<\/p>\n<hr \/>\n<p>Here is screenshot of default page of Slim 3 skeleton I created:<\/p>\n<p><a href=\"https:\/\/codeinphp.github.io\/images\/1432042531555b3c238f08c.png\">enter link description here<\/a><\/p>\n<hr \/>\n<p><strong><a href=\"https:\/\/github.com\/sarfraznawaz2005\/slim3-skeleton\">Slim 3 Skeleton on Github<\/a><\/strong><\/p>",
+			"body": "<p>I needed to start working on some personal project which essentially isn't going to be that big. For this I was looking for light framework so I looked into <a href=\"http:\/\/silex.sensiolabs.org\/\">Silex<\/a>, <a href=\"http:\/\/lumen.laravel.com\/\">Lumen<\/a> and <a href=\"http:\/\/www.slimframework.com\/\">Slim<\/a>. Even though all of them do good job I however chose Slim3 to go with.<\/p>\n<p>I had downloaded and started <em>configuring<\/em> Slim for my needs but then I saw a <a href=\"http:\/\/akrabat.com\/a-slim3-skeleton\/\">post by Rob Allen<\/a> he posted yesterday mentioning that he has created Slim 3 skeleton. It was good because he already had put together all the goodies I needed:<\/p>\n<ul>\n<li>Built-in Dependency Injection Container (Slim uses Pimple DIC)<\/li>\n<li>Monolog<\/li>\n<li>Ability to inject middlewares<\/li>\n<li>Twig templating engine<\/li>\n<li>Dependency-Aware Controllers<\/li>\n<\/ul>\n<p>It provided good base to start with. I modified his skeleton a bit:<\/p>\n<ul>\n<li>Added <a href=\"http:\/\/tracy.nette.org\/en\/\">Tracy PHP debugger<\/a><\/li>\n<li>Added nice-looking interface<\/li>\n<li>Created Twig templates with partials<\/li>\n<li>Modified folder structure a bit so that both frontend and backend assets can easily be added and used<\/li>\n<\/ul>\n<p>This now allows me to easily start working on my project.<\/p>\n<hr \/>\n<p>Here is screenshot of default page of Slim 3 skeleton I created:<\/p>\n<p><img src=\"https:\/\/codeinphp.github.io\/images\/1432042531555b3c238f08c.png\" alt=\"slim-skeleton\" \/><\/p>\n<hr \/>\n<p><strong><a href=\"https:\/\/github.com\/sarfraznawaz2005\/slim3-skeleton\">Slim 3 Skeleton on Github<\/a><\/strong><\/p>",
 			"addpost": "addpost",
 			"dated": "May 19, 2015 06:57 PM",
 			"slug": "slim3-skeleton",
 			"categoryslug": "php",
 			"status": "publised",
 			"summary": "\n<p>I needed to start working on some personal project which essentially isn't going to be that big. For this I was looking for light framework so I looked into <a href=\"http:\/\/silex.sensiolabs.org\/\">Silex<\/a>, <a href=\"http:\/\/lumen.laravel.com\/\">Lumen<\/a> and <a href=\"http:\/\/www.slimframework.com\/\">...<\/a><\/p>\n",
+			"prevStatus": "publised",
 			"showbody": "1"
 		},
 		{
@@ -691,17 +692,18 @@
 			"author": "Sarfraz Ahmed",
 			"title": "Slim3 Skeleton",
 			"tags": [
-				"slim",
-				"github"
+				"github",
+				"slim"
 			],
 			"category": "PHP",
-			"body": "<p>I needed to start working on some personal project which essentially isn't going to be that big. For this I was looking for light framework so I looked into <a href=\"http:\/\/silex.sensiolabs.org\/\">Silex<\/a>, <a href=\"http:\/\/lumen.laravel.com\/\">Lumen<\/a> and <a href=\"http:\/\/www.slimframework.com\/\">Slim<\/a>. Even though all of them do good job I however chose Slim3 to go with.<\/p>\n<p>I had downloaded and started <em>configuring<\/em> Slim for my needs but then I saw a <a href=\"http:\/\/akrabat.com\/a-slim3-skeleton\/\">post by Rob Allen<\/a> he posted yesterday mentioning that he has created Slim 3 skeleton. It was good because he already had put together all the goodies I needed:<\/p>\n<ul>\n<li>Built-in Dependency Injection Container (Slim uses Pimple DIC)<\/li>\n<li>Monolog<\/li>\n<li>Ability to inject middlewares<\/li>\n<li>Twig templating engine<\/li>\n<li>Dependency-Aware Controllers<\/li>\n<\/ul>\n<p>It provided good base to start with. I modified his skeleton a bit:<\/p>\n<ul>\n<li>Added <a href=\"http:\/\/tracy.nette.org\/en\/\">Tracy PHP debugger<\/a><\/li>\n<li>Added nice-looking interface<\/li>\n<li>Created Twig templates with partials<\/li>\n<li>Modified folder structure a bit so that both frontend and backend assets can easily be added and used<\/li>\n<\/ul>\n<p>This now allows me to easily start working on my project.<\/p>\n<hr \/>\n<p>Here is screenshot of default page of Slim 3 skeleton I created:<\/p>\n<p><a href=\"https:\/\/codeinphp.github.io\/images\/1432042531555b3c238f08c.png\">enter link description here<\/a><\/p>\n<hr \/>\n<p><strong><a href=\"https:\/\/github.com\/sarfraznawaz2005\/slim3-skeleton\">Slim 3 Skeleton on Github<\/a><\/strong><\/p>",
+			"body": "<p>I needed to start working on some personal project which essentially isn't going to be that big. For this I was looking for light framework so I looked into <a href=\"http:\/\/silex.sensiolabs.org\/\">Silex<\/a>, <a href=\"http:\/\/lumen.laravel.com\/\">Lumen<\/a> and <a href=\"http:\/\/www.slimframework.com\/\">Slim<\/a>. Even though all of them do good job I however chose Slim3 to go with.<\/p>\n<p>I had downloaded and started <em>configuring<\/em> Slim for my needs but then I saw a <a href=\"http:\/\/akrabat.com\/a-slim3-skeleton\/\">post by Rob Allen<\/a> he posted yesterday mentioning that he has created Slim 3 skeleton. It was good because he already had put together all the goodies I needed:<\/p>\n<ul>\n<li>Built-in Dependency Injection Container (Slim uses Pimple DIC)<\/li>\n<li>Monolog<\/li>\n<li>Ability to inject middlewares<\/li>\n<li>Twig templating engine<\/li>\n<li>Dependency-Aware Controllers<\/li>\n<\/ul>\n<p>It provided good base to start with. I modified his skeleton a bit:<\/p>\n<ul>\n<li>Added <a href=\"http:\/\/tracy.nette.org\/en\/\">Tracy PHP debugger<\/a><\/li>\n<li>Added nice-looking interface<\/li>\n<li>Created Twig templates with partials<\/li>\n<li>Modified folder structure a bit so that both frontend and backend assets can easily be added and used<\/li>\n<\/ul>\n<p>This now allows me to easily start working on my project.<\/p>\n<hr \/>\n<p>Here is screenshot of default page of Slim 3 skeleton I created:<\/p>\n<p><img src=\"https:\/\/codeinphp.github.io\/images\/1432042531555b3c238f08c.png\" alt=\"slim-skeleton\" \/><\/p>\n<hr \/>\n<p><strong><a href=\"https:\/\/github.com\/sarfraznawaz2005\/slim3-skeleton\">Slim 3 Skeleton on Github<\/a><\/strong><\/p>",
 			"addpost": "addpost",
 			"dated": "May 19, 2015 06:57 PM",
 			"slug": "slim3-skeleton",
 			"categoryslug": "php",
 			"status": "publised",
 			"summary": "\n<p>I needed to start working on some personal project which essentially isn't going to be that big. For this I was looking for light framework so I looked into <a href=\"http:\/\/silex.sensiolabs.org\/\">Silex<\/a>, <a href=\"http:\/\/lumen.laravel.com\/\">Lumen<\/a> and <a href=\"http:\/\/www.slimframework.com\/\">...<\/a><\/p>\n",
+			"prevStatus": "publised",
 			"showbody": "1"
 		},
 		{
@@ -782,17 +784,18 @@
 			"author": "Sarfraz Ahmed",
 			"title": "Slim3 Skeleton",
 			"tags": [
-				"slim",
-				"github"
+				"github",
+				"slim"
 			],
 			"category": "PHP",
-			"body": "<p>I needed to start working on some personal project which essentially isn't going to be that big. For this I was looking for light framework so I looked into <a href=\"http:\/\/silex.sensiolabs.org\/\">Silex<\/a>, <a href=\"http:\/\/lumen.laravel.com\/\">Lumen<\/a> and <a href=\"http:\/\/www.slimframework.com\/\">Slim<\/a>. Even though all of them do good job I however chose Slim3 to go with.<\/p>\n<p>I had downloaded and started <em>configuring<\/em> Slim for my needs but then I saw a <a href=\"http:\/\/akrabat.com\/a-slim3-skeleton\/\">post by Rob Allen<\/a> he posted yesterday mentioning that he has created Slim 3 skeleton. It was good because he already had put together all the goodies I needed:<\/p>\n<ul>\n<li>Built-in Dependency Injection Container (Slim uses Pimple DIC)<\/li>\n<li>Monolog<\/li>\n<li>Ability to inject middlewares<\/li>\n<li>Twig templating engine<\/li>\n<li>Dependency-Aware Controllers<\/li>\n<\/ul>\n<p>It provided good base to start with. I modified his skeleton a bit:<\/p>\n<ul>\n<li>Added <a href=\"http:\/\/tracy.nette.org\/en\/\">Tracy PHP debugger<\/a><\/li>\n<li>Added nice-looking interface<\/li>\n<li>Created Twig templates with partials<\/li>\n<li>Modified folder structure a bit so that both frontend and backend assets can easily be added and used<\/li>\n<\/ul>\n<p>This now allows me to easily start working on my project.<\/p>\n<hr \/>\n<p>Here is screenshot of default page of Slim 3 skeleton I created:<\/p>\n<p><a href=\"https:\/\/codeinphp.github.io\/images\/1432042531555b3c238f08c.png\">enter link description here<\/a><\/p>\n<hr \/>\n<p><strong><a href=\"https:\/\/github.com\/sarfraznawaz2005\/slim3-skeleton\">Slim 3 Skeleton on Github<\/a><\/strong><\/p>",
+			"body": "<p>I needed to start working on some personal project which essentially isn't going to be that big. For this I was looking for light framework so I looked into <a href=\"http:\/\/silex.sensiolabs.org\/\">Silex<\/a>, <a href=\"http:\/\/lumen.laravel.com\/\">Lumen<\/a> and <a href=\"http:\/\/www.slimframework.com\/\">Slim<\/a>. Even though all of them do good job I however chose Slim3 to go with.<\/p>\n<p>I had downloaded and started <em>configuring<\/em> Slim for my needs but then I saw a <a href=\"http:\/\/akrabat.com\/a-slim3-skeleton\/\">post by Rob Allen<\/a> he posted yesterday mentioning that he has created Slim 3 skeleton. It was good because he already had put together all the goodies I needed:<\/p>\n<ul>\n<li>Built-in Dependency Injection Container (Slim uses Pimple DIC)<\/li>\n<li>Monolog<\/li>\n<li>Ability to inject middlewares<\/li>\n<li>Twig templating engine<\/li>\n<li>Dependency-Aware Controllers<\/li>\n<\/ul>\n<p>It provided good base to start with. I modified his skeleton a bit:<\/p>\n<ul>\n<li>Added <a href=\"http:\/\/tracy.nette.org\/en\/\">Tracy PHP debugger<\/a><\/li>\n<li>Added nice-looking interface<\/li>\n<li>Created Twig templates with partials<\/li>\n<li>Modified folder structure a bit so that both frontend and backend assets can easily be added and used<\/li>\n<\/ul>\n<p>This now allows me to easily start working on my project.<\/p>\n<hr \/>\n<p>Here is screenshot of default page of Slim 3 skeleton I created:<\/p>\n<p><img src=\"https:\/\/codeinphp.github.io\/images\/1432042531555b3c238f08c.png\" alt=\"slim-skeleton\" \/><\/p>\n<hr \/>\n<p><strong><a href=\"https:\/\/github.com\/sarfraznawaz2005\/slim3-skeleton\">Slim 3 Skeleton on Github<\/a><\/strong><\/p>",
 			"addpost": "addpost",
 			"dated": "May 19, 2015 06:57 PM",
 			"slug": "slim3-skeleton",
 			"categoryslug": "php",
 			"status": "publised",
 			"summary": "\n<p>I needed to start working on some personal project which essentially isn't going to be that big. For this I was looking for light framework so I looked into <a href=\"http:\/\/silex.sensiolabs.org\/\">Silex<\/a>, <a href=\"http:\/\/lumen.laravel.com\/\">Lumen<\/a> and <a href=\"http:\/\/www.slimframework.com\/\">...<\/a><\/p>\n",
+			"prevStatus": "publised",
 			"showbody": "1"
 		}
 	],
