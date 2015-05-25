@@ -6,6 +6,33 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Introducing Phexecute - PHP Code Runner</title>
+<description><![CDATA[<p>Some time ago I had <a href="http://codeinphp.github.io/post/phpexecute-php-code-runner/">posted about PHPExecute</a> which is PHP code runner / tester. The purpose of PHPExecute was to quickly test some PHP code and save snippets for later use. PHPExecute was very basic, I always wanted to have ability to write tests, store unlimited snippets, check coding conventions based on PSR2 but I actually never updated it to implement those features. Last weekend I sat down and wrote <strong><a href="https://github.com/sarfraznawaz2005/Phexecute">Phexecute</a></strong> , it supersedes PHPExecute. </p>
+<p>Phexecute has these features:</p>
+<ul>
+<li>PHP Code_Sniffer to easily identify and fix problematic parts of code (through PSR-2)</li>
+<li>Run PHPUnit tests and see results right inside browser</li>
+<li>Run SimpleTest tests</li>
+<li>Uses Symfony VarDumper component easy visualization of vars, arrays, objects</li>
+<li>Ability to save unlimited snippets</li>
+<li>Live PHP error highlighting</li>
+<li>Easy to extend</li>
+</ul>
+<h2>Screenshots</h2>
+<p>Main Screen</p>
+<p><img src="https://raw.github.com/sarfraznawaz2005/phexecute/master/screenshots/main.png" alt="Main Window" /></p>
+<p>PHP Code_Sniffer Results</p>
+<p><img src="https://raw.github.com/sarfraznawaz2005/phexecute/master/screenshots/codesniffer.png" alt="CodeSniffer Window" /></p>
+<p>PHPUnit Results</p>
+<p><img src="https://raw.github.com/sarfraznawaz2005/phexecute/master/screenshots/phpunit.png" alt="PHPUnit Window" /></p>
+<p>SimpleTest Results</p>
+<p><img src="https://raw.github.com/sarfraznawaz2005/phexecute/master/screenshots/simpletest.png" alt="SimpleTest Window" /></p>
+<hr />
+<p><a href="https://github.com/sarfraznawaz2005/Phexecute">Checkout Phexecute on Github</a></p>]]></description>
+<link>https://codeinphp.github.io/post/introducing-phexecute-php-code-runner</link>
+<pubDate>Mon, 25 May 2015 13:04:00 +0500</pubDate>
+</item>
+<item>
 <title>Slim3 Skeleton</title>
 <description><![CDATA[<p>I needed to start working on some personal project which essentially isn't going to be that big. For this I was looking for light framework so I looked into <a href="http://silex.sensiolabs.org/">Silex</a>, <a href="http://lumen.laravel.com/">Lumen</a> and <a href="http://www.slimframework.com/">Slim</a>. Even though all of them do good job I however chose Slim3 to go with.</p>
 <p>I had downloaded and started <em>configuring</em> Slim for my needs but then I saw a <a href="http://akrabat.com/a-slim3-skeleton/">post by Rob Allen</a> he posted yesterday mentioning that he has created Slim 3 skeleton. It was good because he already had put together all the goodies I needed:</p>
