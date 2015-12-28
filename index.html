@@ -71,34 +71,204 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/introducing-phexecute-php-code-runner">Introducing Phexecute - PHP Code Runner</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/coding-to-interface">Coding to Interface</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> May 25, 2015 01:04 PM
+                    <span class="glyphicon glyphicon-time"></span> December 28, 2015 11:45 PM
                 
                         <hr>
-                        <p class="post-content"><p>Some time ago I had <a href="http://codeinphp.github.io/post/phpexecute-php-code-runner/">posted about PHPExecute</a> which is PHP code runner / tester. The purpose of PHPExecute was to quickly test some PHP code and save snippets for later use. PHPExecute was very basic, I always wanted to have ability to write tests, store unlimited snippets, check coding conventions based on PSR2 but I actually never updated it to implement those features. Last weekend I sat down and wrote <strong><a href="https://github.com/sarfraznawaz2005/Phexecute">Phexecute</a></strong> , it supersedes PHPExecute. </p>
-<p>Phexecute has these features:</p>
+                        <p class="post-content"><p>One of the nicest things you can add to your programming skills is <strong>coding to interface</strong>. One of the <a href="https://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29">five principles of S.O.L.I.D</a> is <a href="https://en.wikipedia.org/wiki/Dependency_inversion_principle">Dependency inversion principle</a> which states:</p>
+<blockquote>
+<p>In object-oriented programming, the dependency inversion principle
+refers to a specific form of decoupling software modules. When
+following this principle, the conventional dependency relationships
+established from high-level, policy-setting modules to low-level,
+dependency modules are reversed, thus rendering high-level modules
+independent of the low-level module implementation details. The
+principle states:<a href="https://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29">1</a></p>
+<p>A. High-level modules should not depend on low-level modules. Both
+should depend on abstractions.</p>
+<p>B. Abstractions should not depend on details. Details should depend on
+abstractions.</p>
+</blockquote>
+<p>Pretty <em>formal</em> definition hun ? let's understand through example actually.</p>
+<p>Imagine we have rudimentary MySQL wrapper class:</p>
+<pre><code>class Mysql
+{
+    protected $db = null;
+
+    public function connect($dsn, $user = '', $pass = '')
+    {
+        $this-&gt;db = new PDO($dsn, $user, $pass);
+    }
+
+    public function query($query)
+    {
+        return $this-&gt;db-&gt;query($query);
+    }
+}</code></pre>
+<p>Pretty common and valid code in old days we used to be proud while writing such class. There are couple of problems associated with it though:</p>
 <ul>
-<li>PHP Code_Sniffer to easily identify and fix problematic parts of code (through PSR-2)</li>
-<li>Run PHPUnit tests and see results right inside browser</li>
-<li>Run SimpleTest tests</li>
-<li>Uses Symfony VarDumper component easy visualization of vars, arrays, objects</li>
-<li>Ability to save unlimited snippets</li>
-<li>Live PHP error highlighting</li>
-<li>Easy to extend</li>
+<li>The class <code>Mysql</code> has implicit dependency (tight-coupling) on the <code>PDO</code> class. All dependencies should always be explicit not implicit.</li>
+<li>It is hard to unit-test due to implicit dependency</li>
 </ul>
-<h2>Screenshots</h2>
-<p>Main Screen</p>
-<p><img src="https://raw.github.com/sarfraznawaz2005/phexecute/master/screenshots/main.png" alt="Main Window" /></p>
-<p>PHP Code_Sniffer Results</p>
-<p><img src="https://raw.github.com/sarfraznawaz2005/phexecute/master/screenshots/codesniffer.png" alt="CodeSniffer Window" /></p>
-<p>PHPUnit Results</p>
-<p><img src="https://raw.github.com/sarfraznawaz2005/phexecute/master/screenshots/phpunit.png" alt="PHPUnit Window" /></p>
-<p>SimpleTest Results</p>
-<p><img src="https://raw.github.com/sarfraznawaz2005/phexecute/master/screenshots/simpletest.png" alt="SimpleTest Window" /></p>
-<hr />
-<p><a href="https://github.com/sarfraznawaz2005/Phexecute">Checkout Phexecute on Github</a></p></p>
+<p>Let's use above class:</p>
+<pre><code>class User
+{
+    private $database = null;
+
+    public function __construct()
+    {
+        $this-&gt;database = new Mysql();
+        $this-&gt;database-&gt;connect('mysql:host=localhost;dbname=test', 'root', '');
+    }
+
+    public function getUsers()
+    {
+        $users = $this-&gt;database-&gt;query('SELECT * FROM users ORDER BY id DESC');
+        print_r($users);
+    }
+}
+
+$user = new User();
+$user-&gt;getUsers();</code></pre>
+<p>Again pretty common piece of code but again this one has even more problems:</p>
+<ul>
+<li>The class <code>User</code> has implicit dependency (tight-coupling) on the <code>Mysql</code> class. All dependencies should always be explicit not implicit.</li>
+<li>It is hard to unit-test due to implicit dependency</li>
+<li>If we wanted to change database credentials, we need to edit the <code>User</code> class which is not good; every class should be completely <strong>modular</strong> or black box. If we need to operate further on it, we should actually use its public properties and methods instead of editing it again and again.</li>
+<li>Let's assume right now class is using MySQL as database. What if we wanted to use some other type of database ? You will have to modify class.</li>
+<li>The <code>User</code> class does not necessarily need to know about database connection, it should be confined to its own functionality only. So writing database connection code in <code>User</code> class doesn't make it modular. This defeats the <a href="http://en.wikipedia.org/wiki/Single_responsibility_principle">Single responsibility principle</a>.</li>
+</ul>
+<p>You might wonder above code has problems but these days we write code based on MVC design pattern and follow best practices and write <em>modern code</em> but I am sure below code is pretty common even today using any framework you use:</p>
+<pre><code>class UserController extends Controller
+{
+    public function actionListAllUsers()
+    {          
+       // fetch all users from database
+        $users = User::model()-&gt;findAll();
+
+       // show them on screen
+        print_r($users);          
+    }
+}</code></pre>
+<p>If you analyze this has same problems again in that class <code>UserController</code> is tightly coupled (implicit dependency) with <code>User</code> model class which also makes it hard to unit-test.</p>
+<p>This means:</p>
+<blockquote>
+<p>Coupled Code is Evil BIG DOT</p>
+</blockquote>
+<h2>So what's the solution ?</h2>
+<p>The solution is <a href="https://en.wikipedia.org/wiki/Dependency_injection">Dependency Injection</a> (see my previous post <a href="http://codeinphp.github.io/post/dependency-injection-in-php/">Dependency Injection in PHP</a>). The idea behind Dependency Injection is that instead of writing implicit dependencies, we should pass/provide those via constructor or setter method or even interface.</p>
+<p>Let's refactor <code>User</code> class code and pass our dependency via constructor instead of hard-coding it inside <code>User</code> class method:</p>
+<pre><code>class User
+{
+    private $database = null;
+
+    public function __construct(Mysql $database)
+    {
+        $this-&gt;database = $database;
+    }
+
+    public function getUsers()
+    {
+        $users = $this-&gt;database-&gt;query('SELECT * FROM users ORDER BY id DESC');
+        print_r($users);
+    }
+}
+
+$database = new Mysql();
+$database-&gt;connect('mysql:host=localhost;dbname=test', 'root', '');
+$user = new User($database);
+$user-&gt;getUsers();</code></pre>
+<p>This is much better! We no more have implicit dependency on <code>Mysql</code> class which also makes our <code>User</code> class easier to unit-test. The class makes clear intention that it needs some sort of <code>Mysql</code> class. It also doesn't know (or care) where <code>Mysql</code> will come form, it just needs one to operate. The <code>User</code> class is now completely modular and follows single responsibility principle (that of manipulating users).</p>
+<p>In the similar way, we can also improve our modern code:</p>
+<pre><code>class UserController extends Controller
+{
+    protected $user;
+
+    public function __construct(User $user)
+    {
+        $this-&gt;user = $user;
+    }
+
+    public function actionListAllUsers()
+    {          
+       // fetch all users from database
+        $users = $this-&gt;user-&gt;findAll();
+
+       // show them on screen
+        print_r($users);          
+    }
+}</code></pre>
+<p>Here again we pass dependency (<code>User</code> class) of <code>UserController</code> via its constructor making it much better. So all good ? Not really...</p>
+<h2>We still have a problem</h2>
+<p>One problem with <code>User</code> class which still persists is that it is tied to <strong>specific type of database</strong> (<code>Mysql</code>). What if we wanted to use some other database like Sqlite or SQL Server or some other ? Well this is where <strong>dependency inversion principle</strong> comes into play. </p>
+<p>To overcome this problem, we need to create an <strong>interface</strong> (abstraction or contract - see definition of DIP above) which would allow us to use <em>any database</em> with <code>User</code> class. Here is our interface that all databases would implement:</p>
+<pre><code>interface DB
+{
+    public function connect($dsn, $user = '', $pass = '');
+    public function query($query);
+}</code></pre>
+<p>Here is <code>Mysql</code> class now implementing above interface:</p>
+<pre><code>class Mysql implements DB
+{
+    protected $db = null;
+
+    public function connect($dsn, $user = '', $pass = '')
+    {
+        $this-&gt;db = new PDO($dsn, $user, $pass);
+    }
+
+    public function query($query)
+    {
+        return $this-&gt;db-&gt;query($query);
+    }
+}</code></pre>
+<p>Another database class implementing above interface:</p>
+<pre><code>class Sqlite implements DB
+{
+    protected $db = null;
+
+    public function connect($dsn, $user = '', $pass = '')
+    {
+        $this-&gt;db = new PDO($dsn);
+    }
+
+    public function query($query)
+    {
+        return $this-&gt;db-&gt;query($query);
+    }
+}</code></pre>
+<p>As you can see both <code>Mysql</code> and <code>Sqlite</code> implement methods imposed by the interface. Finally here is our <code>User</code> class:</p>
+<pre><code>class User
+{
+    private $database = null;
+
+    public function __construct(DB $database)
+    {
+        $this-&gt;database = $database;
+    }
+
+    public function getUsers()
+    {
+        $users = $this-&gt;database-&gt;query('SELECT * FROM users ORDER BY id DESC');
+        print_r($users);
+    }
+}</code></pre>
+<p>Notice that in constructor of above class, we are now passing interface rather than specific type of database.</p>
+<p>Now we can use any database for the <code>User</code> class, here is example of <code>Mysql</code>:</p>
+<pre><code>$database = new Mysql();
+$database-&gt;connect('mysql:host=localhost;dbname=test', 'root', '');
+$user = new User($database);
+$user-&gt;getUsers();</code></pre>
+<p>And example of <code>Sqlite</code> database class:</p>
+<pre><code>$database = new Sqlite();
+$database-&gt;connect('sqlite:database.sqlite');
+$user = new User($database);
+$user-&gt;getUsers();</code></pre>
+<p>Amazing! we can now readily change database to be used with our <code>User</code> class, our <code>User</code> class is much more flexible by following the dependency inversion principle. If client requires to use some other database, no problem we implement one and specify to <code>User</code> class in similar fashion!</p>
+<p>As you can see we took basic and common example of code and converted it into re-usable, flexible, modular and testable piece of code. </p>
+<p>You might want to read more about <a href="https://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29">S.O.L.I.D principles</a> to write pleasant code and as bonus avoid <a href="http://williamdurand.fr/2013/07/30/from-stupid-to-solid-code/">S.T.U.P.I.D</a> code.</p></p>
                         <br/>
                 
                         <div class="post-info">
@@ -108,9 +278,10 @@
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
+                                <a href="https://codeinphp.github.io/tag/interface">interface</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/oop">oop</a>&nbsp;&nbsp;
                                 <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/runner">runner</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/tester">tester</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/polymorphism">polymorphism</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -163,11 +334,11 @@
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/coding-to-interface">Coding to Interface</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/introducing-phexecute-php-code-runner">Introducing Phexecute - PHP Code Runner</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/slim3-skeleton">Slim3 Skeleton</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/singleton-and-multiton-design-patterns">Singleton and Multiton Design Patterns</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/factory-design-pattern">Factory Design Pattern</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/quick-learning-resources-via-stackoverflow">Quick Learning Resources via StackOverflow</a></li>
                 </ul>
             </div>
         
@@ -193,7 +364,7 @@
                         <strong>Archives</strong>
                     </div>
         
-                    <ul class="archives list-group"><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/may-2015">May 2015</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/april-2015">April 2015</a></li></ul>
+                    <ul class="archives list-group"><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/december-2015">December 2015</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/may-2015">May 2015</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/april-2015">April 2015</a></li></ul>
                 </div>
         
             <!-- Tags -->
@@ -232,16 +403,17 @@
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/github" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">github</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/googledrive" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">googledrive</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/injection" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">injection</a>
-<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/interface" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">interface</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/interface" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">interface</a>
 <a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/javascript" title="3 total posts" data-original-title="4 total posts" data-toggle="tooltip">javascript</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/lambda" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">lambda</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/laravel" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">laravel</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/migration" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">migration</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/mysql" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">mysql</a>
-<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="3 total posts" data-original-title="4 total posts" data-toggle="tooltip">oop</a>
+<a style="font-size: 14px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="4 total posts" data-original-title="5 total posts" data-toggle="tooltip">oop</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/pdo" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">pdo</a>
-<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="24 total posts" data-original-title="25 total posts" data-toggle="tooltip">php</a>
+<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="25 total posts" data-original-title="26 total posts" data-toggle="tooltip">php</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/phpexecute" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">phpexecute</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/polymorphism" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">polymorphism</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/refactoring" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">refactoring</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/runner" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">runner</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/scope" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">scope</a>
