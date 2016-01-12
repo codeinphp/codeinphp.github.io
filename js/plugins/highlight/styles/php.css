@@ -3,7 +3,11 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 */
 
 pre {
-    border: 1px solid #aaa;
+    border: 8px solid #aaa;
+    
+    -moz-box-shadow: 10px 10px 5px #AAA;
+    -webkit-box-shadow: 10px 10px 5px #AAA;
+    box-shadow: 0 0 15px #333;
 }
 
 .hljs {
@@ -15,9 +19,6 @@ pre {
     border: 1px solid #ccc;
     margin:5px;
     -webkit-text-size-adjust: none;
-       -moz-box-shadow: 10px 10px 5px #AAA;
-    -webkit-box-shadow: 10px 10px 5px #AAA;
-    box-shadow: 0 0 15px #333;
 }
 
 .hljs-comment,
