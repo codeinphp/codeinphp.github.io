@@ -28,7 +28,7 @@ pre.code {
     border:0;
 }
 
-p code {
+p code, ul code {
     padding: 2px 4px;
     font-size: 90%;
     color: #000;
