@@ -29,8 +29,8 @@ pre.code {
 }
 
 ::selection {
-  background: #8892BF; /* WebKit/Blink Browsers */
+  background: orange; /* WebKit/Blink Browsers */
 }
 ::-moz-selection {
-  background: #8892BF; /* Gecko Browsers */
+  background: orange; /* Gecko Browsers */
 }

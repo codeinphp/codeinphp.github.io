@@ -3,18 +3,21 @@ php.net style (c) Sarfraz Ahmed <sarfraznawaz2005@gmail.com>
 */
 
 pre {
-    box-shadow: 0 0 10px 0 rgba(197, 197, 197, 0.75);
-    -moz-box-shadow: 0 0 10px 0 rgba(197, 197, 197, 0.75);
-    -webkit-box-shadow: 0 0 10px 0 rgba(197, 197, 197, 0.75);
+    border: 1px solid #aaa;
 }
 
 .hljs {
     display: block;
     overflow-x: auto;
-    padding: 0.5em;
+    padding: 1em;
     color: #0000BB;
     background: #eee;
+    border: 1px solid #ccc;
+    margin:5px;
     -webkit-text-size-adjust: none;
+       -moz-box-shadow: 10px 10px 5px #AAA;
+    -webkit-box-shadow: 10px 10px 5px #AAA;
+    box-shadow: 0 0 15px #333;
 }
 
 .hljs-comment,
