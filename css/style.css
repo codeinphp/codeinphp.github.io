@@ -28,6 +28,14 @@ pre.code {
     border:0;
 }
 
+p code {
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #000;
+    background-color: #ffe4b7;
+    border-radius: 4px;
+}
+
 ::selection {
   background: orange; /* WebKit/Blink Browsers */
 }
