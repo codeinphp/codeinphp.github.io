@@ -6,6 +6,19 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Fast MySQL Backup and Restore</title>
+<description><![CDATA[<p>Backing up and restoring MySQL database is generally trivial task however when database is huge, it is really a pain to do so because of amount of time it takes to perform backup/restore operation with conventional tools like PHPMyAdmin or similar.</p>
+<p>If you have <strong>SSH access</strong> to server, we can leverage built-in MySQL commands <a href="https://dev.mysql.com/doc/refman/5.5/en/mysqldump.html"><code>mysqldump</code></a> and <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql.html"><code>mysql</code></a> respectively to backup and restore big database really fast.</p>
+<p><strong>To Backup Database:</strong></p>
+<p><code>mysqldump -uDB_USER_HERE -pDB_PASSWORD_HERE DATABASE_NAME_HERE &gt; backup.sql</code></p>
+<p><strong>To Restore Database:</strong></p>
+<p><code>mysql -uDB_USER_HERE -pDB_PASSWORD_HERE DATABASE_NAME_HERE &lt; backup.sql</code></p>
+<hr />
+<p><strong>Note:</strong> If you don't have SSH access, you can use tools like <a href="http://www.mysqldumper.net/">MySQLDumper</a> which does fairly good job but not as fast as <code>mysqldump</code> and <code>mysql</code> commands of course.</p>]]></description>
+<link>https://codeinphp.github.io/post/fast-mysql-backup-and-restore</link>
+<pubDate>Sun, 29 May 2016 18:57:00 +0500</pubDate>
+</item>
+<item>
 <title>Coding to Interface</title>
 <description><![CDATA[<p>One of the nicest things you can add to your programming skills is <strong>coding to interface</strong>. One of the <a href="https://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29">five principles of S.O.L.I.D</a> is <a href="https://en.wikipedia.org/wiki/Dependency_inversion_principle">Dependency inversion principle</a> which states:</p>
 <blockquote>
