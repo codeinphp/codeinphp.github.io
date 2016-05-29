@@ -22,7 +22,7 @@
 	"pages": [
 		{
 			"title": "About",
-			"body": "<img src=\"https:\/\/codeinphp.github.io\/images\/1464528216574aed582f5bb.png\" width=\"150\" height=\"180\"\/>\n<p>Hello, I am Sarfraz Ahmed, a self-taught programmer from Karachi, Pakistan mainly involved in PHP, MySQL, HTML\/CSS, JavaScript\/jQuery for around 7+ years now. I also have bit of experience with Android platform. I am also Pakistan's top user on <a href=\"http:\/\/stackoverflow.com\/users\/139459\/sarfraz\">StackOverflow<\/a> by reputation holding Gold badge for the tags PHP, Javascript, jQuery, HTML and CSS.<\/p>",
+			"body": "<img src=\"https:\/\/codeinphp.github.io\/images\/1464528216574aed582f5bb.png\" width=\"175\" height=\"180\"\/>\n<p>Hello, I am Sarfraz Ahmed, a self-taught programmer from Karachi, Pakistan mainly involved in PHP, MySQL, HTML\/CSS, JavaScript\/jQuery for around 7+ years now. I also have bit of experience with Android platform. I am also Pakistan's top user on <a href=\"http:\/\/stackoverflow.com\/users\/139459\/sarfraz\">StackOverflow<\/a> by reputation holding Gold badge for the tags PHP, Javascript, jQuery, HTML and CSS.<\/p>",
 			"slug": "about",
 			"generated": ""
 		},
