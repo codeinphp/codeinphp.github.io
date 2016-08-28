@@ -6,6 +6,351 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>From Bad to Good: DI, DIC and Services</title>
+<description><![CDATA[<p>In this post, I intend to touch the concepts of:</p>
+<ul>
+<li>Dependency Injection (<a href="http://codeinphp.github.io/post/dependency-injection-in-php/">My previous post on DI</a>)</li>
+<li>Dependency Injection Container (DIC)</li>
+<li>Services</li>
+</ul>
+<p>Even though these terms seems scary at first especially to new-comers but are really easy to understand and help write <strong>quality code that is easy to understand and extend</strong>. We will take a ^legacy code^ and convert it into object-oriented one by using these principles.</p>
+<p>Suppose we have simple application that sends newsletter email to all its subscribers, here is the legacy code:</p>
+<pre><code>// file: index.php or could also be considered as Controller file in MVC paradigm
+
+require __DIR__ . 'vendor/autoload.php';
+
+use Demo\Mailer\SmtpMailer;
+
+$dsn = 'sqlite:' . __DIR__ . 'database.sqlite';
+$pdo = new PDO($dsn);
+
+$mailer = new SmtpMailer('smtp.example.com', 'user', 'password', '465');
+
+$sql = 'SELECT * from subscribers';
+
+foreach ($pdo-&gt;query($sql) as $row) {
+    $mailer-&gt;sendMessage(
+        $row['email'],
+        'This is the email body',
+        $row['name'],
+        'info@example.com'
+    );
+}</code></pre>
+<p>Right now above code smells and has these problems:</p>
+<ul>
+<li>Logic is mixed up, SQL queries, sending emails database configuration is all in one file</li>
+</ul>
+<p>To fix this, first instinct is to convert it into class:</p>
+<pre><code>class SubscriberMailer
+{
+    public function sendEmails()
+    {
+        $dsn = 'sqlite:' . __DIR__ . 'database.sqlite';
+        $pdo = new PDO($dsn);
+
+        $mailer = new SmtpMailer('smtp.example.com', 'user', 'password', '465');
+
+        $sql = 'SELECT * from subscribers';
+
+        foreach ($pdo-&gt;query($sql) as $row) {
+            $mailer-&gt;sendMessage(
+                $row['email'],
+                'This is the email body',
+                $row['name'],
+                'info@example.com'
+            );
+        }
+    }
+}</code></pre>
+<p>This looks good to eye but it has more problems:</p>
+<ul>
+<li>Logic is <em>still</em> mixed up, SQL queries, sending emails database configuration is all in one file</li>
+<li>It has hard-coded dependencies (tight-coupling) on PDO and Mailer class, what if we wanted to change Mailer class ?</li>
+<li>It is hard to unit-test because of tight coupling</li>
+</ul>
+<p>Let's try to fix these problems. We can see that this class has dependency on PDO so instead of hard-coding it inside <code>SubscriberMailer</code> class, we can ^pass^ it via its constructor which now makes the class:</p>
+<pre><code>class SubscriberMailer
+{
+    protected $pdo = null;
+
+    public function __construct($pdo)
+    {
+        $this-&gt;pdo = $pdo;
+    }
+
+    public function sendEmails()
+    {
+        $mailer = new SmtpMailer('smtp.example.com', 'user', 'password', '465');
+
+        $sql = 'SELECT * from subscribers';
+
+        foreach ($this-&gt;pdo-&gt;query($sql) as $row) {
+            $mailer-&gt;sendMessage(
+                $row['email'],
+                'This is the email body',
+                $row['name'],
+                'info@example.com'
+            );
+        }
+    }
+}</code></pre>
+<p>This is a bit better, the class doesn't care where PDO objects comes from, it just needs one to operate and you can't instantiate the class without providing one so it makes it intention clear and easy. So this is what is called <strong>Dependency Injection</strong>, no need to fear even though the term sounded scary initially (read my <a href="http://codeinphp.github.io/post/dependency-injection-in-php/">previous article</a> on more ways of injecting dependencies). Here is how we use above class at this point of the time:</p>
+<pre><code>require __DIR__ . 'vendor/autoload.php';
+
+use Demo\Mailer\SmtpMailer;
+use Demo\Mailer\SubscriberMailer;
+
+$dsn = 'sqlite:' . __DIR__ . 'database.sqlite';
+$pdo = new PDO($dsn);
+
+$subscriberMailer = new SubscriberMailer($pdo);
+$subscriberMailer-&gt;sendEmails();</code></pre>
+<p>This is starting to look better compared to first snippet of code. However, we still have a problem in that we have hard-coded smtp config into our class, what if we wanted to change the smtp config without touching the class ? Or what if we had different setup of smtp config for development and production ? Remember a class should be a black-box which simply does its job without editing it again and again, you can only extend it not edit it. So this reasoning hints us that like pdo, we should also pass smtp config via class's constructor and move it from the class itself.</p>
+<pre><code>class SubscriberMailer
+{
+    protected $pdo = null;
+    protected $smtpConfig = [];
+
+    public function __construct($pdo, array $smtpConfig)
+    {
+        $this-&gt;pdo = $pdo;
+        $this-&gt;smtpConfig = $smtpConfig;
+    }
+
+    public function sendEmails()
+    {
+        $mailer = new SmtpMailer(
+            $this-&gt;smtpConfig['host'],
+            $this-&gt;smtpConfig['user'],
+            $this-&gt;smtpConfig['password'],
+            $this-&gt;smtpConfig['port']
+        );
+
+        $sql = 'SELECT * from subscribers';
+
+        foreach ($this-&gt;pdo-&gt;query($sql) as $row) {
+            $mailer-&gt;sendMessage(
+                $row['email'],
+                'This is the email body',
+                $row['name'],
+                'info@example.com'
+            );
+        }
+    }
+}</code></pre>
+<p>Usage:</p>
+<pre><code>require __DIR__ . 'vendor/autoload.php';
+
+use Demo\Mailer\SmtpMailer;
+use Demo\Mailer\SubscriberMailer;
+
+$dsn = 'sqlite:' . __DIR__ . 'database.sqlite';
+$pdo = new PDO($dsn);
+
+$subscriberMailer = new SubscriberMailer($pdo, [
+   'host' =&gt; 'smtp.example.com',
+   'user' =&gt; 'user',
+   'password' =&gt; 'password',
+   'port' =&gt; '465',
+]);
+
+$subscriberMailer-&gt;sendEmails();</code></pre>
+<p>This is better, we can now readily change smtp config in one place and we don't have to touch our class. It still has these problems though:</p>
+<ul>
+<li>It is tightly coupled to SMTP mailer, what if we wanted to change mailer from smtp to another one like sendmail ?</li>
+<li>SQL is still written in our class, logic is mixed up, our mail class shouldn't know about users or interact with database, it just needs to send emails !</li>
+</ul>
+<blockquote>
+<p><code>Hint</code>: The <code>new</code> keyword is considered code-smell, whenever you
+encounter it, it means it is something you should pass via dependency
+injection.</p>
+</blockquote>
+<p>So by now we know that to remove hard-coded dependency or tight-coupling, we should pass it instead via dependency injection. So instead of passing mailer config, we should pass mailer object instead:</p>
+<pre><code>class SubscriberMailer
+{
+    protected $pdo = null;
+    protected $mailer = null;
+
+    public function __construct(\PDO $pdo, SmtpMailer $mailer)
+    {
+        $this-&gt;pdo = $pdo;
+        $this-&gt;mailer = $mailer;
+    }
+
+    public function sendEmails()
+    {
+        $sql = 'SELECT * from subscribers';
+
+        foreach ($this-&gt;pdo-&gt;query($sql) as $row) {
+            $this-&gt;mailer-&gt;sendMessage(
+                $row['email'],
+                'This is the email body',
+                $row['name'],
+                'info@example.com'
+            );
+        }
+    }
+}</code></pre>
+<p>Usage:</p>
+<pre><code>require __DIR__ . 'vendor/autoload.php';
+
+use Demo\Mailer\SmtpMailer;
+use Demo\Mailer\SubscriberMailer;
+
+$dsn = 'sqlite:' . __DIR__ . 'database.sqlite';
+$pdo = new PDO($dsn);
+
+$mailer = new SmtpMailer('smtp.example.com', 'user', 'password', '465');
+
+$subscriberMailer = new SubscriberMailer($pdo, $mailer);       
+$subscriberMailer-&gt;sendEmails();</code></pre>
+<p>This is better, we removed hard-coded dependency to smtp mailer and notice that we have also type-hinted the PDO and SmtpMailer in the constructor of our class, this is extremely helpful because:</p>
+<ul>
+<li>Our class makes clear intention that it needs a PDO and SmtpMailer to work properly</li>
+<li>If somebody passes something other than these two dependencies, they would get clear error message</li>
+<li>Type-hinting makes our code self-documenting</li>
+<li>It makes IDE auto-completion </li>
+</ul>
+<p>Right now our mailer class knows it needs an instance of SmtpMailer to work and it should have a <code>sendMessage</code> method. Remember, we refactored out code in hope that we might use some other type of mailer like sendmail but problem is that it might not necessarily have the <code>sendMessage</code> method which means we cannot use it. So how do we solve this problem to be able to use some other type of mailer implementation ? Well the answer is to use an interface/contract and use that instead:</p>
+<pre><code>// app/Demo/Contracts/MailerInterface.php
+interface MailerInterface
+{
+   public function sendMessage($email, $body, $subject, $from);
+}
+
+// app/Demo/Mailer/SubscriberMailer.php
+use Demo\Contracts\MailerInterface;
+
+class SubscriberMailer implements MailerInterface
+{
+    protected $pdo = null;
+    protected $mailer = null;
+
+    public function __construct(\PDO $pdo, MailerInterface $mailer)
+    {
+        $this-&gt;pdo = $pdo;
+        $this-&gt;mailer = $mailer;
+    }
+
+    public function sendEmails()
+    {
+        $sql = 'SELECT * from subscribers';
+
+        foreach ($this-&gt;pdo-&gt;query($sql) as $row) {
+            $this-&gt;mailer-&gt;sendMessage(
+                $row['email'],
+                'This is the email body',
+                $row['name'],
+                'info@example.com'
+            );
+        }
+    }
+}</code></pre>
+<p>Notice how our class now implements the <code>MailerInterface</code> and is also type-hinted in constructor. Just like every step that we are performing, this step also has nice advantages:</p>
+<ul>
+<li>Our <code>SubscriberMailer</code> class is now greatly expandable since it now accepts <strong>ANY object</strong> that implements <code>MailerInterface</code> that has <code>sendMessage</code> method</li>
+<li>It documents our code a bit more, it is clear now how an object should be constructed that implements the <code>MailerInterface</code></li>
+</ul>
+<p>All well and good so far. We now see that in our class has SQL to get users. Again it should not care about talking to database, it just needs users' emails to send emails to. To fix this, we need use the <strong>Repository Pattern</strong> which is essentially a class talking to database to manipulate specific entity, in this case users. So we can pass <code>UserRepository</code> as dependency that has a method to get all users:</p>
+<pre><code>// app/Demo/Mailer/SubscriberMailer.php
+use Demo\Contracts\MailerInterface;
+use Demo\Repositories\UserRepository;
+
+class SubscriberMailer implements MailerInterface
+{
+    protected $mailer = null;
+    protected $userRepository = null;
+
+    public function __construct(MailerInterface $mailer, UserRepository $userRepository)
+    {
+        $this-&gt;mailer = $mailer;
+        $this-&gt;userRepository = $userRepository;
+    }
+
+    public function sendEmails()
+    {
+        $users = $this-&gt;userRepository-&gt;getAll();
+
+        foreach ($users as $user) {
+            $this-&gt;mailer-&gt;sendMessage(
+                $user-&gt;email,
+                'This is the email body',
+                $user-&gt;name,
+                'info@example.com'
+            );
+        }
+    }
+}</code></pre>
+<p>Usage:</p>
+<pre><code>require __DIR__ . 'vendor/autoload.php';
+
+use Demo\Mailer\SmtpMailer;
+use Demo\Mailer\SubscriberMailer;
+use Demo\Repositories\UserRepository;
+
+$mailer = new SmtpMailer('smtp.example.com', 'user', 'password', '465');
+
+$subscriberMailer = new SubscriberMailer($mailer, new UserRepository);    
+$subscriberMailer-&gt;sendEmails();</code></pre>
+<p>Awesome! our <code>SubscriberMailer</code> class now does not have any mixed-up logic, it is complete black-box whose task is to send emails to provided users. It doesn't need to care about how you pass <code>MailerInterface</code> or <code>UserRepository</code>, it just needs them to operate. It has only one task of sending emails. Not to mention that our class is also easy to be unit-tested. Notice also that we removed PDO as dependency since it is now job of <code>UserRepository</code> to give us the users.</p>
+<p>We can now call our class a <strong>Service</strong> that performs one and only one task without any coupling. If you have heard about <strong><a href="https://en.wikipedia.org/wiki/Service-oriented_architecture">Service-Oriented Architecture</a></strong>, this is what it is, a collection of service classes with one and only one responsibility each without any hard-coded dependencies.</p>
+<p>At this point of the time, we are all good with our class but one of the downsides of Dependency Injection is that all the complexity of creating and configuring objects is your job. Now this isn't that bad since it happens at one place and gives you the control but it is something which we can still improve.</p>
+<p>To do this, we need to leverage what is called <strong>Dependency Injection Container</strong> (DIC). The job of DIC is to create and configure objects for us. There are many DIC out there for PHP but let's see our modified code using famous <strong><a href="http://pimple.sensiolabs.org/">Pimple</a></strong> container, here we wrap the dependencies or services into Pimple container. I am not going into details of how to use it, you should refer to its documentation.</p>
+<pre><code>// file: container.php
+
+use Demo\Mailer\SmtpMailer;
+use Demo\Repositories\UserRepository;
+use Pimple\Container;
+use Demo\Mailer\SubscriberMailer;
+
+$container = new Pimple();
+
+// container can also hold configs - ideally should be put in separate file...
+$container['smtp_config'] = [
+   'host' =&gt; 'smtp.example.com',
+   'user' =&gt; 'user',
+   'pass' =&gt; 'password',
+   'port' =&gt; '465',
+];
+
+$container['mailer'] = $container-&gt;share(function(Pimple $container){
+   return new SmtpMailer(
+      $container['smtp_config']['host'],
+      $container['smtp_config']['user'],
+      $container['smtp_config']['pass'],
+      $container['smtp_config']['port']
+   );
+});
+
+$container['userRepository'] = $container-&gt;share(function(){
+   return new UserRepository();
+});
+
+$container['subscriberMailer'] = $container-&gt;share(function(Pimple $container){
+   return new SubscriberMailer($container['mailer'], $container['userRepository']);
+});
+
+// file: index.php
+
+require __DIR__ . 'vendor/autoload.php';
+require __DIR__ . 'container.php';
+
+$subscriberMailer = $container['subscriberMailer'];
+$subscriberMailer-&gt;sendEmails();</code></pre>
+<p>Notice how clear and concise our <code>index.php</code> code is now compared to initial version. </p>
+<p>Using the DIC provides us with these advantages:</p>
+<ul>
+<li>Wrapping our object creation in container's anonymous function makes object creation lazy which means object isn't created <em>only until needed</em> and if we never reference our <code>SubscriberMailer</code> class, those objects are never created at all saving us memory !</li>
+<li>Using the container's <code>share</code> method means no matter how many times we need, it will always give us same original object instance. If we need to send many emails, we don't need many instances. This also makes code a bit more faster.</li>
+<li>All the logic of which objects depend on other objects is abstracted away into container itself, we don't need to worry how they are created or what their dependencies are, we just use our services straight away out of container.</li>
+<li>If we ever need to change config or something, we only edit it at one place, nobody needs to know about this change.</li>
+</ul>
+<hr />
+<p>In conclusion, no matter which framework you use, these principles can be applied to make code which is easy to understand, extend and test.</p>]]></description>
+<link>https://codeinphp.github.io/post/from-bad-to-good-di-dic-and-services</link>
+<pubDate>Sun, 28 Aug 2016 14:37:00 +0500</pubDate>
+</item>
+<item>
 <title>Fast MySQL Backup and Restore</title>
 <description><![CDATA[<p>Backing up and restoring MySQL database is generally trivial task however when database is huge, it is really a pain to do so because of amount of time it takes to perform backup/restore operation with conventional tools like PHPMyAdmin or similar.</p>
 <p>If you have <strong>SSH access</strong> to server, we can leverage built-in MySQL commands <a href="https://dev.mysql.com/doc/refman/5.5/en/mysqldump.html"><code>mysqldump</code></a> and <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql.html"><code>mysql</code></a> respectively to backup and restore big database really fast.</p>
