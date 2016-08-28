@@ -94,7 +94,7 @@ foreach ($pdo-&gt;query($sql) as $row) {
         }
     }
 }</code></pre>
-<p>This is a bit better, the class doesn't care where PDO objects comes from, it just needs one to operate and you can't instantiate the class without providing one so it makes it intention clear and easy. So this is what is called <strong>Dependency Injection</strong>, no need to fear even though the term sounded scary initially (read my <a href="http://codeinphp.github.io/post/dependency-injection-in-php/">previous article</a> on more ways of injecting dependencies). Here is how we use above class at this point of the time:</p>
+<p>This is a bit better, the class doesn't care where PDO objects comes from, it just needs one to operate and you can't instantiate the class without providing one so it makes its intention clear. So this is what is called <strong>Dependency Injection</strong>, no need to fear even though the term sounded scary initially (read my <a href="http://codeinphp.github.io/post/dependency-injection-in-php/">previous article</a> on more ways of injecting dependencies). Here is how we use above class at this point of the time:</p>
 <pre><code>require __DIR__ . 'vendor/autoload.php';
 
 use Demo\Mailer\SmtpMailer;
@@ -165,7 +165,7 @@ $subscriberMailer-&gt;sendEmails();</code></pre>
 encounter it, it means it is something you should pass via dependency
 injection.</p>
 </blockquote>
-<p>So by now we know that to remove hard-coded dependency or tight-coupling, we should pass it instead via dependency injection. So instead of passing mailer config, we should pass mailer object instead:</p>
+<p>So by now we know that to remove hard-coded dependency or tight-coupling, we should pass it instead via dependency injection. So instead of passing mailer config, we should pass mailer object:</p>
 <pre><code>class SubscriberMailer
 {
     protected $pdo = null;
@@ -204,14 +204,14 @@ $mailer = new SmtpMailer('smtp.example.com', 'user', 'password', '465');
 
 $subscriberMailer = new SubscriberMailer($pdo, $mailer);       
 $subscriberMailer-&gt;sendEmails();</code></pre>
-<p>This is better, we removed hard-coded dependency to smtp mailer and notice that we have also type-hinted the PDO and SmtpMailer in the constructor of our class, this is extremely helpful because:</p>
+<p>This is better, we removed hard-coded dependency to smtp mailer and notice that we have also type-hinted the <code>PDO</code> and <code>SmtpMailer</code> in the constructor of our class, this is extremely helpful because:</p>
 <ul>
-<li>Our class makes clear intention that it needs a PDO and SmtpMailer to work properly</li>
+<li>Our class makes clear intention that it needs a <code>PDO</code> and <code>SmtpMailer</code> to work properly</li>
 <li>If somebody passes something other than these two dependencies, they would get clear error message</li>
 <li>Type-hinting makes our code self-documenting</li>
 <li>It makes IDE auto-completion </li>
 </ul>
-<p>Right now our mailer class knows it needs an instance of SmtpMailer to work and it should have a <code>sendMessage</code> method. Remember, we refactored out code in hope that we might use some other type of mailer like sendmail but problem is that it might not necessarily have the <code>sendMessage</code> method which means we cannot use it. So how do we solve this problem to be able to use some other type of mailer implementation ? Well the answer is to use an interface/contract and use that instead:</p>
+<p>Right now our mailer class knows it needs an instance of <code>SmtpMailer</code> to work and it should have a <code>sendMessage</code> method. Remember, we refactored our code in hope that we might use some other type of mailer like sendmail but problem is that it might not necessarily have the <code>sendMessage</code> method which means we cannot use it. So how do we solve this problem to be able to use some other type of mailer implementation ? Well the answer is to use an interface/contract and use that instead:</p>
 <pre><code>// app/Demo/Contracts/MailerInterface.php
 interface MailerInterface
 {
