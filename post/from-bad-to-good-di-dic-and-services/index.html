@@ -288,10 +288,18 @@ interface MailerInterface
    public function sendMessage($email, $body, $subject, $from);
 }
 
-// app/Demo/Mailer/SubscriberMailer.php
+// app/Demo/Mailer/SmtpMailer.php
 use Demo\Contracts\MailerInterface;
 
-class SubscriberMailer implements MailerInterface
+class SmtpMailer implements MailerInterface
+{
+    public function sendMessage($email, $body, $subject, $from) {
+        // code to send email
+    }
+}
+
+// app/Demo/Mailer/SubscriberMailer.php    
+class SubscriberMailer
 {
     protected $pdo = null;
     protected $mailer = null;
@@ -316,17 +324,17 @@ class SubscriberMailer implements MailerInterface
         }
     }
 }</code></pre>
-<p>Notice how our class now implements the <code>MailerInterface</code> and is also type-hinted in constructor. Just like every step that we are performing, this step also has nice advantages:</p>
+<p>Just like every step that we are performing, this step also has nice advantages:</p>
 <ul>
 <li>Our <code>SubscriberMailer</code> class is now greatly expandable since it now accepts <strong>ANY object</strong> that implements <code>MailerInterface</code> that has <code>sendMessage</code> method</li>
 <li>It documents our code a bit more, it is clear now how an object should be constructed that implements the <code>MailerInterface</code></li>
 </ul>
-<p>All well and good so far. We now see that in our class has SQL to get users. Again it should not care about talking to database, it just needs users' emails to send emails to. To fix this, we need use the <strong>Repository Pattern</strong> which is essentially a class talking to database to manipulate specific entity, in this case users. So we can pass <code>UserRepository</code> as dependency that has a method to get all users:</p>
+<p>All well and good so far. We now see that in our class has SQL to get users. Again it should not care about talking to database, it just needs users' emails to send emails to. To fix this, we need use the <strong><a href="http://shawnmc.cool/the-repository-pattern">Repository Pattern</a></strong> which is essentially a class talking to database to manipulate specific entity, in this case users. So we can pass <code>UserRepository</code> as dependency that has a method to get all users:</p>
 <pre><code>// app/Demo/Mailer/SubscriberMailer.php
 use Demo\Contracts\MailerInterface;
 use Demo\Repositories\UserRepository;
 
-class SubscriberMailer implements MailerInterface
+class SubscriberMailer
 {
     protected $mailer = null;
     protected $userRepository = null;
