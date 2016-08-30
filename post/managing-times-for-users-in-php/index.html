@@ -460,6 +460,11 @@ $date = $tz-&gt;getDate('2015-01-01 9:32 PM');
         });
 
         // for Disqus
+        
+        var disqus_config = function () {
+          this.page.identifier = 'managing-times-for-users-in-php';
+        };        
+        
         var disqus_shortname = 'codeinphp';
         var dsq = document.createElement('script');
         dsq.type = 'text/javascript';

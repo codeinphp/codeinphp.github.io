@@ -391,6 +391,11 @@
         });
 
         // for Disqus
+        
+        var disqus_config = function () {
+          this.page.identifier = 'introducing-phexecute-php-code-runner';
+        };        
+        
         var disqus_shortname = 'codeinphp';
         var dsq = document.createElement('script');
         dsq.type = 'text/javascript';

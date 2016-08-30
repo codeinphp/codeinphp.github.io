@@ -432,6 +432,11 @@ return $instance;</code></pre>
         });
 
         // for Disqus
+        
+        var disqus_config = function () {
+          this.page.identifier = 'codeigniter-tip-accessing-codeigniter-instance-outside';
+        };        
+        
         var disqus_shortname = 'codeinphp';
         var dsq = document.createElement('script');
         dsq.type = 'text/javascript';

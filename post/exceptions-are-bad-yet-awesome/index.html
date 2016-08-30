@@ -583,6 +583,11 @@ throw new Exception('I am an Exception anyway!');</code></pre>
         });
 
         // for Disqus
+        
+        var disqus_config = function () {
+          this.page.identifier = 'exceptions-are-bad-yet-awesome';
+        };        
+        
         var disqus_shortname = 'codeinphp';
         var dsq = document.createElement('script');
         dsq.type = 'text/javascript';

@@ -489,6 +489,11 @@ independent from other triads.</p>
         });
 
         // for Disqus
+        
+        var disqus_config = function () {
+          this.page.identifier = 'controllers-for-frontend-and-backend-in-codeigniter';
+        };        
+        
         var disqus_shortname = 'codeinphp';
         var dsq = document.createElement('script');
         dsq.type = 'text/javascript';

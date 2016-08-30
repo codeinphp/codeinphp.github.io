@@ -383,6 +383,11 @@ echo $this-&gt;benchmark-&gt;elapsed_time('code_start', 'code_end');</code></pre
         });
 
         // for Disqus
+        
+        var disqus_config = function () {
+          this.page.identifier = 'codeigniter-tip-time-your-pages';
+        };        
+        
         var disqus_shortname = 'codeinphp';
         var dsq = document.createElement('script');
         dsq.type = 'text/javascript';

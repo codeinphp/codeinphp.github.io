@@ -378,6 +378,11 @@
         });
 
         // for Disqus
+        
+        var disqus_config = function () {
+          this.page.identifier = 'fast-mysql-backup-and-restore';
+        };        
+        
         var disqus_shortname = 'codeinphp';
         var dsq = document.createElement('script');
         dsq.type = 'text/javascript';

@@ -493,6 +493,11 @@ Members of interface can not be Static | Only Complete Member of abstract class 
         });
 
         // for Disqus
+        
+        var disqus_config = function () {
+          this.page.identifier = 'abstract-class-vs-interface';
+        };        
+        
         var disqus_shortname = 'codeinphp';
         var dsq = document.createElement('script');
         dsq.type = 'text/javascript';

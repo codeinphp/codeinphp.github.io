@@ -434,6 +434,11 @@ $secondInstance = Logger::getInstance('email');</code></pre></p>
         });
 
         // for Disqus
+        
+        var disqus_config = function () {
+          this.page.identifier = 'singleton-and-multiton-design-patterns';
+        };        
+        
         var disqus_shortname = 'codeinphp';
         var dsq = document.createElement('script');
         dsq.type = 'text/javascript';

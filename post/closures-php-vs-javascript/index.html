@@ -463,6 +463,11 @@ $f();</code></pre>
         });
 
         // for Disqus
+        
+        var disqus_config = function () {
+          this.page.identifier = 'closures-php-vs-javascript';
+        };        
+        
         var disqus_shortname = 'codeinphp';
         var dsq = document.createElement('script');
         dsq.type = 'text/javascript';
