@@ -789,7 +789,7 @@ elseif (Config::item('db_type') === 'sqlite') {
         $this-&gt;driver = $driver;
     }
 
-    protected function makeDB($host, $user, $pass, $dbname)
+    public function makeDB($host, $user, $pass, $dbname)
     {
         if ($this-&gt;driver === 'mysql') {
             $DB = new MySQLDB();
