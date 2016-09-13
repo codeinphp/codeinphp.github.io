@@ -54,13 +54,14 @@
 				"laravel"
 			],
 			"category": "PHP",
-			"body": "<p>VisitLog is a simple Laravel 5 package that can be used to log visitor information and save it into database. <\/p>\n<h2>Features<\/h2>\n<ul>\n<li>Other than basic log such as IP, Browser and OS, it can also log Location information.<\/li>\n<li>Allows to log both unique and non-unique visits based on IP.<\/li>\n<li>Allows to cache the visits based on IP.<\/li>\n<li>Allows to log authenticated user info.<\/li>\n<li>Provides log viewer page out of box.<\/li>\n<\/ul>\n<h2>Screenshots<\/h2>\n<p><img src=\"https:\/\/raw.github.com\/sarfraznawaz2005\/visitlog\/master\/screenshot.png\" alt=\"Main Window\" \/><\/p>\n<hr \/>\n<p><a href=\"https:\/\/github.com\/sarfraznawaz2005\/visitlog\">Visit Package Repository<\/a> to know more about it and installation.<\/p>",
+			"body": "<p>VisitLog is a simple Laravel 5 package that can be used to log visitor information and save it into database. <\/p>\n<h2>Features<\/h2>\n<ul>\n<li>Other than basic log such as IP, Browser and OS, it can also log Location information.<\/li>\n<li>Allows to log both unique and non-unique visits based on IP.<\/li>\n<li>Allows to cache the visits based on IP.<\/li>\n<li>Allows to log authenticated user info.<\/li>\n<li>Provides log viewer page out of box.<\/li>\n<\/ul>\n<h2>Screenshots<\/h2>\n<p><img src=\"https:\/\/raw.github.com\/sarfraznawaz2005\/visitlog\/master\/screen.png\" alt=\"Main Window\" \/><\/p>\n<hr \/>\n<p><a href=\"https:\/\/github.com\/sarfraznawaz2005\/visitlog\">Visit Package Repository<\/a> to know more about it and installation.<\/p>",
 			"addpost": "addpost",
 			"dated": "September 13, 2016 05:50 PM",
 			"slug": "laravel-visitlog",
 			"categoryslug": "php",
 			"status": "publised",
 			"summary": "\n<p>VisitLog is a simple Laravel 5 package that can be used to log visitor information and save it into database. <\/p>\n<h2>Features<\/h2>\n<ul><li>Other than basic log such as IP, Browser and OS, it can also log Location information.<\/li>\n<li>Allows to log both unique and non-unique visits based on IP...<\/li><\/ul>\n",
+			"prevStatus": "publised",
 			"showbody": "1"
 		},
 		{
@@ -793,13 +794,14 @@
 				"laravel"
 			],
 			"category": "PHP",
-			"body": "<p>VisitLog is a simple Laravel 5 package that can be used to log visitor information and save it into database. <\/p>\n<h2>Features<\/h2>\n<ul>\n<li>Other than basic log such as IP, Browser and OS, it can also log Location information.<\/li>\n<li>Allows to log both unique and non-unique visits based on IP.<\/li>\n<li>Allows to cache the visits based on IP.<\/li>\n<li>Allows to log authenticated user info.<\/li>\n<li>Provides log viewer page out of box.<\/li>\n<\/ul>\n<h2>Screenshots<\/h2>\n<p><img src=\"https:\/\/raw.github.com\/sarfraznawaz2005\/visitlog\/master\/screenshot.png\" alt=\"Main Window\" \/><\/p>\n<hr \/>\n<p><a href=\"https:\/\/github.com\/sarfraznawaz2005\/visitlog\">Visit Package Repository<\/a> to know more about it and installation.<\/p>",
+			"body": "<p>VisitLog is a simple Laravel 5 package that can be used to log visitor information and save it into database. <\/p>\n<h2>Features<\/h2>\n<ul>\n<li>Other than basic log such as IP, Browser and OS, it can also log Location information.<\/li>\n<li>Allows to log both unique and non-unique visits based on IP.<\/li>\n<li>Allows to cache the visits based on IP.<\/li>\n<li>Allows to log authenticated user info.<\/li>\n<li>Provides log viewer page out of box.<\/li>\n<\/ul>\n<h2>Screenshots<\/h2>\n<p><img src=\"https:\/\/raw.github.com\/sarfraznawaz2005\/visitlog\/master\/screen.png\" alt=\"Main Window\" \/><\/p>\n<hr \/>\n<p><a href=\"https:\/\/github.com\/sarfraznawaz2005\/visitlog\">Visit Package Repository<\/a> to know more about it and installation.<\/p>",
 			"addpost": "addpost",
 			"dated": "September 13, 2016 05:50 PM",
 			"slug": "laravel-visitlog",
 			"categoryslug": "php",
 			"status": "publised",
 			"summary": "\n<p>VisitLog is a simple Laravel 5 package that can be used to log visitor information and save it into database. <\/p>\n<h2>Features<\/h2>\n<ul><li>Other than basic log such as IP, Browser and OS, it can also log Location information.<\/li>\n<li>Allows to log both unique and non-unique visits based on IP...<\/li><\/ul>\n",
+			"prevStatus": "publised",
 			"showbody": "1"
 		},
 		{
@@ -892,13 +894,14 @@
 				"laravel"
 			],
 			"category": "PHP",
-			"body": "<p>VisitLog is a simple Laravel 5 package that can be used to log visitor information and save it into database. <\/p>\n<h2>Features<\/h2>\n<ul>\n<li>Other than basic log such as IP, Browser and OS, it can also log Location information.<\/li>\n<li>Allows to log both unique and non-unique visits based on IP.<\/li>\n<li>Allows to cache the visits based on IP.<\/li>\n<li>Allows to log authenticated user info.<\/li>\n<li>Provides log viewer page out of box.<\/li>\n<\/ul>\n<h2>Screenshots<\/h2>\n<p><img src=\"https:\/\/raw.github.com\/sarfraznawaz2005\/visitlog\/master\/screenshot.png\" alt=\"Main Window\" \/><\/p>\n<hr \/>\n<p><a href=\"https:\/\/github.com\/sarfraznawaz2005\/visitlog\">Visit Package Repository<\/a> to know more about it and installation.<\/p>",
+			"body": "<p>VisitLog is a simple Laravel 5 package that can be used to log visitor information and save it into database. <\/p>\n<h2>Features<\/h2>\n<ul>\n<li>Other than basic log such as IP, Browser and OS, it can also log Location information.<\/li>\n<li>Allows to log both unique and non-unique visits based on IP.<\/li>\n<li>Allows to cache the visits based on IP.<\/li>\n<li>Allows to log authenticated user info.<\/li>\n<li>Provides log viewer page out of box.<\/li>\n<\/ul>\n<h2>Screenshots<\/h2>\n<p><img src=\"https:\/\/raw.github.com\/sarfraznawaz2005\/visitlog\/master\/screen.png\" alt=\"Main Window\" \/><\/p>\n<hr \/>\n<p><a href=\"https:\/\/github.com\/sarfraznawaz2005\/visitlog\">Visit Package Repository<\/a> to know more about it and installation.<\/p>",
 			"addpost": "addpost",
 			"dated": "September 13, 2016 05:50 PM",
 			"slug": "laravel-visitlog",
 			"categoryslug": "php",
 			"status": "publised",
 			"summary": "\n<p>VisitLog is a simple Laravel 5 package that can be used to log visitor information and save it into database. <\/p>\n<h2>Features<\/h2>\n<ul><li>Other than basic log such as IP, Browser and OS, it can also log Location information.<\/li>\n<li>Allows to log both unique and non-unique visits based on IP...<\/li><\/ul>\n",
+			"prevStatus": "publised",
 			"showbody": "1"
 		}
 	],
