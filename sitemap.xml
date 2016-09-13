@@ -5,6 +5,12 @@
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
+<loc>https://codeinphp.github.io/post/laravel-visitlog/</loc>
+<lastmod>2016-09-13T17:50:00+05:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>1.00</priority>
+</url>
+<url>
 <loc>https://codeinphp.github.io/post/from-bad-to-good-di-dic-and-services/</loc>
 <lastmod>2016-08-28T14:37:00+05:00</lastmod>
 <changefreq>daily</changefreq>
