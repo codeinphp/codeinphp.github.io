@@ -5,6 +5,12 @@
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
+<loc>https://codeinphp.github.io/post/sockets-with-php-and-node/</loc>
+<lastmod>2017-07-22T02:19:00+05:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>1.00</priority>
+</url>
+<url>
 <loc>https://codeinphp.github.io/post/laravel-visitlog/</loc>
 <lastmod>2016-09-13T17:50:00+05:00</lastmod>
 <changefreq>daily</changefreq>

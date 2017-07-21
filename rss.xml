@@ -6,6 +6,115 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Sockets with PHP and Node</title>
+<description><![CDATA[<p>I was looking to implement real time notifications system via sockets without having to use any third party services such as <a href="https://pusher.com/">Pusher</a>, etc. I just wanted to be able to send notifications from PHP side to the client and instantly show them on the web application similar to Facebook notifications. </p>
+<p>First I came across <a href="http://socketo.me/">ratchet</a> library, it worked great but problem emerged when setting it up on secure connection (https) on my host (siteground), tried apache proxy module and everything else told on the internet but to no avail (it seems siteground has problem with ratchet on https) so in the end I had to drop ratchet.</p>
+<p>Then I thought of using <a href="https://socket.io/">socket.io</a> with Node+PHP and with my research I came across <a href="https://github.com/Wisembly/elephant.io">elephant.io</a> library (though it isn't updated recently) and this one worked wonderfully well both on non-secure and secure protocols allowing us to send and receive messages from PHP with node-based server.</p>
+<p>Here are the steps that I followed to get my notification system working.</p>
+<p><strong>Install elephant.io</strong></p>
+<p>For your PHP application, install <code>elephant.io</code> via composer:</p>
+<pre><code>composer require wisembly/elephant.io</code></pre>
+<p><strong>Install Node Dependencies</strong></p>
+<p>Create a directory in your project root and under it create a file named <code>package.json</code> with these contents:</p>
+<pre><code>{
+    "name": "elephantIO_example_emitter",
+    "version": "3.0.0",
+    "main": "server.js",
+
+    "scripts": {
+        "start": "supervisor --debug server.js"
+    },
+
+    "dependencies": {
+        "socket.io": "~1",
+        "winston": "*"
+    }
+}</code></pre>
+<p>On newly created directory run command <code>npm install --save</code>. This will install <code>socket.io</code> and logger library.</p>
+<p>In same newly created directory, create a file <code>server.js</code> with these contents:</p>
+<pre><code>var server     = require('http').createServer(),
+    io         = require('socket.io')(server),
+    logger     = require('winston'),
+    port       = 1337;
+
+// Logger config
+logger.remove(logger.transports.Console);
+logger.add(logger.transports.Console, { colorize: true, timestamp: true });
+logger.info('SocketIO &gt; listening on port ' + port);
+
+io.on('connection', function (socket){
+    var nb = 0;
+
+    logger.info('SocketIO &gt; Connected socket ' + socket.id);
+
+    socket.on('broadcast', function (message) {
+        ++nb;
+        logger.info('ElephantIO broadcast &gt; ' + JSON.stringify(message));
+
+        // send to all connected clients
+        io.sockets.emit("broadcast", message);
+    });
+
+    socket.on('disconnect', function () {
+        logger.info('SocketIO : Received ' + nb + ' messages');
+        logger.info('SocketIO &gt; Disconnected socket ' + socket.id);
+    });
+});
+
+server.listen(port);</code></pre>
+<p>Run <code>server.js</code> file through node by typing <code>node server.js</code>, you should see message that server has started on specified port.</p>
+<p><strong>Client Side</strong></p>
+<p>Put following javascript code in your application's page/footer:</p>
+<pre><code>&lt;script src='//cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.4/socket.io.min.js'&gt;&lt;/script&gt;
+
+&lt;script&gt;
+var socket = io.connect('//127.0.0.1:1337');
+
+socket.on('connect', function () {
+    console.log('connected');
+
+    socket.on('broadcast', function (data) {
+        //console.log(data);
+        //socket.emit("broadcast", data);
+        alert(data.text);
+    });
+
+    socket.on('disconnect', function () {
+        console.log('disconnected');
+    });
+});
+&lt;/script&gt;</code></pre>
+<p><strong>Sending Notification from PHP</strong></p>
+<p>Here is how you can send a message to all connected clients:</p>
+<pre><code>require __DIR__ . '/vendor/autoload.php';
+
+use ElephantIO\Client;
+use ElephantIO\Engine\SocketIO\Version1X;
+
+$client = new Client(new Version1X('//127.0.0.1:1337'));
+
+$client-&gt;initialize();
+// send message to connected clients
+$client-&gt;emit('broadcast', ['type' =&gt; 'notification', 'text' =&gt; 'Hello There!']);
+$client-&gt;close();</code></pre>
+<p>and that's all there is to it.</p>
+<p><strong>Installing and Running Node on Production Site</strong></p>
+<p>I was on <code>CentOSv6</code> and I installed node by following <a href="https://www.a2hosting.com/kb/installable-applications/manual-installations/installing-node-js-on-managed-hosting-accounts">this guide</a>. Then I created simple php file that will be run by cron so that node server is automatically started/restarted if it is not running:</p>
+<pre><code>$nodePath = 'your node binary path here';
+$filePath = 'your server.js file path';
+shell_exec($nodePath . ' ' . $filePath);</code></pre>
+<p>and then specify that file in cron to run at your specified time intervals.</p>
+<p><strong>Important Notes</strong></p>
+<ul>
+<li>I was having bit of issue getting node path from PHP script where I initially installed it so I copied the nodejs folder to my <code>public_html</code> folder (app's root).</li>
+<li>On production site, I had to type actual server IP rather than <code>127.0.0.1</code> on client side code eg instead of <code>var socket = io.connect('//127.0.0.1:1337');</code>, it has to be <code>var socket = io.connect('//SERVER_IP_HERE:1337');</code></li>
+<li>If you are having issue getting it to work on https, check out <a href="https://github.com/Wisembly/elephant.io/issues?utf8=%E2%9C%93&amp;q=">issues section</a> to fix it.</li>
+<li>Check out <strong>examples</strong> folder of <code>elephant.io</code> to know how to send or receive messages both from PHP as well as Javascript.</li>
+</ul>]]></description>
+<link>https://codeinphp.github.io/post/sockets-with-php-and-node</link>
+<pubDate>Sat, 22 Jul 2017 02:19:00 +0500</pubDate>
+</item>
+<item>
 <title>Laravel VisitLog</title>
 <description><![CDATA[<p>VisitLog is a simple Laravel 5 package that can be used to log visitor information and save it into database. </p>
 <h2>Features</h2>
