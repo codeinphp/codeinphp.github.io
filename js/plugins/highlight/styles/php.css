@@ -6,6 +6,11 @@ pre {
 
 }
 
+pre code {
+  font-weight:bold;
+  font-family: PragmataPro, consolas;
+}
+
 .hljs {
     display: block;
     overflow-x: auto;
