@@ -3,6 +3,15 @@ body {
     background:#fcfcfc;
 }
 
+article a{
+    color:#FF8000;
+}
+
+article h3{
+    font-size:30px;
+    font-weight:bold;
+}
+
 .panel, .list-group-item {
     background:#fcfcfc;
 }
