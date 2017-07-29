@@ -7,6 +7,10 @@ article a{
     color:#FF8000;
 }
 
+article a:hover{
+    color:#000;
+}
+
 article h3{
     font-size:30px;
     font-weight:bold;
