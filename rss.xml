@@ -6,6 +6,25 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Introducing Floyer</title>
+<description><![CDATA[<p>At my company, they still use ^svn^ and on top of that ^ftp^ and it was pain in the ass to upload files especially when client didn't have dedicated hosting or where there was no SSH access available. I did find some git-to-ftp or svn-to-fetp deployment tools but they were very slow because they uploaded each file individually.</p>
+<p>I sat down over the weekend and came up with my own solution <strong><a href="https://github.com/sarfraznawaz2005/floyer">Floyer</a></strong> (shortened from FTPDeployer). It works with both <code>git</code> and <code>svn</code> and is quit fast able to upload hundreds of files in few seconds. Other than FTP, it also supports SFTP.</p>
+<h1>How does it work</h1>
+<ul>
+<li>It stores revision/commit hash on the server in a file when deployment is started.</li>
+<li>On next deployment, it compares local revision with remote one thereby able to deploy only the files changed between these two revisions.</li>
+<li>Once it knows what files to upload, it creates zip archive of these files to be deployed on the server.</li>
+<li>Rather than uploading each file individually (which is very slow process), it creates and uploads zip archive file to server where there is corresponding extract zip PHP script which extracts these files very fast. This script is also created and uploaded by Floyer.</li>
+<li>After deployment is finished, zip archive and extract script is deleted automatically.</li>
+</ul>
+<p>Deploying by uploading and extracting archive file not only makes deployment fast but also we don't have to worry about some permission issues or creating new directories and so on because extract script runs from server itself thereby avoiding these issues.</p>
+<h1>Screenshot</h1>
+<p><img src="https://camo.githubusercontent.com/dbd0d6326b7820922db866f0095af8752ff6e3bf/68747470733a2f2f7261772e6769746875622e636f6d2f7361726672617a6e6177617a323030352f666c6f7965722f6d61737465722f73637265656e73686f742e706e67" alt="enter image description here" /></p>
+<p><strong><a href="https://github.com/sarfraznawaz2005/floyer">Checkout Floyer at Github</a></strong></p>]]></description>
+<link>https://codeinphp.github.io/post/introducing-floyer</link>
+<pubDate>Thu, 24 Aug 2017 22:03:00 +0500</pubDate>
+</item>
+<item>
 <title>Sockets with PHP and Node</title>
 <description><![CDATA[<p>I was looking to implement real time notifications system via sockets without having to use any third party services such as <a href="https://pusher.com/">Pusher</a>, etc. I just wanted to be able to send notifications from PHP side to the client and instantly show them on the web application similar to Facebook notifications. </p>
 <p>First I came across <a href="http://socketo.me/">ratchet</a> library, it worked great but problem emerged when setting it up on secure connection (https) on my host (siteground), tried apache proxy module and everything else told on the internet but to no avail (it seems siteground has problem with ratchet on https) so in the end I had to drop ratchet.</p>
