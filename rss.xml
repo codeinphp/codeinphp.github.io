@@ -7,7 +7,7 @@
 <language>en-us</language>
 <item>
 <title>Introducing Floyer</title>
-<description><![CDATA[<p>At my company, they still use ^svn^ and on top of that ^ftp^ and it was pain in the ass to upload files especially when client didn't have dedicated hosting or where there was no SSH access available. I did find some git-to-ftp or svn-to-fetp deployment tools but they were very slow because they uploaded each file individually.</p>
+<description><![CDATA[<p>At my company, they still use ^svn^ and on top of that ^ftp^ and it was pain in the ass to upload files especially when client didn't have dedicated hosting or where there was no SSH access available. I did find some git-to-ftp or svn-to-ftp deployment tools but they were very slow because they uploaded each file individually.</p>
 <p>I sat down over the weekend and came up with my own solution <strong><a href="https://github.com/sarfraznawaz2005/floyer">Floyer</a></strong> (shortened from FTPDeployer). It works with both <code>git</code> and <code>svn</code> and is quit fast able to upload hundreds of files in few seconds. Other than FTP, it also supports SFTP.</p>
 <h1>How does it work</h1>
 <ul>
