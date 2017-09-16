@@ -72,26 +72,17 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/introducing-floyer">Introducing Floyer</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/laravel-querydumper">Laravel QueryDumper</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> August 24, 2017 10:03 PM
+                    <span class="glyphicon glyphicon-time"></span> September 16, 2017 06:16 PM
                 
                         <hr>
-                        <p class="post-content"><p>At my company, they still use ^svn^ and on top of that ^ftp^ and it was pain in the ass to upload files especially when client didn't have dedicated hosting or where there was no SSH access available. I did find some git-to-ftp or svn-to-ftp deployment tools but they were very slow because they uploaded each file individually.</p>
-<p>I sat down over the weekend and came up with my own solution <strong><a href="https://github.com/sarfraznawaz2005/floyer">Floyer</a></strong> (shortened from FTPDeployer). It works with both <code>git</code> and <code>svn</code> and is quit fast able to upload hundreds of files in few seconds. Other than FTP, it also supports SFTP.</p>
-<h1>How does it work</h1>
-<ul>
-<li>It stores revision/commit hash on the server in a file when deployment is started.</li>
-<li>On next deployment, it compares local revision with remote one thereby able to deploy only the files changed between these two revisions.</li>
-<li>Once it knows what files to upload, it creates zip archive of these files to be deployed on the server.</li>
-<li>Rather than uploading each file individually (which is very slow process), it creates and uploads zip archive file to server where there is corresponding extract zip PHP script which extracts these files very fast. This script is also created and uploaded by Floyer.</li>
-<li>After deployment is finished, zip archive and extract script is deleted automatically.</li>
-</ul>
-<p>Deploying by uploading and extracting archive file not only makes deployment fast but also we don't have to worry about some permission issues or creating new directories and so on because extract script runs from server itself thereby avoiding these issues.</p>
+                        <p class="post-content"><p>I wanted simple and quick way to see all running queries on any page of my laravel application especially accompanied by MySQL's <code>EXPLAIN</code> results. So I created very simple package called <strong>Laravel QueryDumper</strong> that allows me see just that.</p>
 <h1>Screenshot</h1>
-<p><img src="https://camo.githubusercontent.com/dbd0d6326b7820922db866f0095af8752ff6e3bf/68747470733a2f2f7261772e6769746875622e636f6d2f7361726672617a6e6177617a323030352f666c6f7965722f6d61737465722f73637265656e73686f742e706e67" alt="enter image description here" /></p>
-<p><strong><a href="https://github.com/sarfraznawaz2005/floyer">Checkout Floyer at Github</a></strong></p></p>
+<p><img src="https://camo.githubusercontent.com/35a43c98152c978c9df07b32f833609fe065edac/68747470733a2f2f7261772e6769746875622e636f6d2f7361726672617a6e6177617a323030352f717565727964756d7065722f6d61737465722f73637265656e2e706e67" alt="enter image description here" /></p>
+<hr />
+<p><strong><a href="https://github.com/sarfraznawaz2005/querydumper">Checkout Laravel QueryDumper</a></strong></p></p>
                         <br/>
                 
                         <div class="post-info">
@@ -101,11 +92,10 @@
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
-                                <a href="https://codeinphp.github.io/tag/deployment">deployment</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/ftp">ftp</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/git">git</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/laravel">laravel</a>&nbsp;&nbsp;
                                 <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/svn">svn</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/sql">sql</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/log">log</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -158,11 +148,11 @@
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/laravel-querydumper">Laravel QueryDumper</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/introducing-floyer">Introducing Floyer</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/sockets-with-php-and-node">Sockets with PHP and Node</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/laravel-visitlog">Laravel VisitLog</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/from-bad-to-good-di-dic-and-services">From Bad to Good: DI, DIC and Services</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/fast-mysql-backup-and-restore">Fast MySQL Backup and Restore</a></li>
                 </ul>
             </div>
         
@@ -187,7 +177,7 @@
                         <strong>Archives</strong>
                     </div>
         
-                    <ul class="archives list-group"><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/august-2017">August 2017</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/july-2017">July 2017</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/september-2016">September 2016</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/august-2016">August 2016</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/may-2016">May 2016</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/december-2015">December 2015</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/may-2015">May 2015</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/april-2015">April 2015</a></li></ul>
+                    <ul class="archives list-group"><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/september-2017">September 2017</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/august-2017">August 2017</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/july-2017">July 2017</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/september-2016">September 2016</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/august-2016">August 2016</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/may-2016">May 2016</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/december-2015">December 2015</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/may-2015">May 2015</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/april-2015">April 2015</a></li></ul>
                 </div>
         
             <!-- Tags -->
@@ -218,7 +208,7 @@
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/date" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">date</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/dependency" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">dependency</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/deployment" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">deployment</a>
-<a style="font-size: 14px" class="tag_cloud" href="https://codeinphp.github.io/tag/design-pattern" title="4 total posts" data-original-title="5 total posts" data-toggle="tooltip">design-pattern</a>
+<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/design-pattern" title="4 total posts" data-original-title="5 total posts" data-toggle="tooltip">design-pattern</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/development" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">development</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/devtools" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">devtools</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/drive" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">drive</a>
@@ -233,13 +223,14 @@
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/interface" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">interface</a>
 <a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/javascript" title="3 total posts" data-original-title="4 total posts" data-toggle="tooltip">javascript</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/lambda" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">lambda</a>
-<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/laravel" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">laravel</a>
+<a style="font-size: 13px" class="tag_cloud" href="https://codeinphp.github.io/tag/laravel" title="3 total posts" data-original-title="4 total posts" data-toggle="tooltip">laravel</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/log" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">log</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/migration" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">migration</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/mysql" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">mysql</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/node" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">node</a>
 <a style="font-size: 14px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="5 total posts" data-original-title="6 total posts" data-toggle="tooltip">oop</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/pdo" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">pdo</a>
-<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="28 total posts" data-original-title="29 total posts" data-toggle="tooltip">php</a>
+<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="29 total posts" data-original-title="30 total posts" data-toggle="tooltip">php</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/phpexecute" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">phpexecute</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/polymorphism" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">polymorphism</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/realtime" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">realtime</a>
@@ -252,7 +243,7 @@
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/slim" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">slim</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/socket" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">socket</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/spl" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">spl</a>
-<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sql" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">sql</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sql" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">sql</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/sqlite" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">sqlite</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/ssh" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">ssh</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/stackoverflow" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">stackoverflow</a>

@@ -6,6 +6,16 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Laravel QueryDumper</title>
+<description><![CDATA[<p>I wanted simple and quick way to see all running queries on any page of my laravel application especially accompanied by MySQL's <code>EXPLAIN</code> results. So I created very simple package called <strong>Laravel QueryDumper</strong> that allows me see just that.</p>
+<h1>Screenshot</h1>
+<p><img src="https://camo.githubusercontent.com/35a43c98152c978c9df07b32f833609fe065edac/68747470733a2f2f7261772e6769746875622e636f6d2f7361726672617a6e6177617a323030352f717565727964756d7065722f6d61737465722f73637265656e2e706e67" alt="enter image description here" /></p>
+<hr />
+<p><strong><a href="https://github.com/sarfraznawaz2005/querydumper">Checkout Laravel QueryDumper</a></strong></p>]]></description>
+<link>https://codeinphp.github.io/post/laravel-querydumper</link>
+<pubDate>Sat, 16 Sep 2017 18:16:00 +0500</pubDate>
+</item>
+<item>
 <title>Introducing Floyer</title>
 <description><![CDATA[<p>At my company, they still use ^svn^ and on top of that ^ftp^ and it was pain in the ass to upload files especially when client didn't have dedicated hosting or where there was no SSH access available. I did find some git-to-ftp or svn-to-ftp deployment tools but they were very slow because they uploaded each file individually.</p>
 <p>I sat down over the weekend and came up with my own solution <strong><a href="https://github.com/sarfraznawaz2005/floyer">Floyer</a></strong> (shortened from FTPDeployer). It works with both <code>git</code> and <code>svn</code> and is quit fast able to upload hundreds of files in few seconds. Other than FTP, it also supports SFTP.</p>
