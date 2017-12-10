@@ -6,6 +6,27 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Whatsapp Chat from CLI Using Puppeteer</title>
+<description><![CDATA[<p><a href="https://github.com/GoogleChrome/puppeteer">GoogleChrome puppeteer</a>  is interesting project to create browser automation tools, testing tools or web scrapping. I was wondering to use it for something useful and an idea popped in about creating CLI application that can be used to send and receive messages on Whatsapp. So I went on to creating <strong><a href="https://github.com/sarfraznawaz2005/whatspup">Whatspup</a></strong>, a name based on both Whatsapp and puppeteer.</p>
+<h2>Features</h2>
+<ul>
+<li>Send and receive messages</li>
+<li>Read Receipts</li>
+<li>Switch between users to chat with</li>
+<li>Popup notifications for new chat messages</li>
+<li>Privacy settings for popup notifications</li>
+<li>One-time authentication, no need to scan QR code again and again</li>
+<li>Windowless/headless (hidden) mode</li>
+<li>Colorful chat messages</li>
+</ul>
+<h2>Screenshot</h2>
+<p><img src="https://raw.githubusercontent.com/sarfraznawaz2005/whatspup/master/screenshot.jpg" alt="Main Window" /></p>
+<hr />
+<p><strong><a href="https://github.com/sarfraznawaz2005/whatspup">Head over to Whatspup repository and start using it :)</a></strong></p>]]></description>
+<link>https://codeinphp.github.io/post/whatsapp-chat-from-cli-using-puppeteer</link>
+<pubDate>Sun, 10 Dec 2017 16:06:00 +0500</pubDate>
+</item>
+<item>
 <title>Laravel QueryDumper</title>
 <description><![CDATA[<p>I wanted simple and quick way to see all running queries on any page of my laravel application especially accompanied by MySQL's <code>EXPLAIN</code> results. So I created very simple package called <strong>Laravel QueryDumper</strong> that allows me see just that.</p>
 <h1>Screenshot</h1>
