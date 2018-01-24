@@ -6,6 +6,60 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Laravel: Automatic Vendor Cleanup Command</title>
+<description><![CDATA[<p>When installing composer packages, they come up with <strong>lot of useless files and folders</strong> such as <code>.git</code>, <code>tests</code>, <code>readme.md</code> and more. When project becomes bigger with many packages, this junk takes considerable disk space. Since I work with Laravel framework most of the time, I created a command that allows me to automatically delete all these junk files whenever I happen to install or update composer packages.</p>
+<p>Here is the pattern used by <code>glob</code> function to detect and delete all junk files:</p>
+<pre><code>protected $patterns = [
+    '.git',
+    '.github',
+    'test',
+    'tests',
+    'travis',
+    'demo',
+    'demos',
+    'license',
+    'changelog*',
+    'contributing*',
+    'upgrading*',
+    'upgrade*',
+    '.idea',
+    '.vagrant',
+    'readme*',
+    '_ide_helper.php',
+    '{,.}*.yml',
+    '*.yaml',
+    '*.md',
+    '*.xml',
+    '*.log',
+    '*.txt',
+    '*.dist',
+    '*.pdf',
+    '*.xls',
+    '*.doc',
+    '*.docx',
+    '*.png',
+    '*.gif',
+    '*.jpg',
+    '*.bmp',
+    '*.jpeg',
+    '*.ico',
+    '.php_cs*',
+    '.scrutinizer',
+    '.gitignore',
+    '.gitattributes',
+    '.editorconfig',
+    'dockerfile',
+    'composer.json',
+    'composer.lock',
+];</code></pre>
+<p>The command itself can be <a href="https://github.com/sarfraznawaz2005/laravel55-starter/blob/master/Modules/Core/Console/VendorCleanup.php">seen here</a>.</p>
+<p>To automatically cleanup junk files/folders when installing or updating composer packages in Laravel, <code>@php artisan vendor:cleanup</code> should be added under the <code>post-autoload-dump</code> section in <code>composer.json</code> file. Or we can also trigger it manually anytime by typing <code>php artisan vendor:cleanup --o</code> where <code>--o</code> is optional argument to display verbose output.</p>
+<p>If you actually want to be able to use this idea of cleanup of useless files in any PHP project (Laravel or not), you might want to create a <a href="https://getcomposer.org/doc/articles/plugins.md">composer plugin</a> instead and install it globally that can then work across PHP projects and cleanup useless files from the <code>vendor</code> folder.</p>
+<p>If you witness any issue or something missing in the pattern list shown above, please leave your suggestion/improvements in comments. Thanks</p>]]></description>
+<link>https://codeinphp.github.io/post/laravel-automatic-vendor-cleanup-command</link>
+<pubDate>Thu, 25 Jan 2018 00:16:00 +0500</pubDate>
+</item>
+<item>
 <title>Whatsapp Chat from CLI Using Puppeteer</title>
 <description><![CDATA[<p><a href="https://github.com/GoogleChrome/puppeteer">GoogleChrome puppeteer</a>  is interesting project to create browser automation tools, testing tools or web scrapping. I was wondering to use it for something useful and an idea popped in about creating CLI application that can be used to send and receive messages on Whatsapp. So I went on to creating <strong><a href="https://github.com/sarfraznawaz2005/whatspup">Whatspup</a></strong>, a name based on both Whatsapp and puppeteer.</p>
 <h2>Features</h2>
