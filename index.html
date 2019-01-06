@@ -72,61 +72,20 @@
     <div class="row">
         <div class="col-md-8 main-content">
                 <article>
-                    <h3><a href="https://codeinphp.github.io/post/laravel-automatic-vendor-cleanup-command">Laravel: Automatic Vendor Cleanup Command</a></h3>
+                    <h3><a href="https://codeinphp.github.io/post/introducing-phpnews-app">Introducing PHPNews App</a></h3>
                     <span class="glyphicon glyphicon-user"></span> Sarfraz Ahmed
                     &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> January 25, 2018 12:16 AM
+                    <span class="glyphicon glyphicon-time"></span> January 06, 2019 08:27 PM
                 
                         <hr>
-                        <p class="post-content"><p>When installing composer packages, they come up with <strong>lot of useless files and folders</strong> such as <code>.git</code>, <code>tests</code>, <code>readme.md</code> and more. When project becomes bigger with many packages, this junk takes considerable disk space. Since I work with Laravel framework most of the time, I created a command that allows me to automatically delete all these junk files whenever I happen to install or update composer packages.</p>
-<p>Here is the pattern used by <code>glob</code> function to detect and delete all junk files:</p>
-<pre><code>protected $patterns = [
-    '.git',
-    '.github',
-    'test',
-    'tests',
-    'travis',
-    'demo',
-    'demos',
-    'license',
-    'changelog*',
-    'contributing*',
-    'upgrading*',
-    'upgrade*',
-    '.idea',
-    '.vagrant',
-    'readme*',
-    '_ide_helper.php',
-    '{,.}*.yml',
-    '*.yaml',
-    '*.md',
-    '*.xml',
-    '*.log',
-    '*.txt',
-    '*.dist',
-    '*.pdf',
-    '*.xls',
-    '*.doc',
-    '*.docx',
-    '*.png',
-    '*.gif',
-    '*.jpg',
-    '*.bmp',
-    '*.jpeg',
-    '*.ico',
-    '.php_cs*',
-    '.scrutinizer',
-    '.gitignore',
-    '.gitattributes',
-    '.editorconfig',
-    'dockerfile',
-    'composer.json',
-    'composer.lock',
-];</code></pre>
-<p>The command itself can be <a href="https://github.com/sarfraznawaz2005/laravel55-starter/blob/master/Modules/Core/Console/VendorCleanup.php">seen here</a>.</p>
-<p>To automatically cleanup junk files/folders when installing or updating composer packages in Laravel, <code>@php artisan vendor:cleanup</code> should be added under the <code>post-autoload-dump</code> section in <code>composer.json</code> file. Or we can also trigger it manually anytime by typing <code>php artisan vendor:cleanup --o</code> where <code>--o</code> is optional argument to display verbose output.</p>
-<p>If you actually want to be able to use this idea of cleanup of useless files in any PHP project (Laravel or not), you might want to create a <a href="https://getcomposer.org/doc/articles/plugins.md">composer plugin</a> instead and install it globally that can then work across PHP projects and cleanup useless files from the <code>vendor</code> folder.</p>
-<p>If you witness any issue or something missing in the pattern list shown above, please leave your suggestion/improvements in comments. Thanks</p></p>
+                        <p class="post-content"><p>Being able to keep oneself updated with latest trends, best practices and news is very crucial especially with the web evolving so rapidly today. This is equally important to become better or what they say modern developer as opposed to obsolete developer. As the technology stack evolves, the client requirements also evolve pushing us as developers to remain abreast of latest stuff as much as we possibly can.</p>
+<p>Two of the most common methods to stay up-to-date with latest stuff is to use some RSS/Atom Aggregator or subscription via emails at various sites. These work fine but I was personally overwhelmed by the amount of new updates and posts I used to get, it was kind of hard to keep the track of it all with that many subscriptions from various sources on different technologies. I <em>could</em>  have minimized the subscriptions but that wouldn't save the actual purpose.</p>
+<p>Therefore being a developer, often times, you come up with your own solution which fits your needs. I wanted just a simple and focused app on just one technology eg PHP that would give me updates from various sources in one central place without bloating me away with too many or stale posts. Since idea was simple, I didn't want to spend too much time on Android so I took the route of using JavaScript to create this app. It turned out there are quite some ways to create <strong>Native</strong> apps today using one technology that can run across devices and platforms. I found <a href="https://www.nativescript.org/">NativeScript</a> quick and easy to get started with although there are other solutions too to make native apps such as ReactNative, Xamarin, Flutter, etc.</p>
+<p>Over the weekend, I went on to creating this app called <strong>PHPNews</strong> and I believe end result is exactly what I wanted as it serves the purpose, here is screenshot: </p>
+<p><img src="https://codeinphp.github.io/images/15467873715c321a2b3c5f2.jpg" alt="PHPNews Screen" /></p>
+<p>It collects information from various sources including official blogs of PHP frameworks such as Laravel, Symfony, Zend Framework and CMSs like WordPress and last but not the least our old friend <a href="http://planet-php.net">http://planet-php.net</a>.</p>
+<p>Definitely give it a try and also share any suggestions or improvements.</p>
+<p><a href='https://play.google.com/store/apps/details?id=io.codeinphp.phpnews&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get PHPNews on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="100"/></a></p></p>
                         <br/>
                 
                         <div class="post-info">
@@ -136,9 +95,14 @@
                 
                             <span class="glyphicon glyphicon-bookmark"></span>
                 
-                                <a href="https://codeinphp.github.io/tag/command">command</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/laravel">laravel</a>&nbsp;&nbsp;
-                                <a href="https://codeinphp.github.io/tag/vendor">vendor</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/android">android</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/app">app</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/articles">articles</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/feeds">feeds</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/nativescript">nativescript</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/news">news</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/php">php</a>&nbsp;&nbsp;
+                                <a href="https://codeinphp.github.io/tag/playstore">playstore</a>&nbsp;&nbsp;
                         </div>
                 
                     <hr>
@@ -191,11 +155,11 @@
                 </div>
         
                 <ul class="list-group">
+                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/introducing-phpnews-app">Introducing PHPNews App</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/laravel-automatic-vendor-cleanup-command">Laravel: Automatic Vendor Cleanup Command</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/whatsapp-chat-from-cli-using-puppeteer">Whatsapp Chat from CLI Using Puppeteer</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/laravel-querydumper">Laravel QueryDumper</a></li>
                         <li class="list-group-item"><a href="https://codeinphp.github.io/post/introducing-floyer">Introducing Floyer</a></li>
-                        <li class="list-group-item"><a href="https://codeinphp.github.io/post/sockets-with-php-and-node">Sockets with PHP and Node</a></li>
                 </ul>
             </div>
         
@@ -220,7 +184,7 @@
                         <strong>Archives</strong>
                     </div>
         
-                    <ul class="archives list-group"><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/january-2018">January 2018</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/december-2017">December 2017</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/september-2017">September 2017</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/august-2017">August 2017</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/july-2017">July 2017</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/september-2016">September 2016</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/august-2016">August 2016</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/may-2016">May 2016</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/december-2015">December 2015</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/may-2015">May 2015</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/april-2015">April 2015</a></li></ul>
+                    <ul class="archives list-group"><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/january-2019">January 2019</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/january-2018">January 2018</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/december-2017">December 2017</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/september-2017">September 2017</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/august-2017">August 2017</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/july-2017">July 2017</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/september-2016">September 2016</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/august-2016">August 2016</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/may-2016">May 2016</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/december-2015">December 2015</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/may-2015">May 2015</a></li><li class="list-group-item archive_link"><a href="https://codeinphp.github.io/archive/april-2015">April 2015</a></li></ul>
                 </div>
         
             <!-- Tags -->
@@ -233,7 +197,9 @@
                         <ul class="list-inline">
                             <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/abstract" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">abstract</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/adapter" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">adapter</a>
-<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/app" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">app</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/android" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">android</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/app" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">app</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/articles" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">articles</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/backup" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">backup</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/blog" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">blog</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/bloggercms" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">bloggercms</a>
@@ -258,6 +224,7 @@
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/drive" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">drive</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/error" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">error</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/exception" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">exception</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/feeds" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">feeds</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/ftp" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">ftp</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/function" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">function</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/git" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">git</a>
@@ -271,11 +238,14 @@
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/log" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">log</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/migration" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">migration</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/mysql" title="2 total posts" data-original-title="3 total posts" data-toggle="tooltip">mysql</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/nativescript" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">nativescript</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/news" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">news</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/node" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">node</a>
 <a style="font-size: 14px" class="tag_cloud" href="https://codeinphp.github.io/tag/oop" title="5 total posts" data-original-title="6 total posts" data-toggle="tooltip">oop</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/pdo" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">pdo</a>
-<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="29 total posts" data-original-title="30 total posts" data-toggle="tooltip">php</a>
+<a style="font-size: 30px" class="tag_cloud" href="https://codeinphp.github.io/tag/php" title="30 total posts" data-original-title="31 total posts" data-toggle="tooltip">php</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/phpexecute" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">phpexecute</a>
+<a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/playstore" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">playstore</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/polymorphism" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">polymorphism</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/puppeteer" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">puppeteer</a>
 <a style="font-size: 12px" class="tag_cloud" href="https://codeinphp.github.io/tag/realtime" title="1 total posts" data-original-title="2 total posts" data-toggle="tooltip">realtime</a>

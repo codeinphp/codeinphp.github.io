@@ -6,6 +6,19 @@
 <description>PHP and more...</description>
 <language>en-us</language>
 <item>
+<title>Introducing PHPNews App</title>
+<description><![CDATA[<p>Being able to keep oneself updated with latest trends, best practices and news is very crucial especially with the web evolving so rapidly today. This is equally important to become better or what they say modern developer as opposed to obsolete developer. As the technology stack evolves, the client requirements also evolve pushing us as developers to remain abreast of latest stuff as much as we possibly can.</p>
+<p>Two of the most common methods to stay up-to-date with latest stuff is to use some RSS/Atom Aggregator or subscription via emails at various sites. These work fine but I was personally overwhelmed by the amount of new updates and posts I used to get, it was kind of hard to keep the track of it all with that many subscriptions from various sources on different technologies. I <em>could</em>  have minimized the subscriptions but that wouldn't save the actual purpose.</p>
+<p>Therefore being a developer, often times, you come up with your own solution which fits your needs. I wanted just a simple and focused app on just one technology eg PHP that would give me updates from various sources in one central place without bloating me away with too many or stale posts. Since idea was simple, I didn't want to spend too much time on Android so I took the route of using JavaScript to create this app. It turned out there are quite some ways to create <strong>Native</strong> apps today using one technology that can run across devices and platforms. I found <a href="https://www.nativescript.org/">NativeScript</a> quick and easy to get started with although there are other solutions too to make native apps such as ReactNative, Xamarin, Flutter, etc.</p>
+<p>Over the weekend, I went on to creating this app called <strong>PHPNews</strong> and I believe end result is exactly what I wanted as it serves the purpose, here is screenshot: </p>
+<p><img src="https://codeinphp.github.io/images/15467873715c321a2b3c5f2.jpg" alt="PHPNews Screen" /></p>
+<p>It collects information from various sources including official blogs of PHP frameworks such as Laravel, Symfony, Zend Framework and CMSs like WordPress and last but not the least our old friend <a href="http://planet-php.net">http://planet-php.net</a>.</p>
+<p>Definitely give it a try and also share any suggestions or improvements.</p>
+<p><a href='https://play.google.com/store/apps/details?id=io.codeinphp.phpnews&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get PHPNews on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="100"/></a></p>]]></description>
+<link>https://codeinphp.github.io/post/introducing-phpnews-app</link>
+<pubDate>Sun, 06 Jan 2019 20:27:00 +0500</pubDate>
+</item>
+<item>
 <title>Laravel: Automatic Vendor Cleanup Command</title>
 <description><![CDATA[<p>When installing composer packages, they come up with <strong>lot of useless files and folders</strong> such as <code>.git</code>, <code>tests</code>, <code>readme.md</code> and more. When project becomes bigger with many packages, this junk takes considerable disk space. Since I work with Laravel framework most of the time, I created a command that allows me to automatically delete all these junk files whenever I happen to install or update composer packages.</p>
 <p>Here is the pattern used by <code>glob</code> function to detect and delete all junk files:</p>
