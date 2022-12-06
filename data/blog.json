@@ -8,7 +8,7 @@
 		"layout": "default",
 		"theme": "bootstrap.min.css",
 		"disqus": "codeinphp",
-		"analytics": "",
+		"analytics": "UA-61657332-1",
 		"only_titles": "",
 		"generated": null
 	},
